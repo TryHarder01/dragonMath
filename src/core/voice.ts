@@ -6,7 +6,7 @@ let lastPrompt = '';
 // `?mute` in the URL silences speech (handy for automated checks), and `?fast`
 // runs every pause ~20× quicker so scripts/playthrough.mjs can play whole rounds fast.
 const params = new URLSearchParams(location.search);
-let muted = params.has('mute');
+const muted = params.has('mute');
 const pace = params.has('fast') ? 0.05 : 1;
 
 const PREFERRED = ['Samantha', 'Karen', 'Moira', 'Google US English', 'Microsoft Aria', 'Microsoft Jenny'];
@@ -23,11 +23,6 @@ function pickVoice(): SpeechSynthesisVoice | null {
 if ('speechSynthesis' in window) {
   chosen = pickVoice();
   speechSynthesis.addEventListener?.('voiceschanged', () => (chosen = pickVoice()));
-}
-
-export function setMuted(m: boolean) {
-  muted = m;
-  if (m) speechSynthesis?.cancel();
 }
 
 /** Speak text. Resolves when finished (or after a safety timeout). */

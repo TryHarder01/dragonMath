@@ -6,7 +6,7 @@ import { h } from './dom';
 import { repeatPrompt, say, wait } from './voice';
 import { sfx } from './sound';
 
-export const PROBLEMS_PER_ROUND = 5;
+const PROBLEMS_PER_ROUND = 5;
 
 export type Exit = 'map' | 'hatch';
 

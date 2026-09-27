@@ -1,6 +1,6 @@
 import type { GameId } from '../core/progress';
 
-export interface ProblemCtx {
+interface ProblemCtx {
   /** Area the game draws into; cleared before each problem. */
   play: HTMLElement;
   level: number;

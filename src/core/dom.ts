@@ -28,12 +28,6 @@ export function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-/** `count` distinct numbers in [min, max], always including `must`. */
-export function distinctWith(must: number, count: number, min: number, max: number): number[] {
-  const pool = shuffle(Array.from({ length: max - min + 1 }, (_, i) => min + i).filter((n) => n !== must));
-  return shuffle([must, ...pool.slice(0, count - 1)]);
-}
-
 /** Answer choices near the right answer (plausible distractors), within [min, max]. */
 export function nearChoices(answer: number, count: number, min: number, max: number): number[] {
   const near = shuffle([-2, -1, 1, 2].map((d) => answer + d).filter((n) => n >= min && n <= max));

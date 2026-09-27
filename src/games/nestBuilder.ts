@@ -128,11 +128,6 @@ const LEVELS = [
   mixedProblem,
 ];
 
-/** Exported so every level's ranges and choices can be stress-tested. */
-export function generateNestProblem(level: number): NestProblem {
-  return LEVELS[level - 1]();
-}
-
 function tenFrame(cls = ''): { el: HTMLElement; cells: HTMLElement[] } {
   const cells: HTMLElement[] = [];
   const el = h('div', `nest-frame ${cls}`.trim());
@@ -471,10 +466,7 @@ export const nestBuilder: Game = {
   intro: 'Nest Builder! Every nest holds ten eggs. Help Ember fill the nests, one nest at a time.',
 
   runProblem({ play, level }) {
-    // Exercise all nine full-nest tiles in the crowded layout audit.
-    const plan = level === 7 && new URLSearchParams(location.search).has('audit')
-      ? subProblem('sub-big', 98, 9, false, 99)
-      : generateNestProblem(level);
+    const plan = LEVELS[level - 1]();
     switch (plan.kind) {
       case 'fill': return runFill(play, plan);
       case 'add-small': return runAdd(play, plan, level !== 8);

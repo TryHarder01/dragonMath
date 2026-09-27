@@ -1,5 +1,16 @@
 # Worklog
 
+## 2026-09-27 — Dead-code checks with Knip
+
+**Goal:** Per the user, a TypeScript counterpart to Python's vulture, run automatically, plus fixing what it finds.
+
+**Done:**
+- Added `knip` (devDependency) with `knip.json` (the scripts are entry points, since the justfile runs them). `just check` now runs it too (the whole check takes about 0.6 s). `just deadcode` runs it alone.
+- Deleted dead helpers: `distinctWith` (dom), `numeralWithDots` and `countAlong` (visuals), `setMuted` (voice). Removed `export` from `PROBLEMS_PER_ROUND`, `visuals.tenFrame`, `StoryProblem`, `ProblemCtx`, and the "exported for stress tests" `generateStoryProblem` / `generateNestProblem`.
+- Removed the `?audit` special cases from Nest Builder (a pinned 98 − 9) and Gem Bags (`forceTricky` / `forceRegroup`). The play-throughs also use `?audit`, so those rounds kept testing one pinned problem. Make Ten's were removed at merge. Knip can't see this pattern, so `AGENTS.md` and the delegate skill's quality bar now name it.
+
+**Verified:** `npx knip` clean; typecheck clean. `node scripts/audit.mjs --only=nest-L7,bags-L3-compare,bags-L6` on random problems: 0 of 18 in 3 runs. `just verify`: check clean, 0 of 180 flagged, all 65 rounds pass.
+
 ## 2026-09-27 — Build Make Ten practice module
 
 **Goal:** Add the spec's dedicated Make Ten game to the island map without changing Nest Builder's behaviour.

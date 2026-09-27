@@ -11,6 +11,8 @@ One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written wi
 
 ## Fixed
 
+- **[codebase] Test-only exports and `?audit` branches kept reappearing** (Stomp, Nest, Dino Story, Make Ten, Gem Bags): Knip in `just check` catches the exports; `AGENTS.md` and the delegate skill's quality bar name the `?audit` pattern.
+
 - **[checks] Merges silently broke CSS** (a shared closing brace kept only once): `just check`, first step of `just verify`.
 - **[checks] Conflict markers committed** after a scripted resolution: `just check`.
 - **[tooling] Play-throughs took ~5½ min for one level per game:** `?fast` + parallel rounds, all levels in ~47 s.

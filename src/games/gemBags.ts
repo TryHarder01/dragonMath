@@ -12,7 +12,6 @@ import { eggScene, type EggQuestion } from './eggScene';
 import type { Game } from './types';
 
 const MINUS = '−';
-const AUDIT = new URLSearchParams(location.search).has('audit');
 const PRAISE = 'Bags first, then gems. Smart!';
 
 type Kind = 'count' | 'build' | 'compare' | 'add-tens' | 'sub-tens' | 'add' | 'sub' | 'regroup';
@@ -29,8 +28,6 @@ interface GemProblem {
 
 interface GenerateOptions {
   afterFirstRound?: boolean;
-  forceTricky?: boolean;
-  forceRegroup?: boolean;
 }
 
 interface Hoard {
@@ -176,7 +173,7 @@ function placeChoices(answer: number, extras: number[] = []): number[] {
 function compareProblem(opts: GenerateOptions): GemProblem {
   let a: number;
   let b: number;
-  const tricky = opts.forceTricky || Math.random() < 0.4;
+  const tricky = Math.random() < 0.4;
   if (tricky && Math.random() < 0.5) {
     const tens = rand(1, 9);
     let ones = rand(1, 9);
@@ -282,7 +279,7 @@ function generateGemProblem(level: number, opts: GenerateOptions = {}): GemProbl
     case 7:
       return subNoRegroup(level);
     case 8:
-      if (opts.forceRegroup || Math.random() < 0.3) return regroup(level);
+      if (Math.random() < 0.3) return regroup(level);
       return pick([() => addTens(level, true), () => subTens(level, true), () => addTens(level), () => subTens(level), () => addNoRegroup(level), () => subNoRegroup(level)])();
     default:
       throw new Error(`Unknown Gem Bags level: ${level}`);
@@ -585,11 +582,7 @@ export const gemBags: Game = {
   },
 
   runProblem({ play, level }) {
-    const p = generateGemProblem(level, {
-      afterFirstRound,
-      forceTricky: AUDIT && level === 3,
-      forceRegroup: AUDIT && level === 8,
-    });
+    const p = generateGemProblem(level, { afterFirstRound });
     if (p.kind === 'build') return buildScene(play, p.answer);
     if (p.kind === 'compare') return compareScene(play, p);
     return eggScene(play, question(p));

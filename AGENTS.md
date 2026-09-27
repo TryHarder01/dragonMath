@@ -24,7 +24,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 - `npm run typecheck`: run `tsc --noEmit`.
 - `npm run build`: typecheck plus a production build into `dist/`.
 - Add `?mute` to the URL to turn off speech, which is useful for automated checks.
-- `just check` (about 1 s, also the first step of `just verify`): conflict markers, and `{ }` balance in each `styles.css` section.
+- `just check` (about a second, also the first step of `just verify`): conflict markers, `{ }` balance in each `styles.css` section, and dead code via [Knip](https://knip.dev) (unused exports, files and dependencies; `just deadcode` alone). Don't export something just for a test or a throwaway script, and don't add `?audit`/test-only branches to game code: Knip flags the first, and the second makes play-throughs test less.
 - `just audit` checks every screen's layout at 6 window sizes, from a phone to a big monitor at 70% zoom, using `scripts/audit.mjs` (Playwright on the system Chrome). It flags content that doesn't fill the window, is clipped, or where eggs cover the question card, and saves screenshots to `audit-screens/`. Run it after any layout or CSS change. `?audit` in the URL exposes `window.__audit` shortcuts for opening screens directly.
 - `just playthrough <game|all> [--level=N|all]` drives full rounds in Chrome (`scripts/playthrough.mjs`, per-game drivers in `scripts/drivers/`) and checks each reaches the hatch with no errors and a hint shown. Rounds run in parallel with the game in `?fast` mode (pauses ~20× quicker), so every level of every game takes about a minute. `--real` plays at real speed. `just verify` runs build, audit and every level of every game.
 - `orca.yaml` runs `npm install` when Orca creates a worktree.
@@ -44,7 +44,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
   - `sound` (WebAudio effects)
   - `progress` (localStorage)
   - `adaptive` (levels)
-  - `visuals` (dots, ten-frames, `countAlong`)
+  - `visuals` (dots, ten-frames)
   - `models` (fact picture models, each with an animated strategy hint: `addModel`, `subModel`, `missingModel`, `arrayModel`, `groupsModel`)
   - `choices` (`awaitChoice`: the tap-an-answer pattern with a hint on wrong answers)
   - `round` (runs 5 problems, then the hatch)

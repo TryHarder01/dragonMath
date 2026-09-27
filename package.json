@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "knip": "^6.38.0",
     "playwright": "1.57",
     "typescript": "^7.0.2",
     "vite": "^8.3.1"

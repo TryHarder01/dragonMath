@@ -25,9 +25,14 @@ build:
 preview: build
     npm run preview
 
-# Merge guard: conflict markers, and { } balance in each styles.css section (~1s)
+# Fast guards (~1 s): conflict markers, { } balance per styles.css section, and dead code (knip)
 check:
     node scripts/check.mjs
+    npx knip --no-progress
+
+# Dead code: unused exports, files and dependencies (config in knip.json)
+deadcode:
+    npx knip
 
 # List agent friction reports (docs/retros/), newest first
 retros:

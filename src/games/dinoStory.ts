@@ -99,7 +99,7 @@ function nextTemplate(kind: StoryKind): StoryTemplate {
   return bag.pop()!;
 }
 
-export interface StoryProblem {
+interface StoryProblem {
   level: number;
   kind: StoryKind;
   answer: number;
@@ -305,8 +305,7 @@ function twoStep(level = 8): StoryProblem {
   );
 }
 
-/** Exported so every level's ranges can be stress-tested. */
-export function generateStoryProblem(level: number): StoryProblem {
+function generateStoryProblem(level: number): StoryProblem {
   switch (level) {
     case 1: return join();
     case 2: return separate();

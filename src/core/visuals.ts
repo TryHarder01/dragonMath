@@ -1,9 +1,7 @@
-// Quantity pictures: dice-pattern dots, ten-frames, and numerals with dots.
+// Quantity pictures: dice-pattern dots and ten-frames.
 // Research rule: at this age a numeral always has a picture of its quantity nearby.
 
 import { h } from './dom';
-import { say, wait, word } from './voice';
-import { sfx } from './sound';
 
 const DICE: Record<number, number[]> = {
   1: [4],
@@ -24,7 +22,7 @@ export function dots(n: number, cls = ''): HTMLElement {
 }
 
 /** A 5- or 10-slot frame with `n` counters filled in reading order. */
-export function tenFrame(n: number, size: 5 | 10 = 10, cls = ''): HTMLElement {
+function tenFrame(n: number, size: 5 | 10 = 10, cls = ''): HTMLElement {
   const frame = h('div', `frame frame-${size} ${cls}`);
   for (let i = 0; i < size; i++) {
     const cell = h('span', 'cell');
@@ -32,26 +30,4 @@ export function tenFrame(n: number, size: 5 | 10 = 10, cls = ''): HTMLElement {
     frame.append(cell);
   }
   return frame;
-}
-
-/** Big numeral with a small dot picture underneath. */
-export function numeralWithDots(n: number, showDots = true): HTMLElement {
-  const box = h('div', 'numeral-box', [h('span', 'numeral', [String(n)])]);
-  if (showDots) box.append(dots(n, 'mini'));
-  return box;
-}
-
-/** Light up each dot inside `root` one at a time while counting aloud. */
-export async function countAlong(root: HTMLElement, selector = '.dot:not(.empty)', finalLine = true) {
-  const items = [...root.querySelectorAll<HTMLElement>(selector)];
-  for (let i = 0; i < items.length; i++) {
-    items[i].classList.add('lit');
-    sfx.count(i + 1);
-    await say(word(i + 1), { rate: 1 });
-    await wait(80);
-  }
-  if (finalLine) await say(`${word(items.length)}!`);
-  await wait(250);
-  items.forEach((el) => el.classList.remove('lit'));
-  return items.length;
 }
