@@ -17,6 +17,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 
 ## Commands
 - `just run`: install dependencies if needed and start the game. Run `just` to list all recipes (`typecheck`, `build`, `preview`, `install`).
+- **Hosted on Netlify:** https://effulgent-dieffenbachia-f29f59.netlify.app/, built from `main` on every push (`netlify.toml`). Pushing to `main` deploys, so run `just verify` first.
 - `npm run dev`: play at http://localhost:5173. Uses `--host`, so an iPad on the same wifi can connect.
 - `npm run typecheck`: run `tsc --noEmit`.
 - `npm run build`: typecheck plus a production build into `dist/`.

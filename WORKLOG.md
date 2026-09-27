@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-09-27 — Home-screen app and Netlify hosting
+
+**Goal:** The "Running it on a phone" follow-ups: make it installable, and record where it's hosted.
+
+**Done:**
+- `public/manifest.webmanifest` + dragon icons (180/192/512 PNG) + Apple meta tags in `index.html`, so Add to Home Screen opens full screen.
+- `vite.config.ts`: `base: './'`, so `dist/` works from any host path.
+- Hosting: the user set up Netlify at https://effulgent-dieffenbachia-f29f59.netlify.app/, which builds from `main` on GitHub on every push. Added `netlify.toml` (build `npm run build`, publish `dist`), a `README.md`, and the URL in `AGENTS.md` and `docs/specs/follow-ups.md`.
+
+**Verified:** typecheck and build OK. Served `dist/` from a `/ember/` subpath in Chrome at phone size: the map shows all 7 games, no page errors, no 404s, manifest and icon load.
+
+**Open / broken:** the live site still serves `bdbe7ee` (pre-manifest) until these commits are pushed.
+
 ## 2026-09-27 — Merge the four games; rough cut ready to play
 
 **Goal:** Per the user, have four Codex agents (orchestrated with Orca) build the four specced games in parallel, then merge and verify. The user asked for a working rough cut by morning over polish, with follow-up work written down.

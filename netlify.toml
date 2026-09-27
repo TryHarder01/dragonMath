@@ -1,0 +1,4 @@
+# Netlify builds this on every push to main: https://effulgent-dieffenbachia-f29f59.netlify.app/
+[build]
+  command = "npm run build"
+  publish = "dist"
