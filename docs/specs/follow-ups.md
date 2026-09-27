@@ -48,8 +48,8 @@ This is for one child, possibly on a phone:
 ## Early reading (from 2026-09-27: he's starting to read)
 
 Screens may now show a few short, simple words with a picture (`docs/decisions/2026-09-27-on-screen-cue-words.md`). Come back to these after the current work:
-- **Find other places where a one-word cue helps,** where a missed prompt leaves the child guessing. Candidates: Stomp Path direction ("back?" when hopping back), Egg Warmer "take away" vs "plus" problems, and Dino Story's "more on top?" / "fewer below?".
-- **"fewer" is a tricky spelling** (the *ew* sound). Decide whether Gem Bags keeps "more / fewer" (correct for counting gems, and it matches the voice) or moves to plainer words, and keep the voice and the screen matching either way.
+- **Find other places where a one-word cue helps,** where a missed prompt leaves the child guessing. Candidates: Stomp Path direction ("back?" when hopping back), Egg Warmer "take away" vs "plus" problems, and Dino Story's "more on top?" / "fewer below?". The first attempt, a picture-plus-word card on Gem Bags, wasn't liked; agree the look with the user before building another.
+- **Teach "fewer" (or "less") in Gem Bags, as its own step.** L3 now asks only "which has more?" (2026-09-27), since switching between more and fewer on the same screen was confusing without a cue. Next: a new level after L3 (or an L3 phase once "more" is solid) that asks for fewer, maybe with a clear on-screen signal agreed with the user first. Pick the word then: "fewer" is correct for counting gems but has the tricky *ew* spelling; "less" is plainer.
 - **Spoken lines that are also shown** should follow both guides: "How Ember talks" (short) and the reading rule (plain spelling, no contractions). Several spoken lines use "Let's …", which is fine spoken but shouldn't be copied onto the screen.
 - **The parent guide** could mention that on-screen words are simple and always read aloud.
 

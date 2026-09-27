@@ -28,7 +28,7 @@ Levels 1 and 4–8 use `eggScene`: the question card shows the gem model and the
   - At **ten loose gems**, they swirl into a new bag automatically: "Ten gems make a bag!" This is regrouping, discovered by doing.
   - Tapping ✓ checks the answer. Right: sparkle, and the round goes on. Wrong: hint, and the child fixes it (the hoard stays), then taps ✓ again.
   - `firstTry` = right on the first ✓.
-- **L3 "Who has more?":** a red dragon and a blue dragon, each above its own pile of bags and gems. Their sides are random each problem, so colour does not reveal the answer. Tap a dragon (use `awaitChoice` with the dragon elements). A cue card above them shows which question it is: "💎💎💎 more?" or "💎 fewer?" ([why](../decisions/2026-09-27-on-screen-cue-words.md)).
+- **L3 "Who has more?":** a red dragon and a blue dragon, each above its own pile of bags and gems. Their sides are random each problem, so colour does not reveal the answer. Tap a dragon (use `awaitChoice` with the dragon elements). It always asks "more": the voice ends "Who has more gems?", and a card above the dragons shows "Who has more?". Comparing for fewer is a planned follow-on (see `follow-ups.md`).
 
 ### Gem model (new: write it in `gemBags.ts`, shaped like `Model`)
 
@@ -48,7 +48,7 @@ Levels 1 and 4–8 use `eggScene`: the question card shows the gem model and the
 |---|---|---|---|
 | 1 | How many gems? (4 bags + 7 → 47) | eggScene, picture shown | tens 1–9, ones 0–9 |
 | 2 | **Make 47**: build it | build scene | target 11–99; half the targets have ones ≥ 5 |
-| 3 | Who has more gems? (then "fewer" on half the problems after the first round) | two dragons, pictures only | both 10–99, different. 40% are **tricky pairs**: more loose gems but fewer bags (29 vs 31), or swapped digits (52 vs 25) |
+| 3 | Who has more gems? ("fewer" is a planned follow-on) | two dragons, pictures only | both 10–99, different. 40% are **tricky pairs**: more loose gems but fewer bags (29 vs 31), or swapped digits (52 vs 25) |
 | 4 | Add or give **one bag**: 47 + 10 / 47 − 10 | eggScene, picture shown | a 11–89 (for −10: 20–99) |
 | 5 | Add or give **tens**: 34 + 20, 56 − 30 | eggScene, picture shown | add 2–5 tens; result ≤ 99 / ≥ 1 |
 | 6 | Add 2-digit, **no regrouping**: 34 + 25 | eggScene, picture shown (two hoards merge) | ones sum ≤ 9, total ≤ 99 |
@@ -86,7 +86,7 @@ about:
 levels: [
   'How many gems? Bags of ten and loose gems',
   'Build a number: tap bags and gems to make 47',
-  'Which dragon has more (or fewer) gems?',
+  'Which dragon has more gems?',
   'Add or share one bag: 47 + 10, 47 − 10',
   'Add or share several bags: 34 + 20, 56 − 30',
   'Add 2-digit numbers: 34 + 25',

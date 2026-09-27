@@ -1,5 +1,15 @@
 # Worklog
 
+## 2026-09-27 — Gem Bags L3 asks only "who has more?"
+
+**Goal:** The user didn't like the "💎💎💎 more? / 💎 fewer?" cue card. Instead: focus L3 on "more" only, and teach fewer/less later as a follow-on.
+
+**Done:** Removed L3's "fewer" path (`askFewer`, the first-round tracking in `startRound`, and the cue card with its CSS); the compare lines always say "more". Updated the parent text, `gem-bags.md`, the decision doc (dated update: the simple-words rule stands, and the example card is gone), the `AGENTS.md` example, and `follow-ups.md` ("Teach fewer (or less) in Gem Bags, as its own step").
+
+Then, per the user ("I would like some words; a short sentence could work"), a plain text card, **"Who has more?"**, above the dragons (`lines.compareCard`), and the spoken ask ends with "Who has more gems?" to match. The rule now allows a short sentence of simple words (decision doc Update 2, `AGENTS.md`, specs).
+
+**Verified:** typecheck; `just check`; `audit --only=bags-L3-compare` 0 of 6, and looked at the phone screenshot; `playthrough bags --level=all` passes; `just verify` before push.
+
 ## 2026-09-27 — Gem Bags "more / fewer" cue on screen
 
 **Goal:** Per the user: Gem Bags L3 flips between "which has more?" and "which has fewer?", only by voice; show it on screen too, in case the child or grown-up missed the prompt.

@@ -50,11 +50,13 @@ export const lines = {
   buildHint: (total: number, tens: number, ones: number, target: number, targetTens: number, targetOnes: number) =>
     `You made ${total}. That's ${tens} bags and ${ones} gems. ${target} needs ${targetTens} bags and ${targetOnes} gems.`,
 
-  // compareScene: L3, which dragon has more (or fewer).
-  compareAsk: (word: string) => `Red dragon. Blue dragon. Which has ${word} gems?`,
-  compareRight: (colour: string, word: string) => `The ${colour} dragon has ${word}! ${PRAISE}`,
+  // compareScene: L3, which dragon has more.
+  compareAsk: 'Red dragon. Blue dragon. Who has more gems?',
+  // Shown on screen above the dragons (simple words, see AGENTS.md).
+  compareCard: 'Who has more?',
+  compareRight: (colour: string) => `The ${colour} dragon has more! ${PRAISE}`,
   compareTensCount: (highTens: number, lowTens: number) => `${highTens} bags is more than ${lowTens} bags.`,
   compareOnesMatch: (onesA: number, onesB: number) => `The bags match. ${onesA} and ${onesB}.`,
-  compareAnswer: (colour: string, word: string) => `The ${colour} dragon has ${word}!`,
+  compareAnswer: (colour: string) => `The ${colour} dragon has more!`,
   compareAgain: 'Look at both dragons. Bags first, then gems!',
 };

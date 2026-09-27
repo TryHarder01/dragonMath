@@ -11,14 +11,18 @@ Kid screens are no longer strictly wordless. Short, simple words may appear **al
 - **Favour small, phonics-friendly words:** short regular words (*more, big, hop, ten*) and common sight words. Avoid contractions (*let's, don't*), silent letters and tricky spellings where a plainer word exists, and keep it to one to three words: a cue, not a sentence.
 - **Pair each word with a picture** a pre-reader can read (e.g. 💎💎💎 for "more").
 
-The first use is Gem Bags L3, where the same screen asks "which has **more**?" or "which has **fewer**?": a cue card shows "💎💎💎 more?" or "💎 fewer?".
+The first use was a cue card on Gem Bags L3 ("💎💎💎 more?" / "💎 fewer?"), because that screen asked either question.
+
+**Update (2026-09-27, same day):** the user didn't like the cue card. Gem Bags L3 now asks only "which has more?", so there's nothing to cue, and the card is gone. Teaching "fewer" comes later as its own step (`docs/specs/follow-ups.md`). The rule above still stands.
+
+**Update 2 (same day):** the user wants some words on that screen after all: "I would like some words; a short sentence could work." So a **short sentence of simple words** (about four words, e.g. "Who has more?") is allowed, not just one to three words, still spoken as well. Gem Bags L3 shows "Who has more?" above the dragons, and the voice ends with the same words.
 
 ## Why
 User's words: Gem Bags "sometimes … is asking for which has more and which has less; there should be text on the screen to help aid that communication, esp. in case the kid or the adult didn't catch the speak()". Then: "kid is starting to pick up simple reading, let's not make [wordless] a hard rule; he has some early phonics lessons already and is learning more … stay away from complex/edge-case reading stuff: contractions, tricky sounds … favour smaller words."
 
 ## Rejected
 - **Strictly wordless screens (the old rule):** a missed prompt left no way to tell which question was asked, and it ignores that he's starting to read.
-- **Sentences on screen:** too hard to read yet, and they'd compete with the voice.
+- **Long sentences or instructions on screen:** too hard to read yet, and they'd compete with the voice. (A short sentence of simple words is fine; see Update 2.)
 - **Maths symbols (> / <):** not taught at this age.
 
 ## Links

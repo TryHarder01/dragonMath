@@ -5,7 +5,6 @@
 import { awaitChoice, type Choice } from '../core/choices';
 import { burst, h, nearChoices, pick, rand, shuffle } from '../core/dom';
 import type { Model } from '../core/models';
-import { getGameState, setGameState } from '../core/progress';
 import { sfx } from '../core/sound';
 import { prompt, say, wait } from '../core/voice';
 import { eggScene, type EggQuestion } from './eggScene';
@@ -23,11 +22,6 @@ interface GemProblem {
   b?: number;
   answer: number;
   choices: number[];
-  askFewer?: boolean;
-}
-
-interface GenerateOptions {
-  afterFirstRound?: boolean;
 }
 
 interface Hoard {
@@ -170,7 +164,7 @@ function placeChoices(answer: number, extras: number[] = []): number[] {
   return shuffle([answer, ...preferred.slice(0, 3)]);
 }
 
-function compareProblem(opts: GenerateOptions): GemProblem {
+function compareProblem(): GemProblem {
   let a: number;
   let b: number;
   const tricky = Math.random() < 0.4;
@@ -191,15 +185,13 @@ function compareProblem(opts: GenerateOptions): GemProblem {
     b = rand(10, 99);
     while (a === b) b = rand(10, 99);
   }
-  const askFewer = Boolean(opts.afterFirstRound && Math.random() < 0.5);
   return {
     level: 3,
     kind: 'compare',
     a,
     b,
-    answer: askFewer ? Math.min(a, b) : Math.max(a, b),
+    answer: Math.max(a, b),
     choices: [a, b],
-    askFewer,
   };
 }
 
@@ -255,7 +247,7 @@ function regroup(level: number): GemProblem {
   return { level, kind: 'regroup', a, b, answer, choices: placeChoices(answer, [droppedTen]) };
 }
 
-function generateGemProblem(level: number, opts: GenerateOptions = {}): GemProblem {
+function generateGemProblem(level: number): GemProblem {
   switch (level) {
     case 1: {
       const tens = rand(1, 9), ones = rand(0, 9), answer = tens * 10 + ones;
@@ -269,7 +261,7 @@ function generateGemProblem(level: number, opts: GenerateOptions = {}): GemProbl
       return { level, kind: 'build', a: answer, answer, choices: [answer] };
     }
     case 3:
-      return compareProblem(opts);
+      return compareProblem();
     case 4:
       return Math.random() < 0.5 ? addTens(level, true) : subTens(level, true);
     case 5:
@@ -488,14 +480,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
     return { el, value: n };
   });
   const compare = h('div', 'gem-compare', choices.map((choice) => choice.el));
-  // The question flips between "more" and "fewer", so show which one it is: a
-  // picture for the child, and the word for a grown-up (and early reading),
-  // in case the spoken prompt was missed.
-  const cue = h('div', 'gem-compare-cue', [
-    h('span', 'gem-compare-pile', [p.askFewer ? '💎' : '💎💎💎']),
-    h('span', 'gem-compare-word', [p.askFewer ? 'fewer?' : 'more?']),
-  ]);
-  play.append(h('div', 'gem-compare-scene', [cue, compare]));
+  play.append(h('div', 'gem-compare-scene', [h('div', 'gem-compare-ask', [lines.compareCard]), compare]));
 
   const fit = () => {
     choices.forEach((choice, i) => {
@@ -515,8 +500,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   const resize = new ResizeObserver(() => (compare.isConnected ? fit() : resize.disconnect()));
   resize.observe(compare);
 
-  const word = p.askFewer ? 'fewer' : 'more';
-  const ask = lines.compareAsk(word);
+  const ask = lines.compareAsk;
   void prompt(ask);
   let hinted = false;
   const answer = models.find((model) => model.n === p.answer)!;
@@ -524,7 +508,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   return awaitChoice(choices, (value) => value === p.answer, {
     onRight: async (choice) => {
       burst(choice.el, '💎');
-      await say(lines.compareRight(answer.colour.name, word));
+      await say(lines.compareRight(answer.colour.name));
     },
     onWrong: async () => {
       if (!hinted) {
@@ -540,7 +524,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
         } else {
           await say(lines.compareOnesMatch(first.ones, second.ones));
         }
-        await say(lines.compareAnswer(answer.colour.name, word));
+        await say(lines.compareAnswer(answer.colour.name));
       } else {
         await say(lines.compareAgain);
       }
@@ -548,12 +532,6 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
     },
   });
 }
-
-interface BagsState {
-  rounds: number;
-}
-
-let afterFirstRound = false;
 
 export const gemBags: Game = {
   id: 'bags',
@@ -565,7 +543,7 @@ export const gemBags: Game = {
   levels: [
     'How many gems? Bags of ten and loose gems',
     'Build a number: tap bags and gems to make 47',
-    'Which dragon has more (or fewer) gems?',
+    'Which dragon has more gems?',
     'Add or share one bag: 47 + 10, 47 − 10',
     'Add or share several bags: 34 + 20, 56 − 30',
     'Add 2-digit numbers: 34 + 25',
@@ -574,14 +552,8 @@ export const gemBags: Game = {
   ],
   intro: lines.intro,
 
-  startRound() {
-    const state = getGameState<BagsState>('bags') ?? { rounds: 0 };
-    afterFirstRound = state.rounds > 0;
-    setGameState('bags', { rounds: state.rounds + 1 });
-  },
-
   runProblem({ play, level }) {
-    const p = generateGemProblem(level, { afterFirstRound });
+    const p = generateGemProblem(level);
     if (p.kind === 'build') return buildScene(play, p.answer);
     if (p.kind === 'compare') return compareScene(play, p);
     return eggScene(play, question(p));
