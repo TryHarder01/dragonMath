@@ -38,6 +38,31 @@
 
 **Next:**
 - Nest Builder and Dino Story still need the same line-by-line pass (per `docs/specs/follow-ups.md`); Nest Builder matters most (it targets the weak spot).
+## 2026-09-27 — Dino Story tightening pass
+
+**Goal:** Fresh line-by-line review of `src/games/dinoStory.ts` against `docs/specs/dino-story.md`, per `docs/specs/follow-ups.md` item 1.
+
+**Done:**
+- Fixed the hint-overlap bug (follow-ups item): the ten-frame/model card was positioned relative to `.story-shell` (`top: 38%`) and floated down over the "11 − 5 = ?" strip below the stage. Moved the card into `.story-stage` itself and sized it against the stage (not the whole shell), so it's always contained above the strip. Confirmed with before/after screenshots on phone and iPad.
+- Fixed a grammar bug in the compare story (level 5): `difference` could reach `bigger - 1`, letting `smaller` be 1, producing "One dinos are on the hill." Tightened the bound to `bigger - 2` so both groups are always ≥2 (plural throughout).
+- Matched `preHint`'s compare line to the spec's exact wording ("Match them up: the extra ones are the answer.").
+- Reviewed the rest of the file line by line: template ranges, situation-type order (matches spec's 1–8), hint-model mapping per kind (all 8 match the spec table), distractor mistakes, and the two-step/sharing/groups logic. No dead code or needless duplication found beyond what's already idiomatic for this codebase (e.g. each game file owns its own `glow()`, same as `eggScene.ts` — not something to consolidate without touching shared/out-of-scope files).
+- Deliberately left alone: the compare story's two rows can together show more than the spec's "20 characters on stage" cap (e.g. 20 turtles + 8 dinos); the audit and screenshots show it wraps into rows of 5 and reads fine, so didn't add complexity to cap it. Also left the module-level `sentenceTurn` counter shared across L6/L8 as-is — it still yields roughly half sentence-beats over time, and splitting it per level wasn't asked for and isn't visible to the child.
+
+**Decisions:**
+- Confine the hint's model card to the stage's own box rather than hide the strip during the hint — keeps both the picture and the number sentence visible together, which is more useful for the "acted it out" learning goal than hiding either.
+
+**Verified:**
+- `npm run typecheck` and `npm run build`: clean.
+- `node scripts/audit.mjs --only=story-L2,story-L5-compare,story-L8-sentences`: 0 of 18 flagged (all 6 sizes).
+- `node scripts/playthrough.mjs story --level=N` for N=1–8: all reach the hatch with a hint shown. L2 and L5 (the levels touched visually) also run and screenshot at `--size=phone`; hint screenshots checked by eye at both sizes.
+- Generator check (throwaway browser script, not committed): 1,000 runs per level (8,000 total) checking answer-in-choices, range, no duplicate choices, and singular/plural — 0 issues after the compare fix.
+
+**Open / broken:**
+- None found beyond what's listed above as deliberately left alone.
+
+**Next:**
+- Nest Builder and Gem Bags still need their line-by-line review (`docs/specs/follow-ups.md`).
 
 ## 2026-09-27 — Merge the four games; rough cut ready to play
 
