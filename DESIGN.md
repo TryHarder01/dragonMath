@@ -96,17 +96,16 @@ Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model
 - **Hint:** count on or back across the changing rows, dot by dot for ×2–×5 and "plus 7 is 42" for bigger tables.
 - **Why:** walking in order shows the structure (one more group), but only unpredictable problems make him recall the fact. So Stairs teaches the structure and Crates does the mixed practice. Jumping from landmarks trains derived facts (6×7 = 5×7 + 7) instead of reciting from 1×.
 
-### 3. Gem Bags: place value (planned)
-Dragons keep gems in bags of 10 plus loose gems. Levels: read tens and ones to 100 → compare 2-digit numbers → add or take away a bag (±10) → add and subtract 2-digit numbers without regrouping.
+### 3–6. Planned games
 
-### 4. Stomp Path: number line to 100 (planned)
-A T-rex walks home along a **straight** numbered path, saying each number (Siegler & Ramani). Levels: hops of 1 on 1–20 → hops of 10 and 1 on 0–100 → skip count by 2, 5 and 10 (feeding Egg Crates) → "Where will you land?" (e.g. 37 + 20).
+Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is the source of truth: levels, generators, hints, spoken lines and parent text. Build them in this order:
 
-### 5. Nest Builder: make-ten strategies (planned)
-Nests of ten. Levels: fill to 10 → bridge through ten (8 + 5 = 8 + 2 + 3) → the same with 2-digit numbers (38 + 5 → 40 + 3) → subtract back through ten (43 − 5).
-
-### 6. Dino Story: word problems (planned)
-Short animated stories. Levels: join / separate within 20 → compare ("how many more?") → missing part → equal groups ("4 nests with 3 eggs each").
+| Game | Skill | Spec |
+|---|---|---|
+| 🪺 Nest Builder | Make-ten / bridging ten, add **and subtract** (13 − 5 → 10 → 8; 43 − 5 → 40 → 38) | [nest-builder.md](docs/specs/nest-builder.md) |
+| 💎 Gem Bags | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
+| 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
+| 📖 Dino Story | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
 
 ## Rewards: the Hatchery
 

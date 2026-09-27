@@ -24,6 +24,8 @@ const SIZES = {
 };
 
 // Each screen: how to open it, and the element that carries the content.
+// For game screens, `ready` is the selector that means "the first problem is
+// showing" (default: numbered answer eggs). New games add their screens here.
 const KEY = 'embers-egg-rescue:v2';
 const SCREENS = {
   // spread: content should span the width too (not just a centred column).
@@ -73,7 +75,7 @@ for (const size of sizes) {
       ({ key, s }) =>
         localStorage.setItem(key, JSON.stringify({
           levels: s.level ?? {},
-          placed: { egg: true, crates: true, stairs: true },
+          placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, story: true },
           hatched: ['rex-green', 'saur-blue', 'dragon-red'],
           games: s.state ?? {},
         })),
@@ -85,7 +87,7 @@ for (const size of sizes) {
       await page.waitForSelector('.skip-btn');
       if (s.skip !== false) {
         await page.click('.skip-btn', { force: true });
-        await page.waitForSelector('.egg .numeral');
+        await page.waitForSelector(s.ready ?? '.egg .numeral');
       }
     }
     if (s.hatchIt) {

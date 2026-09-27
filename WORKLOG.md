@@ -1,5 +1,37 @@
 # Worklog
 
+## 2026-09-26 — Build specs for the four unbuilt games
+
+**Goal:** Write handoff documents that let other agents build Nest Builder, Gem Bags, Stomp Path and Dino Story without re-planning.
+
+**Done:**
+- `docs/specs/README.md`, the shared contract:
+  - the player and the rules;
+  - how a `Game` plugs in and the reuse table (`eggScene`, `awaitChoice`, `models.ts`, `nearChoices`…);
+  - verification (typecheck, `just audit` entries, Playwright play-through, 1,000× generator checks);
+  - finishing steps and rules for parallel work.
+- One spec per game (`nest-builder.md`, `gem-bags.md`, `stomp-path.md`, `dino-story.md`). Each has:
+  - why the game exists, with research;
+  - story and tone, and the screen and interaction;
+  - an 8-level table with generators, spoken lines and hint scripts;
+  - answer distractors (common mistakes);
+  - ready-to-paste parent text, a build checklist and audit entries;
+  - open questions with defaults, and what's out of scope.
+- `DESIGN.md` §3–6 replaced by a table linking to the specs (the specs are the source of truth). `CLAUDE.md` points to `docs/specs/`.
+- `scripts/audit.mjs`: per-screen `ready` selectors for game screens without numbered eggs, and all game ids marked as placed.
+
+**Decisions:**
+- Specs live in `docs/specs/`, one file per game plus a shared README. The user asked me to decide where they go: I chose separate files so parallel agents can each take one, and I kept `DESIGN.md` as a summary. `[promote?]`
+- Recommended build order: Nest Builder (subtraction through ten, his weak spot), Gem Bags, Stomp Path, Dino Story.
+- Nest Builder now includes subtraction levels (13 − 5 → 10 → 8, and 43 − 5), which the old `DESIGN.md` ladder didn't have. Stomp Path adds the open number line and estimation. Dino Story follows the CGI situation-type order.
+- Each spec lists its open questions for the user with a default, so building isn't blocked on answers.
+
+**Verified:** `node --check scripts/audit.mjs` OK. I didn't re-run the audit, since no screens changed. The specs aren't validated by a build yet: the first agent to build from one will find any gaps.
+
+**Next:**
+- Hand `docs/specs/nest-builder.md` (with `docs/specs/README.md`) to an agent. The others can run in parallel in separate worktrees.
+- The user could skim each spec's "Open questions" and override any defaults.
+
 ## 2026-09-26 — Fill the screen at any size; skip-intro button; layout audit
 
 **Goal:** Per the user's screenshots (a big monitor at 70% zoom), the question card and hatch screen sat small in empty space. Make every screen use the window, and add a way to skip the intro speech.
