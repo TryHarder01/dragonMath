@@ -1,5 +1,25 @@
 # Worklog
 
+## 2026-09-27 — Fix mobile sound startup and recovery
+
+**Goal:** Restore effects and spoken instructions on iPhone Safari and the home-screen app without changing desktop or mute/fast behavior.
+
+**Done:**
+- `src/core/sound.ts`: feature-detect Safari's Audio Session API, select `playback` before creating/using Web Audio, and resume an existing context from any non-running state (including WebKit's `interrupted`).
+- `src/core/voice.ts`: cancel only when speech is active or queued, so an idle `cancel()` cannot race the next utterance.
+
+**Decisions:**
+- Fixed hunches 1, 3 and 4. WebKit documents Audio Session support from Safari 16.4 (https://webkit.org/blog/13966/webkit-features-in-safari-16-4/), `playback` as the remedy for silent-switch-muted Web Audio (https://bugs.webkit.org/show_bug.cgi?id=237322), the asynchronous cancel race (https://bugs.webkit.org/show_bug.cgi?id=191745), and iOS's `interrupted` state after backgrounding (https://bugs.webkit.org/show_bug.cgi?id=276016).
+- Rejected hunch 2: `showMap()` invokes the real greeting's `speechSynthesis.speak()` synchronously inside the ▶ click handler already; adding an empty priming utterance would be redundant and could create another queued/cancelled utterance.
+
+**Verified:** `npm run typecheck && npm run build` passed. `just verify` passed: build, 0/156 audit flags, and all 57 game/level play-throughs. An unmuted system-Chrome Playwright probe tapped ▶ and observed the full greeting passed to `speechSynthesis.speak()` in the same click task, the map visible, and no page errors.
+
+**Open / broken:**
+- Untested on iOS hardware. The parent still needs to try with the ringer switch on silent in both a Safari tab and the home-screen app, then background/lock and return before triggering another effect.
+
+**Next:**
+- Have the parent run those three phone checks; if one still fails, capture the iOS version and whether effects, speech, or both are silent.
+
 ## 2026-09-27 — Fast, fanned-out play-throughs
 
 **Goal:** Per the user, make the play-through check efficient and fan it out across levels.
