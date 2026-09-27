@@ -69,6 +69,7 @@ The listener is 4½ and watches Numberblocks: short, warm and rhythmic, never ba
 - **Intros: two short sentences, about 10 words in all:** "Egg Warmer! Let's warm the eggs!"
 - **Hints:** start with a gentle "Let's count." or "Watch!", then show and count. No "Hmm, not that one" plus an explanation plus an instruction in one line.
 - **Shorter must not lose the maths.** A comparison still names what's compared ("How many more on top?", not "How many more?", which sounds like adding). Sharing still says the shares are equal: use "the same in each", not a bare "go into".
+- **Edge cases:** 7 words is fine and 8 is too many; a two-word pair like "Red dragon, blue dragon" is fine, while two clauses aren't. "Let's count." / "Watch!" open a hint after a miss, not praise or the first ask. Catchphrases belong to their game, so don't borrow another game's in shared hints.
 - Not baby talk: no "yummy", "teeny", or talking down. Keep the maths (ten, tens, split, take away).
 - Parent-facing text (`skill`, `about`, `levels`, the guide) isn't spoken and keeps its normal register.
 
