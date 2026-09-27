@@ -1,5 +1,56 @@
 # Worklog
 
+## 2026-09-27 — Voice pass: Gem Bags and Dino Story wording
+
+**Goal:** Per the parent (via AGENTS.md's new "How Ember talks"), rewrite spoken lines in Gem Bags and Dino Story so instructions read as short, one-idea sentences rather than the old longer/joined ones. Pacing itself was already fixed by another worker in `voice.ts`; this is words only.
+
+**Done:**
+- `src/games/gemBags.ts`: split every `and`/`then`/colon-joined spoken line into short sentences, added the "Tens first, then ones!" catchphrase to the tens+ones add/sub hint (previously unlabelled), added "Let's count."/"Watch!" hint openers, shortened the L3 compare `ask` while keeping the red/blue dragon names, trimmed the intro to two short sentences.
+- `src/games/dinoStory.ts`: split every long/joined story template line and generator `ask` string into short sentences (kept the same 4 templates per situation type), removed "equally" (a banned word) from the sharing templates and hint, replaced the "Hmm, not that one" pattern with a "Watch!" opener, shortened the sentence-beat and answer-beat retry lines, trimmed the intro.
+- `docs/specs/gem-bags.md`, `docs/specs/dino-story.md`: updated the "Spoken lines"/"Hints"/template tables and parent-text `intro` to match what shipped.
+
+**Verified:**
+- `npm run typecheck` clean; `just check` clean (no conflict markers, CSS balanced, knip clean).
+- `node scripts/playthrough.mjs bags --level=all`: 0 failed (8/8 levels). `node scripts/playthrough.mjs story --level=all`: 0 failed (8/8 levels).
+- `just verify`: build passed, 0 of 180 audit screen/size combinations flagged, all 65 game/level rounds reached the hatch with a hint shown.
+- Longest remaining spoken sentence in either file: 7 words (e.g. "47 needs 4 bags and 7 gems.", "Then, count on the friends who came.", "You acted it out in your head!" — all pre-existing or newly-split, none over the ~7-word guideline).
+
+**Spoken-line changes (before → after), for review:**
+
+*gemBags.ts*
+- Hint intro: "Count the bags by tens, then count the loose gems." → "Let's count. Bags first!"
+- Hint recap: "4 bags is 40, and 7 more is 47." → "4 bags is 40. 7 more is 47."
+- Add/sub-tens hint opener: "Add the new bags, counting by tens." / "Share the bags, counting back by tens." → "Watch! New bags arrive. Count by tens." / "Watch! Share bags. Count back by tens."
+- Add/sub tens+ones hint: (no opener) → added "Tens first, then ones!" before the existing tens/ones breakdown.
+- Regroup hint opener: "Start at 36. Add 7 loose gems." → "Watch! Start at 36. Add 7 loose gems."
+- L1 `ask`: "How many gems does this dragon have? Count the bags by tens!" → "Count the bags by tens. How many gems now?"
+- L5 `ask` (several bags): "34 gems, and 2 more bags! How many?" → "34 gems. 2 more bags come! How many now?"
+- L6 `ask`: "34 gems and 25 gems. How many altogether?" → "34 gems. 25 more gems. How many altogether?"
+- L2 build wrong-✓ hint: "You made 37: 3 bags and 7 gems. 47 needs 4 bags and 7 gems." → "You made 37. That's 3 bags and 7 gems. 47 needs 4 bags and 7 gems."
+- L3 compare `ask`: "Which dragon has more gems, the red one or the blue one?" → "Red dragon. Blue dragon. Which has more gems?"
+- L3 first wrong-tap hint: "Let's count both hoards. Bags first!" → "Let's count. Bags first!"; "Bags first! 3 bags is more than 2 bags." → "3 bags is more than 2 bags."; "The bags match. Compare the loose gems: 7 and 4." → "The bags match. 7 and 4."
+- L3 second wrong-tap hint: "Look at the red and blue dragons. Bags first, then the loose gems." → "Look at both dragons. Bags first, then gems!"
+- Intro: "Gem Bags! Dragons keep their gems in bags of ten. Help Ember count and share them!" → "Gem Bags! Help Ember count and share gems!"
+
+*dinoStory.ts*
+- Separate template (nest): "{b} hatch and walk home to their mums." → "{b} hatch and walk home."
+- Part-whole templates (whole-unknown, all 4): joined single-sentence lines ("{a} green dinos and {b} blue dinos are at the pond.", etc.) → each split into two short sentences ("{a} green dinos are at the pond." / "{b} blue dinos are there too.", and the parallel eggs/sand/gems versions).
+- Compare template (beach): "{a} turtles and {b} dinos are at the beach." → "{a} turtles are at the beach." / "{b} dinos are there too."
+- Sharing templates: "{total} eggs are shared equally into {a} nests." / "...gems are shared equally by {a} dragons." → "{total} eggs go into {a} nests." / "{total} gems go to {a} dragons." (dropped "equally", a banned word).
+- Part-whole `ask` (whole unknown): "There are 7 in one group and 6 in the other. How many altogether?" → "7 in one group. 6 in the other. How many altogether?"
+- Compare `ask`: "13 in the first group and 8 in the second. How many more are in the first group?" / the "fewer" mirror → "13 and 8. How many more?" / "8 and 13. How many fewer?"
+- Start-unknown `ask`: "Some were playing. 5 went home and 8 stayed. How many were playing at the start?" → "Some were playing. 5 went home. 8 stayed. How many were playing at the start?"
+- Equal-groups sharing `ask`: "12 shared equally into 3 groups. How many in each group?" → "12 go into 3 groups. How many in each?"
+- Sharing hint: "Share 12 equally. One for each group, over and over." → "Share 12. One for each group."; "12 shared into 3 groups is 4 in each group." → "3 groups. 4 in each."
+- Compare pre-hint: "Match them up: the extra ones are the answer." → "Watch! Match them up. Extra ones are the answer."
+- Start-unknown pre-hint: "Put the ones who left back!" → "Watch! Put the ones who left back!"
+- Sentence-beat second-miss line: "Look at what happened, then try another number puzzle." → "Think about the story. Try again."
+- Answer-beat first-miss line: "Hmm, not that one. Let's act it out." → "Watch! Let's act it out."
+- Answer-beat second-miss line: "Look at the picture and try another egg." → "Look at the picture. Try another egg."
+- Intro: "Dino Story! Watch what the dinos do, then help Ember answer the question." → "Dino Story! Help Ember answer the question!"
+
+**Next:** Have the parent listen to a round of each game on the child's usual device and confirm the new pace and wording land better. Worker A (egg games/core) and worker B (nestBuilder/makeTen/stompPath) are doing the same pass on their files in parallel.
+
 ## 2026-09-27 — Dead-code checks with Knip
 
 **Goal:** Per the user, a TypeScript counterpart to Python's vulture, run automatically, plus fixing what it finds.

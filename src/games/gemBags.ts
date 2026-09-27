@@ -85,9 +85,9 @@ function gemsModel(tens: number, ones: number): GemModel {
     el: view.el,
     countUp: () => countHoard(view, tens, ones),
     async hint() {
-      await say('Count the bags by tens, then count the loose gems.');
+      await say("Let's count. Bags first!");
       await countHoard(view, tens, ones);
-      await say(`${tens} bags is ${tens * 10}, and ${ones} more is ${total}.`);
+      await say(`${tens} bags is ${tens * 10}. ${ones} more is ${total}.`);
     },
   };
 }
@@ -106,7 +106,7 @@ function operationModel(a: number, b: number, operation: 'add' | 'sub'): Model {
     el,
     async hint() {
       if (bOnes === 0) {
-        await say(operation === 'add' ? 'Add the new bags, counting by tens.' : 'Share the bags, counting back by tens.');
+        await say(operation === 'add' ? 'Watch! New bags arrive. Count by tens.' : 'Watch! Share bags. Count back by tens.');
         for (let i = 0; i < bTens; i++) {
           change.bags[i].classList.add(operation === 'add' ? 'arriving' : 'sharing');
           const total = operation === 'add' ? a + (i + 1) * 10 : a - (i + 1) * 10;
@@ -116,6 +116,7 @@ function operationModel(a: number, b: number, operation: 'add' | 'sub'): Model {
         return;
       }
 
+      await say('Tens first, then ones!');
       left.bags.forEach((item) => item.classList.add('lit'));
       change.bags.forEach((item) => item.classList.add(operation === 'add' ? 'combining' : 'sharing'));
       const tensAnswer = operation === 'add' ? (aTens + bTens) * 10 : (aTens - bTens) * 10;
@@ -141,7 +142,7 @@ function regroupModel(a: number, b: number): Model {
   return {
     el,
     async hint() {
-      await say(`Start at ${a}. Add ${b} loose gems.`);
+      await say(`Watch! Start at ${a}. Add ${b} loose gems.`);
       equation.remove();
       result.classList.add('show');
       for (let i = 0; i < combined.gems.length; i++) await light(combined.gems[i], i + 1, String(aTens * 10 + i + 1));
@@ -293,7 +294,7 @@ function question(p: GemProblem): EggQuestion {
     case 'count':
       return {
         text: '?',
-        ask: 'How many gems does this dragon have? Count the bags by tens!',
+        ask: 'Count the bags by tens. How many gems now?',
         answer: p.answer,
         choices: p.choices,
         model: gemsModel(tens, ones),
@@ -306,7 +307,7 @@ function question(p: GemProblem): EggQuestion {
           ? `${p.a} plus ${b}. Warm the egg with the answer!`
           : b === 10
             ? `${p.a} gems. A friend gives one more bag! How many now?`
-            : `${p.a} gems, and ${b / 10} more bags! How many?`,
+            : `${p.a} gems. ${b / 10} more bags come! How many now?`,
         answer: p.answer,
         choices: p.choices,
         model: operationModel(p.a, b, 'add'),
@@ -328,7 +329,7 @@ function question(p: GemProblem): EggQuestion {
     case 'add':
       return {
         text: `${p.a} + ${b}`,
-        ask: p.level === 8 ? `${p.a} plus ${b}. Warm the egg with the answer!` : `${p.a} gems and ${b} gems. How many altogether?`,
+        ask: p.level === 8 ? `${p.a} plus ${b}. Warm the egg with the answer!` : `${p.a} gems. ${b} more gems. How many altogether?`,
         answer: p.answer,
         choices: p.choices,
         model: operationModel(p.a, b, 'add'),
@@ -458,7 +459,7 @@ function buildScene(play: HTMLElement, target: number): Promise<boolean> {
       sfx.hmm();
       scene.classList.add('hinting');
       const [targetTens, targetOnes] = split(target);
-      await say(`You made ${total()}: ${tens} bags and ${ones} gems. ${target} needs ${targetTens} bags and ${targetOnes} gems.`);
+      await say(`You made ${total()}. That's ${tens} bags and ${ones} gems. ${target} needs ${targetTens} bags and ${targetOnes} gems.`);
       if (target - total() >= 10) bagSource.classList.add('need');
       else if (target > total()) gemSource.classList.add('need');
       else hoardEl.classList.add('need');
@@ -517,7 +518,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   resize.observe(compare);
 
   const word = p.askFewer ? 'fewer' : 'more';
-  const ask = `Which dragon has ${word} gems, the red one or the blue one?`;
+  const ask = `Red dragon. Blue dragon. Which has ${word} gems?`;
   void prompt(ask);
   let hinted = false;
   const answer = models.find((model) => model.n === p.answer)!;
@@ -530,20 +531,20 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
     onWrong: async () => {
       if (!hinted) {
         hinted = true;
-        await say("Let's count both hoards. Bags first!");
+        await say("Let's count. Bags first!");
         await models[0].model.countUp();
         await models[1].model.countUp();
         const [first, second] = models;
         if (first.tens !== second.tens) {
           const high = first.tens > second.tens ? first : second;
           const low = high === first ? second : first;
-          await say(`Bags first! ${high.tens} bags is more than ${low.tens} bags.`);
+          await say(`${high.tens} bags is more than ${low.tens} bags.`);
         } else {
-          await say(`The bags match. Compare the loose gems: ${first.ones} and ${second.ones}.`);
+          await say(`The bags match. ${first.ones} and ${second.ones}.`);
         }
         await say(`The ${answer.colour.name} dragon has ${word}!`);
       } else {
-        await say('Look at the red and blue dragons. Bags first, then the loose gems.');
+        await say('Look at both dragons. Bags first, then gems!');
       }
       void prompt(ask);
     },
@@ -573,7 +574,7 @@ export const gemBags: Game = {
     'Share 2-digit numbers: 58 − 23',
     'Mixed, plus ten loose gems making a new bag (36 + 7)',
   ],
-  intro: 'Gem Bags! Dragons keep their gems in bags of ten. Help Ember count and share them!',
+  intro: 'Gem Bags! Help Ember count and share gems!',
 
   startRound() {
     const state = getGameState<BagsState>('bags') ?? { rounds: 0 };
