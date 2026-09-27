@@ -64,19 +64,7 @@ Two path views:
 
 ## Spoken lines
 
-Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
-
-| Moment | Line |
-|---|---|
-| L1 | "The T-rex is on twelve. Hop three. Where will it land?" then "Now you stomp! Tap the foot for every hop." |
-| L2 | "The T-rex is on fifteen. Hop back four to the pond. Where will it land?" |
-| L3 | "Twenty-three. One big ten-hop! Where does it land?" / "…two big ten-hops back?" |
-| L4 | "Hopping by fives. Five. Ten. Fifteen. Where next?" |
-| L5 | "Thirty-seven plus twenty. Where does the T-rex land?" |
-| L6 | "Thirty-eight plus twenty-five. Tens first, then ones!" |
-| L7 | "Sixty-two minus twenty-five. Tens first, then ones!" |
-| L8 | "Where does sixty-three live? Tap the path!" |
-| Praise | "Big hops first. Smart!", "You counted every stomp!" |
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`). Every spoken line lives in `src/games/stompPath.lines.ts`; `stompPath.ts` holds no wording.
 
 ## Hints
 

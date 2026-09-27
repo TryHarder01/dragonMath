@@ -53,18 +53,7 @@ Use the shared adaptive rule (5 problems a round, fast placement). No `ownsLevel
 
 ## Spoken lines (use `prompt()` for questions)
 
-Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
-
-| Moment | Line |
-|---|---|
-| L1 | "Ten is eight. How many more?" |
-| L2 | "Eight in the nest. Five in the basket. How many fill the nest?" |
-| L3 | "Two eggs filled the nest. Five is two. How many more?" |
-| L4/L5 beats | "Eight plus five. How many fill the nest?" → "Five is two. How many more?" → "Ten and three more. How many?" (two-digit: "…make forty?", "Forty and three more?") |
-| L6/L8 | the number sentence, then "Warm the egg with the answer!" |
-| L7 beats | "Thirteen minus five. How many walk home to make ten?" → "Five is three. How many more?" → "Ten. Two more walk home. How many are left?" |
-| After a chain | the chant: "Eight plus five. Eight and two. Ten! Ten and three. Thirteen!" |
-| Praise | name the strategy: "You split the five to make ten!", "Fill the nest, then the rest!", "Down to ten, then the rest!" |
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`). Every spoken line lives in `src/games/makeTen.lines.ts`; `makeTen.ts` holds no wording.
 
 ## Hints (on the first miss of a beat)
 
