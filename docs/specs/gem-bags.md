@@ -122,8 +122,8 @@ intro: 'Gem Bags! Dragons keep their gems in bags of ten. Help Ember count and s
 
 ## Open questions for the user (defaults in bold, so build with the default)
 
-- Should numerals show under the dragons on L3? **No.** Pictures only, so he compares by bags and gems rather than reading digits.
-- Is regrouping with subtraction (52 − 7, opening a bag) in scope? **No, leave it out.** Nest Builder L7 covers subtracting across a ten with the make-ten method. Add a level 9 here later if needed.
+- Should numerals show under the dragons on L3? **No.** Pictures only, so he compares by bags and gems rather than reading digits. **Resolved: default accepted by user.**
+- Is regrouping with subtraction (52 − 7, opening a bag) in scope? **No, leave it out.** Nest Builder L7 covers subtracting across a ten with the make-ten method. Add a level 9 here later if needed. **Resolved: default accepted by user.**
 
 ## Out of scope
 
