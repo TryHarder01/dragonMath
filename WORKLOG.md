@@ -1,5 +1,28 @@
 # Worklog
 
+## 2026-09-27 — Audit catches content spilling out of the question card
+
+**Goal:** Per `docs/briefs/2026-09-27-audit-card-overflow.md`: `scripts/audit.mjs` measured a screen's `main` card as one box but never checked what was inside it, so a card with `overflow: hidden` could clip content without any flag (the retro'd Make Ten bug). Extend the measurement to catch that, prove it on a deliberate overflow, then run the full audit and deal with anything real it finds.
+
+**Done:**
+- `scripts/audit.mjs`, inside the existing `page.evaluate` in `auditScreen()`: two new checks alongside `clipped`/`overlap`.
+  - **Spill:** every visible descendant of the screen's `main` element (size > 0, not `visibility: hidden`, not `display: none`, `opacity` > 0) is checked against `main`'s own box; more than 2px outside on any side is flagged with the element's class and the largest overflow side/amount, e.g. `spills out of the card: .make-ten-bond (+38px right)`. Only the outermost offending element is reported when a parent and its overflowing child are both flagged, since an overflowing child pulling its auto-sized ancestor along is one bug, not several.
+  - **Egg-band overlap:** on screens with `.ez-eggs`, the same descendants are checked against the eggs band's box using the existing egg-overlap's >8px-each-way rule, flagged as `spills into the egg band: ...`.
+  - `.nest-grid` is *main* on the nest screen and scrolls on purpose (its content is taller than its own box by design), so it's exempt from the spill check, same as it already was from `clipped`.
+  - Narrow exemption for Stomp Path's `.stomp-more`, `.stomp-tick`, `.stomp-marker` (and their children, via `closest`): these are positioned to straddle the path on purpose (the "…" off-window indicator, and the tick/marker centred exactly on the 0/20 endpoints), not bugs.
+- `src/styles.css`: one real bug the new check found, fixed in Dino Story's own section — `.story-compare-row .story-actor`'s font-size (`clamp(.82rem, min(4.1vw, 7.2vh), 8rem)`) let up to 20 actors' natural width exceed the row's own `max-width: 100%` (inherited from `.story-actor-group`), and since `.story-stage` has `overflow: hidden`, the trailing actors in a large comparison were silently clipped — invisible to the child, not just "close to the edge". Narrowed the clamp to `clamp(.7rem, min(3.3vw, 6vh), 8rem)`. Verified with a scratch Playwright probe (not committed) hitting count=20 rows ~20 times at phone width: actor rects now stay within the row/stage, where before they ran up to +68px past it.
+- `docs/retros/README.md`: moved "The audit misses overflow inside the question card" from Chosen to Fixed.
+
+**Verified:**
+- Red: temporarily doubled `.make-ten-bond`'s width (150px → 300px) and ran `node scripts/audit.mjs --only=maketen-L1,maketen-L4,maketen-L5,maketen-L7`. Flagged on every level/size with a model shown, e.g. `laptop maketen-L4: spills out of the card: make-ten-bond (+189px right) | make-ten-chain (+189px right)` (18 of 24 combinations flagged; L1 has no model yet so it's unaffected). Reverted the rule.
+- Green: `node scripts/audit.mjs` → `0 of 180 screen/size combinations flagged`, run twice for stability (the Dino Story compare count is random per run). Time: 46.7s (`time node scripts/audit.mjs`), under the "about a minute" bar.
+- `npm run typecheck`: clean. `just check`: clean (9 lines files, no conflict/CSS/spoken-line issues).
+- `just verify`: build passed, audit 0/180, playthrough 66/66 (`✓ 0 failed · 57s`).
+
+**Open / broken:** None.
+
+**Next:** Out of scope here, noted for later: hint/animation states aren't audited (only the first-problem state), so a hint model that overflows wouldn't be caught by this check either.
+
 ## 2026-09-27 — First retro review: retro-review skill, retro-handling decision, WORKLOG union merge
 
 **Goal:** Per the user, review all retros, pick ONE devex improvement to hand out, decide how retro notes are handled once addressed, and build a skill for processing retros (a work in progress).

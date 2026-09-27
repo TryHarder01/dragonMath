@@ -171,6 +171,56 @@ async function auditScreen(page, errors, size, name, s) {
           return ix > 8 && iy > 8;
         })
       : false;
+
+    // Content spilling out of (or into the egg band from) its own card: a card
+    // can have overflow: hidden, so spilled content is cut off rather than
+    // visibly outside it, and the painted egg/clip checks above miss that.
+    // Measure every visible descendant's own box instead of trusting what's
+    // painted. `.nest-grid` *is* main and scrolls on purpose, so it's exempt,
+    // same as it is from the clipped check above.
+    const isVisible = (el) => {
+      const cs = getComputedStyle(el);
+      return cs.visibility !== 'hidden' && cs.display !== 'none' && parseFloat(cs.opacity) > 0;
+    };
+    // Only the outermost offending element per branch is reported: an
+    // overflowing child pulls its auto-sized ancestors past the card too, and
+    // that's one bug, not several.
+    const outermost = (hits) => {
+      const set = new Set(hits.map((h) => h.el));
+      return hits.filter(({ el }) => {
+        for (let p = el.parentElement; p && p !== mainEl; p = p.parentElement) if (set.has(p)) return false;
+        return true;
+      });
+    };
+    // Stomp Path positions these to straddle the path on purpose: the "…" more
+    // indicator sits just past the edge, and the tick/marker at the 0 and 20
+    // ends are centred exactly on the endpoint, so they (and their labels)
+    // overhang it by design.
+    const SPILL_EXEMPT = '.stomp-more, .stomp-tick, .stomp-marker';
+    const mainKids = mainEl && !mainEl.matches('.nest-grid')
+      ? [...mainEl.querySelectorAll('*')].map((el) => ({ el, r: el.getBoundingClientRect() })).filter(({ el, r }) => r.width > 0 && r.height > 0 && isVisible(el) && !el.closest(SPILL_EXEMPT))
+      : [];
+    const spill = mr
+      ? outermost(
+          mainKids
+            .map(({ el, r }) => ({ el, left: mr.left - r.left, top: mr.top - r.top, right: r.right - mr.right, bottom: r.bottom - mr.bottom }))
+            .filter(({ left, top, right, bottom }) => Math.max(left, top, right, bottom) > 2),
+        ).map(({ el, ...d }) => {
+          const [side, amt] = Object.entries(d).reduce((a, b) => (b[1] > a[1] ? b : a));
+          return `${el.className} (+${Math.round(amt)}px ${side})`;
+        })
+      : [];
+    const eggsBand = document.querySelector('.ez-eggs')?.getBoundingClientRect();
+    const bandOverlap = eggsBand
+      ? outermost(
+          mainKids.filter(({ r }) => {
+            const ix = Math.min(r.right, eggsBand.right) - Math.max(r.left, eggsBand.left);
+            const iy = Math.min(r.bottom, eggsBand.bottom) - Math.max(r.top, eggsBand.top);
+            return ix > 8 && iy > 8;
+          }),
+        ).map(({ el }) => el.className)
+      : [];
+
     return {
       useW: (u.r - u.l) / vw,
       useH: (u.b - u.t) / vh,
@@ -178,6 +228,8 @@ async function auditScreen(page, errors, size, name, s) {
       cardFill,
       clipped: [...new Set(clipped)],
       overlap,
+      spill,
+      bandOverlap,
     };
   }, { CONTENT, main: s.main });
 
@@ -189,6 +241,8 @@ async function auditScreen(page, errors, size, name, s) {
   if (s.main === '.ez-target' && m.cardFill < 0.7) flags.push(`question card fills only ${pct(m.cardFill)} of its space`);
   if (m.clipped.length) flags.push(`clipped: ${m.clipped.join(' | ')}`);
   if (m.overlap) flags.push('an egg covers the question card');
+  if (m.spill.length) flags.push(`spills out of the card: ${m.spill.join(' | ')}`);
+  if (m.bandOverlap.length) flags.push(`spills into the egg band: ${m.bandOverlap.join(' | ')}`);
   if (errors.length) flags.push(`page errors: ${errors.splice(0).join('; ')}`);
 
   const file = `${outDir}/${size}--${name}.png`;
