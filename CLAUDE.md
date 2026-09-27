@@ -31,7 +31,9 @@ A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme
   - `round` (runs 5 problems, then the hatch)
   - `screens` (map, hatch, nest)
   - `parent` (the parent corner)
-- `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`.
+  - `guide` (the "For grown-ups" page, also at `/#parents`)
+- `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`. Every game carries parent-facing `skill`, `about` and `levels` text, which the guide page shows. Keep that text in sync when you change a game's levels.
+- Kid-facing screens stay wordless (icons and voice). Anything explanatory goes in the parent guide.
 
 ## Tone: the hero only helps
 - The player and Ember are always kind and helpful to the eggs, dinos and dragons. Use verbs like warm, find, count, share, tuck in and walk home.

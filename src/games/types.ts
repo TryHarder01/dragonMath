@@ -6,10 +6,20 @@ export interface ProblemCtx {
   level: number;
 }
 
-export interface Game {
-  id: GameId;
+/** What the parent guide shows about a mini-game (built or upcoming). */
+export interface GameInfo {
   name: string;
   icon: string;
+  /** The math skill, in parent-friendly words. */
+  skill: string;
+  /** What the child does, one or two sentences for a parent. */
+  about: string;
+}
+
+export interface Game extends GameInfo {
+  id: GameId;
+  /** Parent-facing description of levels 1–5. */
+  levels: [string, string, string, string, string];
   /** One-line spoken intro when the game starts. */
   intro: string;
   /** Run one problem; resolve true if answered right on the first try. */

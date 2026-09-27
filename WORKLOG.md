@@ -1,5 +1,36 @@
 # Worklog
 
+## 2026-09-26 — "For grown-ups" guide page
+
+**Goal:** Give parents an in-game page explaining how the game works, since the kid menus are deliberately wordless.
+
+**Done:**
+- `src/core/guide.ts`, a scrolling page with these sections:
+  - At a glance
+  - Getting started
+  - What happens with a wrong answer
+  - Adaptive levels
+  - Each game with the child's current level highlighted
+  - Coming-soon games
+  - How to play along
+  - Screen time
+  - Parent corner
+  - Research basis
+  - Privacy and devices
+- Entry points: the "For grown-ups" link under ▶ on the start screen, "📖 How the game works" in the parent corner (hold ⚙️), and `/#parents` (including a hashchange listener).
+- The `GameInfo` type (`skill`, `about`) and `Game.levels` (5 parent-facing level descriptions) in `src/games/types.ts`. Filled in for Egg Warmer and the 5 upcoming games.
+
+**Decisions:**
+- The guide reads game info from the game modules, so it stays accurate as games are built. No separate copy to drift.
+
+**Verified:** `npx tsc --noEmit` clean. Playwright (system Chrome) opened the guide from all three entry points, and Back works each time. Screenshots at 1024×768 and 390×844 look right. No page errors.
+
+**Open / broken:**
+- New games need `skill`, `about` and `levels` filled in, and must be removed from `UPCOMING`.
+
+**Next:**
+- Build Dino Count (`src/games/dinoCount.ts`), then Gem Trade, Nest Builder, Stomp Path and Dino Story.
+
 ## 2026-09-26 — justfile
 
 **Goal:** One-command start with `just run`.

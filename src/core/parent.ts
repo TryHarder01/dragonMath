@@ -2,6 +2,7 @@
 
 import { GAMES } from '../games';
 import { h } from './dom';
+import { showGuide } from './guide';
 import { getLevel, resetProgress, setLevel } from './progress';
 
 export function parentButton(app: HTMLElement, onClose: () => void): HTMLElement {
@@ -47,9 +48,15 @@ function openPanel(app: HTMLElement, onClose: () => void) {
     close();
   };
   const closeBtn = h('button', 'parent-close', ['Done']);
+  const guideBtn = h('button', 'parent-guide', ['📖 How the game works']);
+  guideBtn.onclick = () => {
+    overlay.remove();
+    showGuide(app, onClose);
+  };
   const panel = h('div', 'parent-panel', [
     h('h2', '', ['Parent corner']),
     h('p', '', ['Levels go 1–5 per game and adjust automatically: up after 3 right in a row, down after 2 misses.']),
+    guideBtn,
     ...rows,
     h('div', 'parent-foot', [reset, closeBtn]),
   ]);

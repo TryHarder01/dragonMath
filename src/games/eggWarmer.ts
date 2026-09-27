@@ -53,6 +53,16 @@ export const eggWarmer: Game = {
   id: 'egg',
   name: 'Egg Warmer',
   icon: '🥚',
+  skill: 'Seeing "how many" at a glance, and matching numbers to amounts',
+  about:
+    'The eggs got chilly in the storm. Your child listens for a number and taps the egg showing that many dots, and Ember warms it until it hatches. Recognising small amounts instantly (without counting one by one) is called subitizing, and it underpins adding later.',
+  levels: [
+    'Match dots to dots, 1–3',
+    'Number and dots shown, eggs have dots, 1–5',
+    'Only the spoken or written number, eggs have dots, 1–5',
+    'Only the number, eggs show ten-frames, 1–10',
+    'A ten-frame is shown, eggs show written numbers, 1–10',
+  ],
   intro: "Egg Warmer! These eggs got chilly in the storm. Help Ember warm the right one so it can hatch.",
 
   async runProblem({ play, level }) {
