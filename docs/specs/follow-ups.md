@@ -15,7 +15,7 @@ The Codex workers ran out of usage partway through their self-review pass, so th
 
 ~~**1. Line-by-line reviews.**~~ Done 2026-09-27 for Nest Builder, Gem Bags and Dino Story by fresh Claude reviewers (see the table above).
 
-**2. Generator checks.** The specs ask for each level's generator to be looped 1,000× to check ranges and that the answer is always one of the choices. All four games have now passed it in throwaway scripts (2026-09-27: Nest Builder, Gem Bags and Dino Story 8,000 problems each, 0 failures). A small shared `scripts/check-generators.mjs` would make it repeatable, which would be nice but isn't needed at this scale.
+**2. Generator checks.** The specs ask for each level's generator to be looped 1,000× to check ranges and that the answer is always one of the choices. All four games have now passed it in throwaway scripts (2026-09-27: Nest Builder, Gem Bags and Dino Story 8,000 problems each, 0 failures). A shared `scripts/check-generators.mjs` was considered and skipped: `just verify` now plays every level of every game (about a minute), which covers most of it at this scale.
 
 ## Things a child would notice
 

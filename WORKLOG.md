@@ -1,5 +1,20 @@
 # Worklog
 
+## 2026-09-27 — Fast, fanned-out play-throughs
+
+**Goal:** Per the user, make the play-through check efficient and fan it out across levels.
+
+**Done:**
+- `?fast` in `src/core/voice.ts`: every `wait()` (and so muted speech) runs at 1/20 of its length. All game timing goes through `wait`/`say`, so this one line speeds up whole rounds. Kids never see it.
+- `scripts/playthrough.mjs`: a game × level job queue (`--level=all`) run in parallel (`--jobs`, default up to 6), each round in its own browser context so saved levels don't collide. Fast by default, `--real` for real speed. Drivers' `page.waitForTimeout` is scaled down in fast mode. A step that times out (a choice vanished as the game moved on) is retried instead of failing, and each round has a deadline. A setup error fails one round, not the run.
+- Driver fixes the parallel runs exposed: `nest.mjs` kept "missed yet?" in module variables shared by every round (moved to `ctx`); `bags.mjs` clicks with `dispatchEvent` and doesn't insist on seeing the brief hint pulse; `tap.mjs` grabs the choice in one call.
+- `just verify` now plays every level of every game.
+
+**Verified:** `node scripts/playthrough.mjs all --level=all`: 57 rounds, 0 failed, 45–49 s, in 4 consecutive runs (it used to take ~5½ min for one level per game). `--real` still works (Stomp L7, 24 s). Looked at a fast-mode hint screenshot (Nest L6): the hint model is there, sometimes mid-animation, and `--real` gives settled screenshots.
+
+**Decisions:**
+- No shared `scripts/check-generators.mjs`: each game keeps its generator private, and exposing them all isn't worth it at this scale. The all-levels play-through plus the one-off 1,000× checks cover it. `[promote?]`
+
 ## 2026-09-27 — Home-screen app and Netlify hosting
 
 **Goal:** The "Running it on a phone" follow-ups: make it installable, and record where it's hosted.

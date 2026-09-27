@@ -29,12 +29,12 @@ preview: build
 audit:
     node scripts/audit.mjs
 
-# Drive a full round of a game in Chrome (screenshots in playthrough-screens/). e.g. `just playthrough nest --level=6`, or `all`
+# Drive full rounds in Chrome (screenshots in playthrough-screens/). e.g. `just playthrough nest --level=6`, `all --level=all`, `--real` for real speed
 playthrough game="all" *args:
     node scripts/playthrough.mjs {{game}} {{args}}
 
-# Everything before handing work back: typecheck + build, layout audit, every game's play-through
+# Everything before pushing (pushing main deploys): typecheck + build, layout audit, every level of every game played through
 verify:
     npm run build
     node scripts/audit.mjs
-    node scripts/playthrough.mjs all
+    node scripts/playthrough.mjs all --level=all

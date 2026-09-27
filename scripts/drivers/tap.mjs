@@ -4,12 +4,11 @@
 // awaitChoice / eggScene, including two-beat problems.
 
 export async function step(page) {
-  const open = page.locator('.tappable:not(.nope):not(.yes)');
-  if (!(await open.count())) {
+  const [el] = await page.locator('.tappable:not(.nope):not(.yes)').elementHandles();
+  if (!el) {
     await page.waitForTimeout(300); // between problems, or a hint still playing
     return;
   }
-  const el = await open.first().elementHandle();
   await el.dispatchEvent('pointerdown');
   // Settled: right (.yes) or wrong after its hint (.nope), or the problem moved on.
   await page

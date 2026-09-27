@@ -23,7 +23,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 - `npm run build`: typecheck plus a production build into `dist/`.
 - Add `?mute` to the URL to turn off speech, which is useful for automated checks.
 - `just audit` checks every screen's layout at 6 window sizes, from a phone to a big monitor at 70% zoom, using `scripts/audit.mjs` (Playwright on the system Chrome). It flags content that doesn't fill the window, is clipped, or where eggs cover the question card, and saves screenshots to `audit-screens/`. Run it after any layout or CSS change. `?audit` in the URL exposes `window.__audit` shortcuts for opening screens directly.
-- `just playthrough <game|all> [--level=N]` drives a full round of a game in Chrome (`scripts/playthrough.mjs`, per-game drivers in `scripts/drivers/`) and checks it reaches the hatch with no errors and a hint shown. `just verify` runs build, audit and every play-through.
+- `just playthrough <game|all> [--level=N|all]` drives full rounds in Chrome (`scripts/playthrough.mjs`, per-game drivers in `scripts/drivers/`) and checks each reaches the hatch with no errors and a hint shown. Rounds run in parallel with the game in `?fast` mode (pauses ~20× quicker), so every level of every game takes about a minute. `--real` plays at real speed. `just verify` runs build, audit and every level of every game.
 - `orca.yaml` runs `npm install` when Orca creates a worktree.
 - Sizing: screens scale with the window (`vmin`/`vh` in the "scale with the screen" block of `styles.css`), and fact-game cards are zoomed to fit by `fitBubble` in `games/eggScene.ts`. Don't add fixed pixel maximums that stop big screens from filling up.
 

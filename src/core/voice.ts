@@ -3,8 +3,11 @@
 
 let chosen: SpeechSynthesisVoice | null = null;
 let lastPrompt = '';
-// `?mute` in the URL silences speech (handy for automated checks).
-let muted = new URLSearchParams(location.search).has('mute');
+// `?mute` in the URL silences speech (handy for automated checks), and `?fast`
+// runs every pause ~20× quicker so scripts/playthrough.mjs can play whole rounds fast.
+const params = new URLSearchParams(location.search);
+let muted = params.has('mute');
+const pace = params.has('fast') ? 0.05 : 1;
 
 const PREFERRED = ['Samantha', 'Karen', 'Moira', 'Google US English', 'Microsoft Aria', 'Microsoft Jenny'];
 
@@ -61,7 +64,7 @@ export function repeatPrompt(): Promise<void> {
 }
 
 export function wait(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms));
+  return new Promise((r) => setTimeout(r, ms * pace));
 }
 
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',

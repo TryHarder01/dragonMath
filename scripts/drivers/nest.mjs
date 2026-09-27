@@ -2,9 +2,6 @@
 // step correctly, deliberately miss the total step so its hint runs, and tap
 // pile eggs one at a time when the tuck-in scene is showing.
 
-let missed = false;
-let shotTuck = false;
-
 function answerFor(text) {
   const nums = [...text.matchAll(/\d+/g)].map((m) => Number(m[0]));
   if (text.includes('→')) return text.includes('−') ? nums[0] - nums.at(-1) : nums.at(-1) - nums[0];
@@ -20,9 +17,9 @@ export async function step(page, ctx) {
 
   const pile = page.locator('.nest-pile-egg.tappable');
   if (await pile.count()) {
-    if (!shotTuck) {
+    if (!ctx.shotTuck) {
       await ctx.shot(`p${ctx.problem + 1}-tuck`);
-      shotTuck = true;
+      ctx.shotTuck = true;
     }
     const egg = await pile.first().elementHandle();
     await egg.dispatchEvent('pointerdown');
@@ -41,9 +38,9 @@ export async function step(page, ctx) {
   const answer = answerFor(expression);
   const choices = await open.locator('.numeral').allTextContents();
   const isBridgeBeat = expression.includes('→');
-  const shouldMiss = !isBridgeBeat && !missed;
+  const shouldMiss = !isBridgeBeat && !ctx.missed;
   const wanted = shouldMiss ? choices.find((value) => Number(value) !== answer) : String(answer);
-  if (shouldMiss) missed = true;
+  if (shouldMiss) ctx.missed = true;
   const choice = open.filter({ hasText: new RegExp(`^${wanted}$`) }).first();
   const el = await choice.elementHandle();
   await el.dispatchEvent('pointerdown');

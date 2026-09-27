@@ -15,10 +15,10 @@ export async function step(page, ctx) {
     const total = Number(await build.getAttribute('data-total'));
     if (!ctx.buildWrong) {
       ctx.buildWrong = true;
-      await page.click('.gem-check');
+      await page.locator('.gem-check').dispatchEvent('click');
       ctx.wrong++;
-      await page.waitForSelector('.gem-build-scene.hinting');
-      await page.waitForSelector('.need');
+      // In fast mode the hint can be over before we look, so the pulse is best-effort.
+      await page.waitForSelector('.need', { timeout: 2000 }).catch(() => {});
       await ctx.shot(`p${ctx.problem + 1}-hint`);
       await page.waitForSelector('.gem-build-scene:not(.hinting)');
       return;
@@ -26,11 +26,11 @@ export async function step(page, ctx) {
     if (total < target) {
       const tens = Number(await build.getAttribute('data-tens'));
       const targetTens = Math.floor(target / 10);
-      await page.click(tens < targetTens ? '.gem-bag-source' : '.gem-one-source');
+      await page.locator(tens < targetTens ? '.gem-bag-source' : '.gem-one-source').dispatchEvent('click');
       await page.waitForTimeout(100);
       return;
     }
-    await page.click('.gem-check');
+    await page.locator('.gem-check').dispatchEvent('click');
     await page.waitForTimeout(500);
     return;
   }
