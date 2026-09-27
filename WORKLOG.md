@@ -1,5 +1,31 @@
 # Worklog
 
+## 2026-09-27 — Lines-file move: Egg Stairs and Egg Crates
+
+**Goal:** Move every spoken line in Egg Stairs and Egg Crates into a per-game `<game>.lines.ts` file, following the pattern already on `main` (`eggWarmer.lines.ts` / `eggWarmer.ts`, `src/core/lines.ts`). Pure move, no rewording, done in parallel with other workers converting Nest Builder/Make Ten/Stomp Path and Gem Bags/Dino Story.
+
+**Done:**
+- `src/games/eggStairs.lines.ts` (new): `intro`, `askFirstRow`, `askLandmark`, `askUp`, `askDown` (the four `ask` branches in `question()`), `hintFirstRow`, `hintCountOn`, `hintCountBack`, `hintResult` (the hint sequence), `walkUp`/`walkDown` (the per-row count-on/count-back line in `Crate.walk`, split out of the old ternary so `walkStep` didn't need a boolean sample arg).
+- `src/games/eggStairs.ts`: now imports `lines` and calls it everywhere `ask`/`say(...)` held an inline template; dropped the now-unused `rowWord` local (its wording moved into `lines.askUp`/`lines.askDown`).
+- `src/games/eggCrates.lines.ts` (new): `intro`, `groups` (equal-groups ask), `rows` (shown-model rows ask, shared by `arr()` and `big()`), `fact` (fact-only ask), `missingFactor`.
+- `src/games/eggCrates.ts`: now imports `lines`; dropped the now-unused `word` import from `../core/words` (moved into `eggCrates.lines.ts`, which needs it for `groups`).
+- No spec file exists for Egg Stairs or Egg Crates in `docs/specs/`, and `DESIGN.md`'s Egg Stairs/Egg Crates sections only have short inline example wording embedded in prose (not a "Spoken lines" table), so nothing there needed to change or point at the lines files.
+
+**Decisions:**
+- `Crate.walk`'s `say(\`${up ? 'plus' : 'minus'} ${t} is ${total}\`)` became two lines-file entries (`walkUp`, `walkDown`) instead of one function taking a boolean — keeps every lines-file function taking plain numbers, per the brief, and avoids a boolean landing in the checker's numeric `SAMPLE_ARGS`.
+- `say(String(total), { rate: 1.05 })` in the same method (counting a single running total, digit by digit) was left inline — it's the "spoken counting of a single number" case the brief calls out, and it's not a string literal so `check-lines.mjs`'s inline-detector doesn't flag it anyway.
+
+**Verified:**
+- `npm run typecheck`: clean.
+- `just check`: clean — `check-lines.mjs` reports "✓ spoken lines OK (4 lines files; longest sentence 7 words...)", counting `src/core/lines.ts` plus `eggWarmer.lines.ts`/`eggStairs.lines.ts`/`eggCrates.lines.ts` (the other three games' lines files aren't in this worktree; other workers are converting them on their own branches). No "written inline" errors for `eggStairs.ts`/`eggCrates.ts`.
+- `node scripts/playthrough.mjs stairs --level=all`: 9/9 levels, 0 failed. `node scripts/playthrough.mjs crates --level=all`: 8/8 levels, 0 failed.
+- `just verify`: build passed, 0 of 180 audit screen/size combinations flagged, 65/65 playthrough rounds (all games in this worktree) reached the hatch with no errors and a hint shown.
+- No wording changed: `check-lines.mjs` never flagged a line (no rewording was needed), and `git diff main -- src/games/eggStairs.ts src/games/eggCrates.ts` shows only `ask`/`say(...)` sites swapped for the matching `lines.*` call, string-for-string — spot-checked every moved line against the pre-move source.
+
+**Open / broken:** None.
+
+**Next:** Once the other two lines-file workers land their branches, merge all three and re-run `just verify` on the merged tree (their `.lines.ts` files should raise the "N lines files" count in `check-lines.mjs`'s output).
+
 ## 2026-09-27 — Voice pass: shared hint lines, Egg Warmer/Stairs/Crates, start greeting
 
 **Goal:** Rewrite spoken lines in the shared models/scene code, Egg Warmer, Egg Stairs and Egg Crates, and the app's start greeting, to match `AGENTS.md`'s new "How Ember talks" section (one idea per sentence, ~7 words, numbers first, chants for recaps, hints start with "Let's count."). The parent said the current voice is "an oomph too much." Pace itself is unaffected (`voice.ts` untouched).

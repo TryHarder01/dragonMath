@@ -15,6 +15,7 @@ import { getGameState, getLevel, setGameState, setLevel, setPlaced } from '../co
 import { sfx } from '../core/sound';
 import { say, wait } from '../core/voice';
 import { eggScene, type EggQuestion } from './eggScene';
+import { lines } from './eggStairs.lines';
 import type { Game } from './types';
 
 const TABLES = [2, 10, 5, 3, 4, 6, 7, 8, 9];
@@ -85,7 +86,7 @@ class Crate {
       } else {
         total += up ? t : -t;
         sfx.count(r);
-        await say(`${up ? 'plus' : 'minus'} ${t} is ${total}`);
+        await say(up ? lines.walkUp(t, total) : lines.walkDown(t, total));
       }
       await wait(100);
     }
@@ -116,20 +117,19 @@ function question(t: number, s: Step): EggQuestion {
   const answer = s.to * t;
   const known = s.from * t;
   const step = Math.abs(s.to - s.from);
-  const rowWord = step === 1 ? 'one more row' : `${step} more rows`;
   let ask: string;
-  if (s.from === 0) ask = `One row of ${t}. How many eggs?`;
-  else if (s.landmark) ask = `You know this. ${s.from} rows of ${t} is ${known}. How many is ${s.to} rows?`;
-  else if (up) ask = `${s.from} rows is ${known}. Add ${rowWord} of ${t}. How many now?`;
-  else ask = `${s.from} rows is ${known}. Take away ${step === 1 ? 'one row' : `${step} rows`}. How many now?`;
+  if (s.from === 0) ask = lines.askFirstRow(t);
+  else if (s.landmark) ask = lines.askLandmark(s.from, t, known, s.to);
+  else if (up) ask = lines.askUp(s.from, known, step, t);
+  else ask = lines.askDown(s.from, known, step);
 
   const model: Model = {
     el: crate.el,
     async hint() {
-      if (s.from === 0) await say(`Count the eggs in one row.`);
-      else await say(up ? `Start at ${known}. Count on the new ${step === 1 ? 'row' : 'rows'}.` : `Start at ${known}. Count back.`);
+      if (s.from === 0) await say(lines.hintFirstRow);
+      else await say(up ? lines.hintCountOn(known, step) : lines.hintCountBack(known));
       await crate.walk(s.from, s.to);
-      await say(`${s.to} rows of ${t} is ${answer}.`);
+      await say(lines.hintResult(s.to, t, answer));
     },
   };
 
@@ -208,7 +208,7 @@ export const eggStairs: Game = {
   about:
     'One times table at a time. The crate fills row by row with a running total beside each row (3, 6, 9, 12…), so the table looks like a staircase. Your child walks up it, walks back down, then jumps from a landmark they know ("5 rows of 3 is 15, so 6 rows is…") instead of counting from the start. It builds the understanding that Egg Crates then practises.',
   levels: TABLES.map((t) => `The ×${t} table: walk up, walk down, then jump from 5 and 10`),
-  intro: "Egg Stairs! Let's count the rows!",
+  intro: lines.intro,
 
   startRound() {
     ({ table, phase } = current());
