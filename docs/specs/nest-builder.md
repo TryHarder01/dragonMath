@@ -120,7 +120,9 @@ intro: 'Nest Builder! Every nest holds ten eggs. Help Ember fill the nests, one 
 ## Open questions for the user (defaults in bold, so build with the default)
 
 - Tuck-in could slow a quick child down. **Keep it on L1–L2 only.** Alternative: only after a miss.
+  - Resolved: default accepted by user.
 - Subtraction is his weak spot, so should L6–L7 come before the 2-digit addition levels? **No, keep the order.** Fast placement will move him quickly through L1–L5 if he's got them.
+  - Resolved: default accepted by user.
 
 ## Out of scope
 

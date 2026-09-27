@@ -1,5 +1,25 @@
 # Worklog
 
+## 2026-09-27 — Build Nest Builder
+
+**Goal:** Build the eight-level Nest Builder make-ten game from `docs/specs/nest-builder.md`: bridging through ten for adding and, especially, subtracting.
+
+**Done:**
+- Added `src/games/nestBuilder.ts`: two-nest ten-frame model, two-beat problems (13 − 5 → 10 → 8), tuck-in on L1–L2, and hints that fill or empty the first nest to ten.
+- Registered it, added its CSS, audit screens and a play-through driver (`scripts/drivers/nest.mjs`), marked it done in `DESIGN.md`, and recorded both accepted spec defaults.
+- The Codex worker built this; its session hit the Codex usage limit during its self-review, so the coordinator verified and committed it.
+
+**Verified:**
+- `npm run typecheck` clean.
+- `just playthrough nest --level=N` for every level 1–8: hatch reached with one wrong tap (hint shown) each time.
+- Looked at the L6 hint (13 − 8 via 10) and the L1 tuck-in.
+
+**Open / broken:**
+- Eggs drawn inside the nest frames are faint; see `docs/specs/follow-ups.md`.
+
+**Next:**
+- Merge with the other game branches and run `just verify`.
+
 ## 2026-09-26 — Codex portability: AGENTS.md and shared skills
 
 **Goal:** Per the user, make the repo work the same for Codex as for Claude Code: one instruction file, and skills both tools find.
