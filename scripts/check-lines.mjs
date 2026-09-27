@@ -4,7 +4,8 @@
 //
 // Loads src/core/lines.ts and every src/games/<game>.lines.ts, renders each line
 // (functions get sample numbers; a lines file can export `samples` with argument
-// lists for lines that need something else), splits it into sentences the way
+// lists for lines that need something else; knip.json treats lines files as
+// entry points, so that export isn't flagged as unused), splits it into sentences the way
 // say() does, and flags:
 // - a sentence of more than 7 words;
 // - a word the guide bans (and the tone rule's never-words);

@@ -1,26 +1,30 @@
-# Retros: friction reports
+# Retros: friction reports and the pattern ledger
 
-One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written with `.claude/skills/retro/SKILL.md`. The coordinator reads them after each run and looks for patterns (`.claude/skills/delegate/SKILL.md`, "After a run"). `just retros` lists the newest.
+One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written with `.claude/skills/retro/SKILL.md`. After each run the coordinator processes them with `.claude/skills/retro-review/SKILL.md`: it appends an `## Outcome` to each retro and updates this ledger. The rules are in `docs/decisions/2026-09-27-retro-handling.md`. `just retros` lists the newest.
 
-## Open patterns
+**Last review:** 2026-09-27, covering 8 retros (21 items). **Pick:** Briefs leave scope implicit. **Runner-up:** Audit misses overflow inside the question card.
 
-- **[environment] Usage limits stop parallel runs.** Four Codex workers at high effort used a 5-hour window in about 35 minutes, twice. Proposed: run at most two Codex workers at once, or use Claude workers (they pause and resume themselves).
-- **[environment] Codex startup prompts (hooks review, update) block Orca's `worker-start`.** Workaround in the delegate skill. Proposed: check `codex` starts clean in a scratch worktree before a batch.
+## Chosen (being fixed)
 
-- **[checks] The audit misses overflow inside the question card.** It measures the `.ez-target` box, not descendants that spill outside it or into the answer band; a phone screenshot caught what it passed (Make Ten, ~15 min). Proposed: flag visible descendants of `.ez-target` whose rect leaves the card or overlaps the egg band.
+- **[instructions] Briefs leave scope implicit.** Which files or sections count, "if any" for files that don't exist, catchphrases the guide listed but the code didn't have yet, "a new level" meaning a new module. Raised by: coordinator-games-build, voice-core-eggs, voice-nest-maketen-stomp, lines-stairs-crates, lines-bags-story. Fix: `docs/briefs/2026-09-27-brief-template.md`. **Worked if** no retro in the next two runs raises an [instructions] item about scope or ownership.
 
-- **[checks] No automatic check of spoken lines** (length, banned words): 1 voice worker + the coordinator caught "digit" by hand. Planned: per-module `*.lines.ts` files and a checker in `just check` (user-approved, next).
-- **[codebase] Specs repeat spoken lines in several tables** that drift: planned to point specs at the `*.lines.ts` files.
+## Open
+
+- **[checks] The audit misses overflow inside the question card.** It measures the `.ez-target` box, not descendants spilling out of it or into the answer band (make-ten, ~15 min, child-visible). Proposed: flag visible descendants of `.ez-target` whose box leaves the card or overlaps the egg band. *Runner-up; the next review starts here.*
 
 ## Fixed
 
-- **[instructions] Voice guide edge cases** (7 words, comma pairs, when hints open with "Let's count.", catchphrases per game), from 2 voice retros: clarified in `AGENTS.md` "How Ember talks".
+- **[codebase] `WORKLOG.md` is a merge hotspot** (conflicts on nearly every parallel merge; one commit with conflict markers; rotation blocked): `merge=union` in `.gitattributes`, and only the coordinator rotates (retro review 2026-09-27). Raised by: coordinator-games-build, lines-nest-maketen-stomp.
+- **[checks] `check-lines` rough edges:** `{placeholders}` counted as banned words, boolean arguments, `samples` flagged by Knip (2f1de3a, bf72153). Raised by: lines-bags-story, lines-stairs-crates, lines-nest-maketen-stomp.
+- **[checks] No automatic check of spoken lines**, and **[codebase] specs repeat spoken lines:** per-game `*.lines.ts` and `scripts/check-lines.mjs` in `just check` (4e32c81, bf72153). Raised by: voice-bags-story.
+- **[instructions] Voice guide edge cases:** `AGENTS.md` "How Ember talks". Raised by: voice-bags-story, voice-core-eggs.
+- **[codebase] Test-only exports and `?audit` branches:** Knip in `just check`, plus rules in `AGENTS.md` and the delegate skill (412062f).
+- **[checks] Merges silently broke CSS; conflict markers committed:** `just check` (fa25c4e).
+- **[tooling] Slow play-throughs (~5½ min for one level per game) and a slow audit (~4 min):** `?fast` and parallel jobs (b02b56d, fa25c4e).
+- **[codebase] Hard-coded game-id lists:** read from `__audit.games()` (fa25c4e).
+- **[instructions] Quality bar and scale reached workers mid-run:** `AGENTS.md` "Scale" and the delegate skill's brief.
 
-- **[codebase] Test-only exports and `?audit` branches kept reappearing** (Stomp, Nest, Dino Story, Make Ten, Gem Bags): Knip in `just check` catches the exports; `AGENTS.md` and the delegate skill's quality bar name the `?audit` pattern.
+## Declined
 
-- **[checks] Merges silently broke CSS** (a shared closing brace kept only once): `just check`, first step of `just verify`.
-- **[checks] Conflict markers committed** after a scripted resolution: `just check`.
-- **[tooling] Play-throughs took ~5½ min for one level per game:** `?fast` + parallel rounds, all levels in ~47 s.
-- **[tooling] The audit took ~4 min:** parallel screen × size jobs in `?fast`, ~45 s.
-- **[codebase] Every new game had to edit hard-coded game-id lists** in `audit.mjs` and `playthrough.mjs`: both now ask the app (`__audit.games()`).
-- **[instructions] The quality bar and the project's scale reached workers mid-run:** both are now in `AGENTS.md` ("Scale") and in the delegate skill's brief template.
+- **[environment] Usage limits and Codex startup prompts:** outside the repo. Handled by policy and workarounds in the delegate skill (fewer Codex workers at once; Claude workers pause and resume).
+- **[codebase] Game code couples the model to the scene** (`eggScene`'s single `showModel`; hint methods reused in `onSolved`): the refactor risk outweighs the benefit at this scale. Revisit if a third game hits it. Raised by: make-ten, voice-nest-maketen-stomp.

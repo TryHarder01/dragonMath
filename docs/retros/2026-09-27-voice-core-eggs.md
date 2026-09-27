@@ -7,3 +7,8 @@
 **Time lost:** ~5 min total, both minor.
 
 **Suggested fix:** None needed — the ambiguity was resolvable from the guide's own worked examples (e.g. `AGENTS.md`'s literal "Egg Warmer! Let's warm the eggs!" answered the eggWarmer.ts intro question directly).
+
+## Outcome (retro review 2026-09-27)
+
+- Guide boundary calls (7 words, catchphrases): Fixed: `AGENTS.md` edge cases.
+- Brief named files that needed no change: Chosen: *Briefs leave scope implicit*.

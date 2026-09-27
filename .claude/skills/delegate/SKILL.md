@@ -58,7 +58,4 @@ Add a size budget when the job is review or tightening (e.g. "the file must not 
 
 ## 5. After a run: the retros
 
-1. `just retros` lists them. Read every retro from the run, plus your own if you hit friction coordinating.
-2. **Group by category** (`tooling`, `instructions`, `environment`, `codebase`, `checks`). Anything reported by two or more agents, or costing more than about 15 minutes, is a pattern.
-3. For each pattern: fix it now if small (a script, a line in `AGENTS.md` or this skill), or add it to `docs/retros/README.md` under "Open patterns" with a proposed fix. Tell the user which patterns you found and what you did.
-4. Mark handled items in `docs/retros/README.md` ("Fixed: …, <commit>"), so the next review doesn't rediscover them.
+Run the `retro-review` skill (`.claude/skills/retro-review/SKILL.md`). It turns the run's retros into **one** fix, and closes out every item: an `## Outcome` on each retro, and the ledger in `docs/retros/README.md`. The rules are in `docs/decisions/2026-09-27-retro-handling.md`. Tiny fixes (under about 10 minutes) are done straight away. The pick gets a brief and a worker.

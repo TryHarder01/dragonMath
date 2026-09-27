@@ -7,3 +7,8 @@
 **Time lost:** ~5 min total, mostly confirming the DESIGN.md non-issue.
 
 **Suggested fix:** Note in `check-lines.mjs`'s header that a lines-file function's non-numeric params (booleans, etc.) get silently passed a number from `SAMPLE_ARGS`, so prefer splitting such a function into named variants instead.
+
+## Outcome (retro review 2026-09-27)
+
+- Boolean params rendered with numbers: Fixed: a sample set ending in 0 also renders the false branch (2f1de3a).
+- "If any" for files with nothing to change: Chosen: *Briefs leave scope implicit*.

@@ -14,7 +14,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 - **This file (`AGENTS.md`) is the single set of instructions.** Codex reads it directly. Claude Code reads `CLAUDE.md`, which just imports this file (`@AGENTS.md`). Edit here, never in `CLAUDE.md`.
 - **Skills live in `.claude/skills/`** (where Claude Code looks). `.agents/skills` is a symlink to it (where Codex looks). Add new skills under `.claude/skills/<name>/SKILL.md` and both tools pick them up.
 - **Delegating to other agents** (Orca worktrees, Codex or Claude): follow `.claude/skills/delegate/SKILL.md`. Every delegated agent writes a friction report with `.claude/skills/retro/SKILL.md` before it reports done. The reports live in `docs/retros/`.
-- **Parallel work:** each agent appends to its own section of shared files (`styles.css`, `SCREENS`, `WORKLOG.md`) and never edits shared lists in place. `just check` catches the usual merge breakage.
+- **Parallel work:** each agent appends to its own section of shared files (`styles.css`, `SCREENS`, `WORKLOG.md`) and never edits shared lists in place. `WORKLOG.md` merges with `merge=union` (`.gitattributes`), so parallel worklog entries never conflict. `just check` catches the usual merge breakage.
 - Keep instructions tool-neutral: say "read the top 80 lines" rather than naming one tool's Read or Edit command.
 
 ## Commands

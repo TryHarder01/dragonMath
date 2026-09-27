@@ -8,3 +8,9 @@
 **Time lost:** ~10 min total, mostly the manual word-count spot check.
 
 **Suggested fix:** A lint step (even a simple regex-based script) that flags `say()`/`prompt()`/`ask:` string literals with sentences over ~7 words or containing banned words ("equally", "compare", "digit", "situation", "total") would catch this class of review mechanically instead of by eye.
+
+## Outcome (retro review 2026-09-27)
+
+- No spoken-line check: Fixed: lines files + `scripts/check-lines.mjs` (4e32c81).
+- Voice guide edge cases: Fixed: `AGENTS.md` "How Ember talks" edge cases.
+- Specs repeat spoken lines: Fixed: specs point at the lines files (bf72153).

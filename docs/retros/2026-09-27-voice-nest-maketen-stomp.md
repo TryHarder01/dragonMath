@@ -7,3 +7,8 @@
 **Time lost:** ~10 min total, mostly the first item.
 
 **Suggested fix:** None needed — both were resolved by reading the surrounding code/grep before editing, not a repeated pattern worth fixing in tooling.
+
+## Outcome (retro review 2026-09-27)
+
+- Hint method reused in `onSolved`: Declined for now (same as `eggScene` coupling; revisit on a third occurrence).
+- Catchphrase listed in the guide but absent from code: Chosen: *Briefs leave scope implicit* (briefs must state current vs intended wording).

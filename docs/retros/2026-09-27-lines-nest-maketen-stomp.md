@@ -7,3 +7,8 @@
 **Time lost:** ~15–20 min, almost all on the Knip/`samples` issue.
 
 **Suggested fix:** Either add `scripts/check-lines.mjs` (or its dynamically-loaded lines files) to Knip's ignore config so a `samples` export doesn't get flagged, or update the script's header comment to steer authors toward reducible-arity functions instead of `samples` when possible.
+
+## Outcome (retro review 2026-09-27)
+
+- `samples` export flagged by Knip: Fixed: lines files are Knip entry points (bf72153).
+- Couldn't rotate `WORKLOG.md` with parallel writers: Fixed: `merge=union` + only the coordinator rotates (this review).

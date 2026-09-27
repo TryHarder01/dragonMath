@@ -1,0 +1,3 @@
+# Parallel worktrees all add entries at the top of the worklog; keep both sides
+# instead of conflicting (entries are independent). See docs/decisions/2026-09-27-retro-handling.md.
+WORKLOG.md merge=union

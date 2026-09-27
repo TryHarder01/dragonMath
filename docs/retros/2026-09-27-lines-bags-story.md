@@ -7,3 +7,8 @@
 **Time lost:** ~15 min total, mostly the placeholder/banned-word collision.
 
 **Suggested fix:** Have `check-lines.mjs` skip banned-word matching (but keep word-count checking) on tokens that came from an unfilled `{...}` placeholder, so template files don't need placeholder names picked around the banned-word list.
+
+## Outcome (retro review 2026-09-27)
+
+- `{total}` placeholder flagged as banned: Fixed: placeholders are ignored in the word checks (2f1de3a).
+- Which spec sections count: Chosen: *Briefs leave scope implicit*.

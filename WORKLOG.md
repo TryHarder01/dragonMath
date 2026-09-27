@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-09-27 — First retro review: retro-review skill, retro-handling decision, WORKLOG union merge
+
+**Goal:** Per the user, review all retros, pick ONE devex improvement to hand out, decide how retro notes are handled once addressed, and build a skill for processing retros (a work in progress).
+
+**Done:**
+- `.claude/skills/retro-review/SKILL.md`: gather → extract items → cluster by root cause → score (recurrence × cost, doubled when a child-visible bug gets through; solvable here) → pick ONE → close out every item → report. It has a changelog so it improves with each use.
+- `docs/decisions/2026-09-27-retro-handling.md`: one project per review; tiny fixes done straight away; every retro item gets an `## Outcome` line (Fixed / Pattern / Chosen / Declined / Noted); `docs/retros/README.md` is the Open / Chosen / Fixed / Declined ledger; a Fixed pattern that recurs is reopened. It includes the first review's scoring table.
+- First review: 8 retros, 21 items, 8 patterns. **Pick:** briefs leave scope implicit (5 retros) → `docs/briefs/2026-09-27-brief-template.md`, sent to a Claude Sonnet worker (the brief doubles as the first example of the template). **Runner-up:** the audit misses overflow inside the question card. **Declined:** usage limits (outside the repo) and model/scene coupling (refactor risk).
+- Tiny fix: `WORKLOG.md merge=union` (`.gitattributes`). Tested in a scratch repo: two top-of-file entries merge cleanly. Only the coordinator rotates the worklog (worklog skill, `AGENTS.md`).
+- Delegate skill "After a run" now points at retro-review. Outcome sections added to all 8 retros; ledger rewritten.
+
+**Verified:** `git check-attr merge WORKLOG.md` → union; the scratch-repo merge test. `just check` passes.
+
+**Open / broken:**
+- The worklog rotation rule moves entries "before the current month", but every entry is from September, so it would move nothing. Revisit if the file gets unwieldy.
+
 ## 2026-09-27 — Lines-file move: Egg Stairs and Egg Crates
 
 **Goal:** Move every spoken line in Egg Stairs and Egg Crates into a per-game `<game>.lines.ts` file, following the pattern already on `main` (`eggWarmer.lines.ts` / `eggWarmer.ts`, `src/core/lines.ts`). Pure move, no rewording, done in parallel with other workers converting Nest Builder/Make Ten/Stomp Path and Gem Bags/Dino Story.

@@ -12,3 +12,13 @@
 **Time lost:** ~2 h, mostly usage limits and merge repair.
 
 **Suggested fix:** Done: `just check`, fast parallel checks, id lists from the app, the delegate and retro skills. Open: fewer concurrent Codex workers.
+
+## Outcome (retro review 2026-09-27)
+
+- Usage limits: Declined as a project (outside the repo); policy in the delegate skill.
+- Codex startup prompts: Declined as a project; workaround in the delegate skill.
+- Merge broke CSS braces / conflict markers: Fixed: `just check` (fa25c4e).
+- Slow play-throughs: Fixed: `?fast` + parallel rounds (b02b56d).
+- Quality bar and scale sent late: Fixed: `AGENTS.md` Scale + the delegate skill's brief.
+- Hard-coded game-id lists: Fixed: read from `__audit.games()` (fa25c4e).
+- "A new level" misread: Chosen: *Briefs leave scope implicit* (docs/briefs/2026-09-27-brief-template.md).
