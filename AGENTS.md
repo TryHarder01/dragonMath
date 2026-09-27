@@ -13,6 +13,8 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 ## Agent setup (Claude Code and Codex)
 - **This file (`AGENTS.md`) is the single set of instructions.** Codex reads it directly. Claude Code reads `CLAUDE.md`, which just imports this file (`@AGENTS.md`). Edit here, never in `CLAUDE.md`.
 - **Skills live in `.claude/skills/`** (where Claude Code looks). `.agents/skills` is a symlink to it (where Codex looks). Add new skills under `.claude/skills/<name>/SKILL.md` and both tools pick them up.
+- **Delegating to other agents** (Orca worktrees, Codex or Claude): follow `.claude/skills/delegate/SKILL.md`. Every delegated agent writes a friction report with `.claude/skills/retro/SKILL.md` before it reports done. The reports live in `docs/retros/`.
+- **Parallel work:** each agent appends to its own section of shared files (`styles.css`, `SCREENS`, `WORKLOG.md`) and never edits shared lists in place. `just check` catches the usual merge breakage.
 - Keep instructions tool-neutral: say "read the top 80 lines" rather than naming one tool's Read or Edit command.
 
 ## Commands
@@ -22,6 +24,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 - `npm run typecheck`: run `tsc --noEmit`.
 - `npm run build`: typecheck plus a production build into `dist/`.
 - Add `?mute` to the URL to turn off speech, which is useful for automated checks.
+- `just check` (about 1 s, also the first step of `just verify`): conflict markers, and `{ }` balance in each `styles.css` section.
 - `just audit` checks every screen's layout at 6 window sizes, from a phone to a big monitor at 70% zoom, using `scripts/audit.mjs` (Playwright on the system Chrome). It flags content that doesn't fill the window, is clipped, or where eggs cover the question card, and saves screenshots to `audit-screens/`. Run it after any layout or CSS change. `?audit` in the URL exposes `window.__audit` shortcuts for opening screens directly.
 - `just playthrough <game|all> [--level=N|all]` drives full rounds in Chrome (`scripts/playthrough.mjs`, per-game drivers in `scripts/drivers/`) and checks each reaches the hatch with no errors and a hint shown. Rounds run in parallel with the game in `?fast` mode (pauses ~20× quicker), so every level of every game takes about a minute. `--real` plays at real speed. `just verify` runs build, audit and every level of every game.
 - `orca.yaml` runs `npm install` when Orca creates a worktree.

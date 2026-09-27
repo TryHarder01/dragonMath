@@ -105,14 +105,14 @@ async function playRound(id, level) {
 
   await page.goto(`${url}${query}`);
   await page.evaluate(
-    ({ KEY, id, level }) =>
+    ({ KEY, id, level, placed }) =>
       localStorage.setItem(KEY, JSON.stringify({
         levels: { [id]: level },
-        placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, story: true },
+        placed,
         hatched: [],
         games: {},
       })),
-    { KEY, id, level },
+    { KEY, id, level, placed: Object.fromEntries(games.map((g) => [g.id, true])) },
   );
   await page.reload();
   await page.evaluate((id) => window.__audit.play(id), id);

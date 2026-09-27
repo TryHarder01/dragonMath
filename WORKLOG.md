@@ -1,5 +1,18 @@
 # Worklog
 
+## 2026-09-27 — Delegation tooling: delegate and retro skills, just check, faster audit
+
+**Goal:** Per the user, make future multi-agent runs smoother: capture tonight's lessons, and have agents report friction so patterns can be fixed.
+
+**Done:**
+- `.claude/skills/delegate/SKILL.md`: the repo's playbook for handing work to Codex/Claude via Orca (brief template with the quality bar and scale up front, launch, known blockers, review/merge checklist, cleanup, retro review).
+- `.claude/skills/retro/SKILL.md` + `docs/retros/`: each delegated agent writes a short friction report (categories: tooling, instructions, environment, codebase, checks) and attaches it to `worker_done`. `docs/retros/README.md` tracks open and fixed patterns. Seeded with the coordinator's retro from the games build. `just retros` lists them.
+- `scripts/check.mjs` / `just check` (the first step of `just verify`): conflict markers in tracked files, and `{ }` balance per `styles.css` section. It caught both injected faults in a test.
+- `scripts/audit.mjs`: screen × size jobs run in parallel with `?fast` (the intro screen stays real-speed): ~4 min → ~45 s, still 0/156 flagged. The audit and play-through build the "placed" lists from `__audit.games()` instead of hard-coded ids.
+- `AGENTS.md`: `just check`, pointers to the delegate and retro skills, and the parallel-work rule (append to your own section, never edit shared lists in place).
+
+**Verified:** `node scripts/check.mjs` clean, and it flags an injected conflict marker and a dropped CSS brace. `node scripts/audit.mjs`: 0 of 156, 45 s; looked at the intro and a question-card screenshot. `node scripts/playthrough.mjs all`: 0 failed. `codex debug prompt-input` lists the delegate, retro and worklog skills.
+
 ## 2026-09-27 — Fix mobile sound startup and recovery
 
 **Goal:** Restore effects and spoken instructions on iPhone Safari and the home-screen app without changing desktop or mute/fast behavior.
