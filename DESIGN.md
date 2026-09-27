@@ -129,6 +129,6 @@ Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is
 4. ~~Egg Stairs~~ (done)
 5. ~~Break nudge and parent corner~~ (done)
 6. Gem Bags
-7. Nest Builder
+7. ~~Nest Builder~~ (done)
 8. Stomp Path
 9. Dino Story

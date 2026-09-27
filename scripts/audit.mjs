@@ -36,6 +36,8 @@ const SCREENS = {
   'stairs-L1-first': { open: 'play', game: 'stairs', level: { stairs: 1 }, state: { stairs: { table: 2, phase: 'up-low' } }, main: '.ez-target' },
   'stairs-L7-tall': { open: 'play', game: 'stairs', level: { stairs: 7 }, state: { stairs: { table: 7, phase: 'up-high' } }, main: '.ez-target' },
   'crates-L6': { open: 'play', game: 'crates', level: { crates: 6 }, main: '.ez-target' },
+  'nest-L2': { open: 'play', game: 'nest', level: { nest: 2 }, main: '.ez-target' },
+  'nest-L7': { open: 'play', game: 'nest', level: { nest: 7 }, main: '.ez-target' },
   hatch: { open: 'hatch', hatchIt: true, main: '.hatch-stage' },
   nest: { open: 'nest', main: '.nest-grid', spread: true },
   guide: { open: 'guide', main: '.guide' },

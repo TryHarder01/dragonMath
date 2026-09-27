@@ -347,3 +347,37 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 
 /* Intro: Ember introduces the game, with a big skip button. */
 .intro-ember { font-size: clamp(6rem, 36vmin, 60rem); line-height: 1; transform: scaleX(-1); animation: hover 3s ease-in-out infinite; }
+
+/* ---------- Nest Builder ---------- */
+.nest-model { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.nest-full-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; width: 300px; }
+.nest-full-tile { position: relative; transition: transform .22s; }
+.nest-full-tile.opening { transform: rotate(-5deg) scale(1.08); }
+.nest-full-tile.used { visibility: hidden; }
+.nest-ten-badge {
+  position: absolute; right: -3px; bottom: -3px; min-width: 24px; height: 24px;
+  display: grid; place-items: center; border-radius: 999px; padding: 0 4px;
+  background: var(--grass-dark); color: white; font-size: 13px; font-weight: 700;
+}
+.nest-frame { display: grid; grid-template-columns: repeat(5, 1fr); width: 140px; border: 4px solid #9a6738; border-radius: 45% 45% 24% 24%; background: #f7ddb0; overflow: hidden; }
+.nest-frame-cell { aspect-ratio: 1; border: 1px solid #bd8954; display: grid; place-items: center; padding: 3px; }
+.nest-frame .egg-dot { width: 100%; }
+.nest-frame.mini { width: 54px; border-width: 2px; border-radius: 10px; }
+.nest-frame.mini .nest-frame-cell { padding: 1px; border-width: 1px; }
+.nest-working { display: flex; justify-content: center; gap: 10px; }
+.nest-frame.opened { animation: nest-open .35s ease-out; }
+.nest-chick { font-size: 20px; line-height: 1; }
+.nest-chick.walk-home { animation: nest-walk-home .22s ease-in forwards; }
+.nest-tuck-scene { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: max(12px, 3vmin); }
+.nest-tuck-scene .nest-frame { width: max(120px, 26vmin); border-width: max(3px, .7vmin); }
+.nest-tuck-ember { font-size: max(3.5rem, 20vmin); transform: scaleX(-1); animation: hover 3s ease-in-out infinite; }
+.nest-pile { display: grid; grid-template-columns: repeat(3, auto); gap: max(4px, 1.4vmin); align-content: center; }
+.nest-pile-egg { width: max(72px, 14vmin); height: max(72px, 14vmin); font-size: max(2.4rem, 9vmin); border-radius: 50%; background: var(--card); box-shadow: 0 5px 0 #0002; z-index: 4; }
+.nest-pile-egg.moving { pointer-events: none; animation: nest-tuck .32s ease-in forwards; }
+@keyframes nest-tuck { to { translate: var(--tuck-x) var(--tuck-y); scale: .45; opacity: .35; } }
+@keyframes nest-walk-home { to { translate: 38px -16px; opacity: 0; } }
+@keyframes nest-open { 50% { transform: scale(1.08); } }
+@media (max-aspect-ratio: 3/4) {
+  .nest-tuck-scene { flex-wrap: wrap; align-content: center; }
+  .nest-tuck-ember { position: absolute; top: 2%; right: 3%; }
+}
