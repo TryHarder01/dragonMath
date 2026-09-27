@@ -1,6 +1,6 @@
 ---
 name: retro-review
-description: Process the agents' friction reports in docs/retros/, find the patterns, pick ONE solvable improvement, and close the loop (outcomes on each retro, the pattern ledger, a decision note, a spec to hand out). Use after a delegated run finishes, when the user asks to "review the retros", "process retros" or "find something to fix from the retros", or when docs/retros/ has several unreviewed reports. Work in progress: improve this skill after each use (see "Improve this skill").
+description: Process the agents' friction reports in docs/retros/, find the patterns, pick ONE solvable improvement, and close the loop (outcomes on each retro, the pattern ledger, a decision note, a spec to hand out). Use after a delegated run finishes, when the user asks to "review the retros", "process retros" or "find something to fix from the retros", or when docs/retros/ has several unreviewed reports. Work in progress: improve the procedure after each use (see "Improve this skill").
 ---
 
 # Retro review: from friction reports to one fix
@@ -56,9 +56,4 @@ Tell the user: how many retros and items, the patterns (one line each, with recu
 
 ## Improve this skill
 
-This skill is new. After each use, add one line to "Changelog" below: what was awkward, and what you changed.
-
-## Changelog
-
-- 2026-09-27: first use (8 retros, 21 items). Written alongside the decision note; see its "First review" section for the result.
-- 2026-09-27: the user asked for a second fix straight away. Added "More than one fix" (take the runner-up, no re-scoring; run in parallel only if ownership doesn't overlap). Briefs now go in `docs/briefs/`, and briefs for a new check must require red-then-green proof (the audit-overflow bug couldn't be reproduced from history, so the worker has to create one on purpose).
+This skill is new, so improve it after each use. When a step was awkward or wrong, **change the procedure itself**, and don't append notes. The commit message says what went wrong and why the step changed (`git log -p` on this file is the history). Keep this file to what's needed on every run.
