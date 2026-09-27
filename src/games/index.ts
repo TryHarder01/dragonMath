@@ -2,17 +2,12 @@ import type { Game, GameInfo } from './types';
 import { eggCrates } from './eggCrates';
 import { eggStairs } from './eggStairs';
 import { eggWarmer } from './eggWarmer';
+import { gemBags } from './gemBags';
 
-export const GAMES: Game[] = [eggWarmer, eggStairs, eggCrates];
+export const GAMES: Game[] = [eggWarmer, eggStairs, eggCrates, gemBags];
 
 /** Shown greyed-out on the map, and as "Coming soon" in the parent guide, until built. */
 export const UPCOMING: GameInfo[] = [
-  {
-    icon: '💎',
-    name: 'Gem Bags',
-    skill: 'Place value: tens and ones to 100',
-    about: 'Dragons keep their gems in bags of ten plus a few loose ones. How many gems is that? Who has more? Adding a bag at a time builds adding and subtracting tens.',
-  },
   {
     icon: '🦖',
     name: 'Stomp Path',

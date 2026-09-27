@@ -347,3 +347,155 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 
 /* Intro: Ember introduces the game, with a big skip button. */
 .intro-ember { font-size: clamp(6rem, 36vmin, 60rem); line-height: 1; transform: scaleX(-1); animation: hover 3s ease-in-out infinite; }
+
+/* ---------- Gem Bags ---------- */
+.gem-hoard {
+  --gem-size: clamp(32px, min(5vmin, 8vh), 10vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--gem-size) * .32);
+  min-height: var(--gem-size);
+}
+.gem-bags, .gem-loose-grid {
+  display: grid;
+  grid-template-columns: repeat(5, var(--gem-size));
+  gap: calc(var(--gem-size) * .12);
+  justify-content: center;
+}
+.gem-bag {
+  width: var(--gem-size);
+  aspect-ratio: .9;
+  display: grid;
+  place-items: center;
+  position: relative;
+  color: var(--shell);
+  font-size: calc(var(--gem-size) * .4);
+  line-height: 1;
+  background: linear-gradient(135deg, #a56b38, #75411f);
+  border: calc(var(--gem-size) * .055) solid #5f351d;
+  border-radius: 38% 38% 48% 48% / 25% 25% 58% 58%;
+  box-shadow: inset 0 calc(var(--gem-size) * -.1) 0 #0002, 0 calc(var(--gem-size) * .07) 0 #0002;
+  transition: transform .25s, filter .25s, opacity .25s;
+}
+.gem-bag::before {
+  content: '';
+  position: absolute;
+  left: 11%; right: 11%; top: 19%;
+  height: 10%;
+  border-radius: 999px;
+  background: #e0b04c;
+  box-shadow: 0 0 0 calc(var(--gem-size) * .025) #73481f;
+}
+.gem-bag b { position: relative; z-index: 1; margin-top: 20%; }
+.gem-loose {
+  width: var(--gem-size);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--gem-size) * .82);
+  line-height: 1;
+  filter: drop-shadow(0 calc(var(--gem-size) * .07) 0 #4e2d7a55);
+  transition: transform .25s, filter .25s, opacity .25s;
+}
+.gem-bag.lit, .gem-loose.lit { transform: scale(1.13); filter: drop-shadow(0 0 calc(var(--gem-size) * .28) var(--dot-lit)); }
+.gem-equation-model { display: flex; align-items: center; justify-content: center; gap: 1.5vmin; }
+.fact-scene .gem-equation-model .gem-hoard, .fact-scene .gem-regroup-model .gem-hoard {
+  --gem-size: clamp(22px, min(3.8vmin, 6vh), 8vh);
+}
+.fact-scene .gem-equation-model .gem-hoard { flex-direction: column; }
+.gem-operation { font-size: clamp(1.6rem, 5vmin, 8rem); font-weight: 700; }
+.gem-friend { font-size: clamp(2rem, 7vmin, 11rem); }
+.gem-change-hoard { padding: calc(var(--gem-size) * .16); border-radius: calc(var(--gem-size) * .25); background: #efe5ff88; }
+.gem-bag.arriving { animation: gem-arrive .6s ease-out; }
+.gem-bag.combining, .gem-loose.combining { animation: gem-combine .75s ease-in-out; }
+.gem-bag.sharing, .gem-loose.sharing { animation: gem-share .75s ease-in-out; opacity: .45; }
+.gem-regroup-model { display: flex; flex-direction: column; align-items: center; gap: 1vmin; }
+.gem-trade-result { display: none; border-top: .3vmin dashed var(--gem); padding-top: 1vmin; }
+.gem-trade-result.show { display: block; }
+.gem-loose.trading { animation: gem-trade .7s ease-in forwards; }
+.gem-bag.new-bag { animation: gem-new-bag .65s cubic-bezier(.2, 1.6, .4, 1); }
+
+.gem-build-scene {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: center;
+  gap: 1.5vmin;
+}
+.gem-build-top { display: flex; align-items: center; gap: 3vmin; }
+.gem-build-target {
+  font-size: clamp(3rem, 14vmin, 20vh); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
+  background: var(--card); border-radius: 3vmin; padding: .12em .4em;
+}
+.gem-build-dragon.ez-ember { font-size: clamp(3.5rem, 12vmin, 18vh); transform: scaleX(-1); }
+.gem-build-hoard.ez-target {
+  --build-item: max(72px, min(9vmin, 11vh));
+  width: min(96%, calc(var(--build-item) * 7));
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 2vmin;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 1vmin;
+}
+.gem-build-item {
+  width: var(--build-item);
+  height: var(--build-item);
+  min-width: 72px;
+  min-height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 24%;
+  background: var(--card);
+}
+.gem-build-item .gem-bag, .gem-build-item .gem-loose { --gem-size: calc(var(--build-item) * .72); }
+.gem-sources { width: 100%; min-height: max(88px, 15vh); display: flex; justify-content: center; align-items: center; gap: 4vmin; }
+.gem-source.act, .gem-check.act {
+  width: max(76px, 12vmin);
+  height: max(76px, 12vmin);
+  min-width: 72px;
+  padding: 1vmin;
+  display: grid;
+  place-items: center;
+  border-radius: 26%;
+  background: var(--card);
+}
+.gem-source .gem-bag, .gem-source .gem-loose { --gem-size: max(50px, 8vmin); }
+.gem-check.act { background: var(--grass); color: white; font-size: max(3rem, 7vmin); }
+.gem-source.need, .gem-build-hoard.need { animation: pulse .55s ease-in-out 3; box-shadow: 0 0 0 1.2vmin var(--dot-lit); }
+.gem-build-hoard.trading .gem-build-gem { animation: gem-trade .7s ease-in; }
+
+.gem-compare { width: 100%; height: 100%; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; align-items: stretch; }
+.gem-dragon-choice.ez-target {
+  min-width: 0;
+  min-height: 72px;
+  padding: 2vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vmin;
+  overflow: hidden;
+}
+.gem-dragon.ez-ember { font-size: clamp(4rem, 14vmin, 22vh); transform: none; animation: hover 3s ease-in-out infinite; }
+.gem-dragon-choice .gem-hoard { --gem-size: clamp(24px, min(4vmin, 7vh), 9vh); flex-direction: column; }
+
+@keyframes gem-arrive { from { translate: 10vmin -5vmin; opacity: 0; rotate: 20deg; } }
+@keyframes gem-combine { 50% { translate: -4vmin 0; filter: drop-shadow(0 0 1vmin var(--dot-lit)); } }
+@keyframes gem-share { to { translate: 10vmin -3vmin; opacity: .2; rotate: 16deg; } }
+@keyframes gem-trade { 50% { translate: 0 -2vmin; rotate: 180deg; } to { translate: 0 -4vmin; scale: .2; opacity: 0; rotate: 360deg; } }
+@keyframes gem-new-bag { from { scale: 0; rotate: -25deg; } }
+
+@media (max-aspect-ratio: 3/4) {
+  .gem-friend { display: none; }
+  .gem-build-dragon.ez-ember { position: static; font-size: 9vh; }
+  .gem-compare { gap: 2vmin; }
+  .gem-dragon-choice.ez-target { padding: 1vmin; }
+  .gem-dragon-choice .gem-hoard { --gem-size: clamp(22px, 7vw, 5vh); }
+}

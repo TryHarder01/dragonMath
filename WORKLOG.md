@@ -1,5 +1,28 @@
 # Worklog
 
+## 2026-09-27 — Build Gem Bags
+
+**Goal:** Build the eight-level Gem Bags place-value game from `docs/specs/gem-bags.md`.
+
+**Done:**
+- Added `src/games/gemBags.ts`: count, build, compare, add/share tens, 2-digit no-regrouping, and regrouping-add problems with spoken hints and gem models.
+- Registered the game, added its CSS, audit screens and custom play-through driver, and marked it done in `DESIGN.md`.
+- Fixed the driver waiting on a solved problem and kept the L8 traded hoard from stacking over the answer eggs.
+- (Coordinator) L2 build: shows the target numeral beside the dragon, so the child doesn't have to hold "forty-seven" in their head.
+
+**Decisions:**
+- L3 stays picture-only, and subtraction with regrouping stays out of scope — the user accepted both spec defaults; recorded in the spec. `[promote?]`
+
+**Verified:**
+- `npm run typecheck` clean; `npm run build` succeeded (24 modules).
+- `just audit`: 0 of 78 screen/size combinations flagged.
+- `just playthrough bags` at every level 1–8 (coordinator rerun): hatch reached with a hint in every run; L2 again at phone size after the target numeral.
+- Throwaway `node scripts/check-gem-generators.mjs`: 8,000 problems checked across all levels; script removed before commit.
+- Inspected the L2 and L3 hint, crowded L6 phone/big, and L8 regrouping screenshots; models matched the problems with no clipping or overlap.
+
+**Next:**
+- Merge the `gem-bags` branch with the other game branches, then run `just verify` on the combined tree.
+
 ## 2026-09-26 — Codex portability: AGENTS.md and shared skills
 
 **Goal:** Per the user, make the repo work the same for Codex as for Claude Code: one instruction file, and skills both tools find.
