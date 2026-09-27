@@ -60,14 +60,13 @@ for (const { line, num } of sections['You own'] ?? []) {
   }
 }
 
-// Only top-level scope items (unindented bullets/numbers), not indented
-// sub-bullets, so a scope item that quotes these phrases as examples
-// (like this checker's own "In scope" entry) isn't flagged.
+// Quoted text ("…" or `…`) is an example, not an instruction, so it's skipped;
+// every other line of a scope section is scanned, sub-bullets included.
 for (const name of SCOPE_SECTIONS) {
   for (const { line, num } of sections[name] ?? []) {
-    if (!/^(-\s|\d+\.\s)/.test(line)) continue;
+    const text = line.replace(/"[^"]*"|`[^`]*`/g, '');
     for (const phrase of VAGUE) {
-      if (new RegExp(`\\b${phrase}\\b`, 'i').test(line)) {
+      if (new RegExp(`\\b${phrase}\\b`, 'i').test(text)) {
         problems.push(`${file}:${num}: vague scope word "${phrase}" in "${name}": "${line.trim()}"`);
       }
     }

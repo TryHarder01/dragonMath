@@ -6,8 +6,6 @@ One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written wi
 
 ## Chosen (being fixed)
 
-- **[instructions] Briefs leave scope implicit.** Which files or sections count, "if any" for files that don't exist, catchphrases the guide listed but the code didn't have yet, "a new level" meaning a new module. Raised by: coordinator-games-build, voice-core-eggs, voice-nest-maketen-stomp, lines-stairs-crates, lines-bags-story. Fix: `docs/briefs/2026-09-27-brief-template.md`. **Worked if** no retro in the next two runs raises an [instructions] item about scope or ownership.
-
 - **[checks] The audit misses overflow inside the question card.** It measures the card's own box, not descendants spilling out or into the answer band. Raised by: make-ten (~15 min, child-visible). Fix: `docs/briefs/2026-09-27-audit-card-overflow.md`. **Worked if** no retro reports layout problems the audit passed.
 
 ## Open
@@ -16,6 +14,7 @@ None solvable right now (see Declined).
 
 ## Fixed
 
+- **[instructions] Briefs leave scope implicit** (5 retros): briefs are now files in `docs/briefs/`, built from `TEMPLATE.md` and checked with `just brief-check` (1bdaa1d, plus quote-aware vague-word scanning in the same merge). **Watching:** it counts as worked if no retro in the next two runs raises an [instructions] item about scope or ownership. The brief-template retro already had one small miss (the retro header), which counts as run 1.
 - **[codebase] `WORKLOG.md` is a merge hotspot** (conflicts on nearly every parallel merge; one commit with conflict markers; rotation blocked): `merge=union` in `.gitattributes`, and only the coordinator rotates (retro review 2026-09-27). Raised by: coordinator-games-build, lines-nest-maketen-stomp.
 - **[checks] `check-lines` rough edges:** `{placeholders}` counted as banned words, boolean arguments, `samples` flagged by Knip (2f1de3a, bf72153). Raised by: lines-bags-story, lines-stairs-crates, lines-nest-maketen-stomp.
 - **[checks] No automatic check of spoken lines**, and **[codebase] specs repeat spoken lines:** per-game `*.lines.ts` and `scripts/check-lines.mjs` in `just check` (4e32c81, bf72153). Raised by: voice-bags-story.

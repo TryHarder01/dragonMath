@@ -7,3 +7,8 @@
 **Time lost:** ~10-15 min total.
 
 **Suggested fix:** None needed beyond the one already applied above — the checker's own dogfood run caught it before merge, which is what the brief's "run it on this brief" step was for.
+
+## Outcome (coordinator, 2026-09-27)
+
+- Checker flagged its own quoted examples: Fixed differently. The top-level-only scan let vague words in sub-bullets through, so quoted text is skipped instead and every line is scanned (red-green checked). Same merge.
+- Retro header dropped the agent name: Fixed: the header is now `(<agent>; brief: …)` in the retro skill. It was a brief that left scope implicit: evidence for the pattern this task fixes, and a reminder that the fix also needs good briefs.
