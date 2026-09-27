@@ -7,6 +7,8 @@ One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written wi
 - **[environment] Usage limits stop parallel runs.** Four Codex workers at high effort used a 5-hour window in about 35 minutes, twice. Proposed: run at most two Codex workers at once, or use Claude workers (they pause and resume themselves).
 - **[environment] Codex startup prompts (hooks review, update) block Orca's `worker-start`.** Workaround in the delegate skill. Proposed: check `codex` starts clean in a scratch worktree before a batch.
 
+- **[checks] The audit misses overflow inside the question card.** It measures the `.ez-target` box, not descendants that spill outside it or into the answer band; a phone screenshot caught what it passed (Make Ten, ~15 min). Proposed: flag visible descendants of `.ez-target` whose rect leaves the card or overlaps the egg band.
+
 ## Fixed
 
 - **[checks] Merges silently broke CSS** (a shared closing brace kept only once): `just check`, first step of `just verify`.
