@@ -112,7 +112,7 @@ export const eggWarmer: Game = {
     'Mixed + / − / missing numbers within 20',
     'Mixed within 20, plus ×2, ×5 and ×10 facts',
   ],
-  intro: 'Egg Warmer! These eggs got chilly in the storm. Solve the number puzzle and warm the right egg so it can hatch.',
+  intro: "Egg Warmer! Let's warm the eggs!",
 
   runProblem({ play, level }) {
     return eggScene(play, LEVELS[level - 1]());

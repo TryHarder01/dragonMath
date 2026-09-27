@@ -1,5 +1,41 @@
 # Worklog
 
+## 2026-09-27 — Voice pass: shared hint lines, Egg Warmer/Stairs/Crates, start greeting
+
+**Goal:** Rewrite spoken lines in the shared models/scene code, Egg Warmer, Egg Stairs and Egg Crates, and the app's start greeting, to match `AGENTS.md`'s new "How Ember talks" section (one idea per sentence, ~7 words, numbers first, chants for recaps, hints start with "Let's count."). The parent said the current voice is "an oomph too much." Pace itself is unaffected (`voice.ts` untouched).
+
+**Done, by file (before → after):**
+- `src/core/models.ts` (shared hint lines, used by every fact game):
+  - addModel make-ten recap: `"X and Y make ten. Ten and Z is W."` → `"X and Y. Ten! Ten and Z. W!"` (chant, per the guide's own example)
+  - addModel plain recap: `"X plus Y is Z."` → `"X and Y is Z."`
+  - subModel crossing-ten: `"Take away N to get to ten. Then M more."` → `"Take away N. Down to ten. Then M more."`
+  - subModel plain: `"Start at A. Take away B, counting back."` → `"Start at A. Take away B. Count back."` (dropped the comma-joined clause)
+  - missingModel question: `"Start at A. How many more to get to C?"` → `"Start at A. How many more to C?"`
+  - missingModel recap: `"That's N more. A plus N is C."` → `"That's N more. A and N is C."`
+  - arrayModel (missing-factor hint): `"Let's build rows of C until we get to P."` (10 words, one sentence) → `"Let's build rows of C. Count up to P."` (two sentences)
+- `src/games/eggScene.ts` (shared onWrong hint, used by every fact game):
+  - first wrong tap: `"Hmm, not that one. Let's figure it out together."` → `"Let's count."` — this exact old line is the bad example named in AGENTS.md's own guide
+  - second wrong tap: `"Not that one either. Look at the picture and try again."` → `"Not that one either. Look at the picture. Try again."` (split the and-joined instruction)
+- `src/games/eggWarmer.ts`: intro `"Egg Warmer! These eggs got chilly in the storm. Solve the number puzzle and warm the right egg so it can hatch."` (3 sentences, one 13 words) → `"Egg Warmer! Let's warm the eggs!"` (the guide's own worked example for this game)
+- `src/games/eggStairs.ts`:
+  - intro `"Egg Stairs! Ember is stacking eggs in a crate, one row at a time. Help count them as the rows go up and down!"` (3 sentences, up to 12 words, comma- and and-joined) → `"Egg Stairs! Let's count the rows!"`
+  - landmark question: `"You know N rows of T is K. How many is M rows?"` (8-word first sentence) → `"You know this. N rows of T is K. How many is M rows?"`
+  - hint lead-in: `"Start at K, and count on the new row(s)."` / `"Start at K, and count back."` → `"Start at K. Count on the new row(s)."` / `"Start at K. Count back."` (dropped the comma-joins)
+- `src/games/eggCrates.ts`: intro `"Egg Crates! The rescued eggs are packed in rows. Help Ember count them fast!"` → `"Egg Crates! Let's count rows of eggs!"`
+- `src/main.ts`: start greeting `"...A big storm scattered the dino eggs..."` → `"...A storm scattered the dino eggs..."` (7 words → 6)
+- `DESIGN.md`: updated the Egg Stairs landmark quote to match the shipped wording ("You know this. 5 rows of 3 is 15...").
+- `src/core/screens.ts`, `src/core/round.ts`, `src/core/choices.ts`, `src/core/parent.ts`: read end to end; every spoken line (map greeting, break nudge, hatch/nest lines) was already within the guide (short sentences, no comma-joins) — no changes.
+
+**Longest remaining spoken sentence:** 7 words, several tied (e.g. screens.ts "You have {n} friends in your nest!"; eggCrates.ts "How many rows of {c} make {p}?"). None exceed the guide's ~7-word target.
+
+**Verified:**
+- `npm run typecheck && just check`: clean (Knip, conflict/brace checks).
+- `node scripts/playthrough.mjs all --level=all`: 57/57 rounds, 0 failed.
+- `just verify`: build passed, 0 of 180 audit screen/size combinations flagged, 57/57 rounds passed.
+- `git diff --stat` on the 7 touched files: 16 insertions / 16 deletions — a straight copy edit, no file grew.
+
+**Next:** Have the parent listen to a live round of Egg Warmer, Egg Stairs and Egg Crates on the child's usual device to confirm the shorter lines land better; worker B/C are doing the same pass for nestBuilder/makeTen/stompPath and gemBags/dinoStory in parallel.
+
 ## 2026-09-27 — Dead-code checks with Knip
 
 **Goal:** Per the user, a TypeScript counterpart to Python's vulture, run automatically, plus fixing what it finds.

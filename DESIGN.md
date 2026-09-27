@@ -89,7 +89,7 @@ Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model
   1. Walk up rows 1–5: "3 rows is 9. Add one more row of 3?"
   2. Walk up rows 6–10, starting from the 5-row landmark.
   3. Walk down from 10: "10 rows is 30. Take one row away?"
-  4. Jumps from a ⭐ landmark with no walking: "You know 5 rows of 3 is 15. How many is 6 rows?" (5→6, 5→4, 10→9, 5→7, 10→8, 2→4, 5→3).
+  4. Jumps from a ⭐ landmark with no walking: "You know this. 5 rows of 3 is 15. How many is 6 rows?" (5→6, 5→4, 10→9, 5→7, 10→8, 2→4, 5→3).
 - **The game moves its own level** (`ownsLevel`), not the shared adaptive rule, so a table isn't left halfway through:
   - A clean walk phase (no misses) skips straight to the jumps.
   - Passing the jumps with at most 1 miss unlocks the next table. Otherwise the jumps repeat.

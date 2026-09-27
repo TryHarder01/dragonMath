@@ -23,7 +23,7 @@ function showStart() {
   );
   go.addEventListener('click', () => {
     unlockAudio();
-    showMap(app, "Hi rider! I'm Ember. A big storm scattered the dino eggs. Let's help them get home! Tap a picture to play.");
+    showMap(app, "Hi rider! I'm Ember. A storm scattered the dino eggs. Let's help them get home! Tap a picture to play.");
   });
 }
 

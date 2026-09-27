@@ -119,7 +119,7 @@ function question(t: number, s: Step): EggQuestion {
   const rowWord = step === 1 ? 'one more row' : `${step} more rows`;
   let ask: string;
   if (s.from === 0) ask = `One row of ${t}. How many eggs?`;
-  else if (s.landmark) ask = `You know ${s.from} rows of ${t} is ${known}. How many is ${s.to} rows?`;
+  else if (s.landmark) ask = `You know this. ${s.from} rows of ${t} is ${known}. How many is ${s.to} rows?`;
   else if (up) ask = `${s.from} rows is ${known}. Add ${rowWord} of ${t}. How many now?`;
   else ask = `${s.from} rows is ${known}. Take away ${step === 1 ? 'one row' : `${step} rows`}. How many now?`;
 
@@ -127,7 +127,7 @@ function question(t: number, s: Step): EggQuestion {
     el: crate.el,
     async hint() {
       if (s.from === 0) await say(`Count the eggs in one row.`);
-      else await say(up ? `Start at ${known}, and count on the new ${step === 1 ? 'row' : 'rows'}.` : `Start at ${known}, and count back.`);
+      else await say(up ? `Start at ${known}. Count on the new ${step === 1 ? 'row' : 'rows'}.` : `Start at ${known}. Count back.`);
       await crate.walk(s.from, s.to);
       await say(`${s.to} rows of ${t} is ${answer}.`);
     },
@@ -208,7 +208,7 @@ export const eggStairs: Game = {
   about:
     'One times table at a time. The crate fills row by row with a running total beside each row (3, 6, 9, 12…), so the table looks like a staircase. Your child walks up it, walks back down, then jumps from a landmark they know ("5 rows of 3 is 15, so 6 rows is…") instead of counting from the start. It builds the understanding that Egg Crates then practises.',
   levels: TABLES.map((t) => `The ×${t} table: walk up, walk down, then jump from 5 and 10`),
-  intro: 'Egg Stairs! Ember is stacking eggs in a crate, one row at a time. Help count them as the rows go up and down!',
+  intro: "Egg Stairs! Let's count the rows!",
 
   startRound() {
     ({ table, phase } = current());

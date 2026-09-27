@@ -109,10 +109,10 @@ export function eggScene(play: HTMLElement, q: EggQuestion): Promise<boolean> {
           bubble.append(q.model.el);
           fit();
         }
-        await say("Hmm, not that one. Let's figure it out together.");
+        await say("Let's count.");
         await q.model.hint();
       } else {
-        await say('Not that one either. Look at the picture and try again.');
+        await say('Not that one either. Look at the picture. Try again.');
       }
       play.classList.remove('paused');
       void prompt(q.ask);
