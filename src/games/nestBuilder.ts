@@ -13,7 +13,7 @@ const MINUS = '−';
 
 type NestKind = 'fill' | 'add-small' | 'next-ten' | 'add-big' | 'sub-small' | 'sub-big';
 
-interface NestAnswer {
+export interface NestAnswer {
   answer: number;
   choices: number[];
 }
@@ -26,7 +26,7 @@ interface NestProblem {
   oneBeat: boolean;
 }
 
-function choicesWithMistake(answer: number, min: number, max: number, mistake?: number): number[] {
+export function choicesWithMistake(answer: number, min: number, max: number, mistake?: number): number[] {
   const choices = nearChoices(answer, 4, min, max);
   if (mistake !== undefined && mistake >= min && mistake <= max && mistake !== answer && !choices.includes(mistake)) {
     choices[choices.findIndex((n) => n !== answer)] = mistake;
@@ -43,7 +43,7 @@ function fillProblem(): NestProblem {
   };
 }
 
-function addProblem(kind: 'add-small' | 'add-big', a: number, b: number, oneBeat: boolean, max: number): NestProblem {
+export function addProblem(kind: 'add-small' | 'add-big', a: number, b: number, oneBeat: boolean, max: number): NestProblem {
   const bridge = Math.ceil(a / 10) * 10 - a;
   const rest = b - bridge;
   return {
@@ -148,7 +148,7 @@ function eggDot(cls = ''): HTMLElement {
   return h('i', `dot egg-dot ${cls}`.trim());
 }
 
-interface NestModel {
+export interface NestModel {
   el: HTMLElement;
   fillTo10(): Promise<void>;
   spill(n: number): Promise<void>;
@@ -159,7 +159,7 @@ interface NestModel {
 }
 
 /** Full-nest tiles plus the active ten-frame and one spill-over frame. */
-function nestModel({ tens, ones }: { tens: number; ones: number }): NestModel {
+export function nestModel({ tens, ones }: { tens: number; ones: number }): NestModel {
   const tiles = h('div', 'nest-full-tiles');
   const tileEls: HTMLElement[] = [];
   for (let t = 0; t < tens; t++) {
@@ -259,7 +259,7 @@ function withHint(nest: NestModel, hint: () => Promise<void>): Model {
   return { el: nest.el, hint };
 }
 
-function question(
+export function question(
   text: string,
   ask: string,
   beat: NestAnswer,

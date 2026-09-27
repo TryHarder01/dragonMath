@@ -38,6 +38,10 @@ const SCREENS = {
   'crates-L6': { open: 'play', game: 'crates', level: { crates: 6 }, main: '.ez-target' },
   'nest-L2': { open: 'play', game: 'nest', level: { nest: 2 }, main: '.ez-target' },
   'nest-L7': { open: 'play', game: 'nest', level: { nest: 7 }, main: '.ez-target' },
+  'maketen-L1': { open: 'play', game: 'maketen', level: { maketen: 1 }, main: '.ez-target' },
+  'maketen-L4': { open: 'play', game: 'maketen', level: { maketen: 4 }, main: '.ez-target' },
+  'maketen-L5': { open: 'play', game: 'maketen', level: { maketen: 5 }, main: '.ez-target' },
+  'maketen-L7': { open: 'play', game: 'maketen', level: { maketen: 7 }, main: '.ez-target' },
   'bags-L2-build': { open: 'play', game: 'bags', level: { bags: 2 }, main: '.gem-build-hoard', ready: '.gem-sources' },
   'bags-L3-compare': { open: 'play', game: 'bags', level: { bags: 3 }, main: '.gem-compare', ready: '.gem-dragon' },
   'bags-L6': { open: 'play', game: 'bags', level: { bags: 6 }, main: '.ez-target' },
@@ -93,7 +97,7 @@ for (const size of sizes) {
       ({ key, s }) =>
         localStorage.setItem(key, JSON.stringify({
           levels: s.level ?? {},
-          placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, story: true },
+          placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, maketen: true, story: true },
           hatched: ['rex-green', 'saur-blue', 'dragon-red'],
           games: s.state ?? {},
         })),

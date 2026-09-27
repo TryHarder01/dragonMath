@@ -1,8 +1,8 @@
 # Game specs: build handoffs
 
-**All four are built** (2026-09-27). The specs stay as the source of truth for each game's levels, hints and parent text. Known rough edges and next steps: [follow-ups.md](follow-ups.md).
+**All five are built** (2026-09-27). The specs stay as the source of truth for each game's levels, hints and parent text. Known rough edges and next steps: [follow-ups.md](follow-ups.md).
 
-One file per mini-game. Each spec is meant to be picked up by an agent (or person) with no memory of earlier sessions and built **without re-planning**. Read this README first. It covers what all four games share.
+One file per mini-game. Each spec is meant to be picked up by an agent (or person) with no memory of earlier sessions and built **without re-planning**. Read this README first. It covers what all five games share.
 
 | Spec | Game | Skill | Build order |
 |---|---|---|---|
@@ -36,7 +36,7 @@ He adds within 20 confidently. **Subtraction is weak.** He knows about ¼–½ o
 
 ## How a game plugs in
 
-- **File:** `src/games/<name>.ts`, exporting a `Game` (`src/games/types.ts`). `GameId` already includes `'nest' | 'bags' | 'stomp' | 'story'`.
+- **File:** `src/games/<name>.ts`, exporting a `Game` (`src/games/types.ts`). `GameId` includes `'nest' | 'maketen' | 'bags' | 'stomp' | 'story'`.
 - **Register it:** add it to `GAMES` in `src/games/index.ts` and **remove its entry from `UPCOMING`**. The map and the parent guide pick it up automatically.
 - **Parent text:** `skill`, `about` and `levels` (8 strings, easiest first). Each spec gives ready-to-paste text.
 - **Round:** by default 5 problems, each a `runProblem({ play, level })` that resolves `true` if answered right on the first try. The shared adaptive rule (fast placement, then up after 3 right / down after 2 misses) does the rest. Use `ownsLevel` / `startRound` / `isRoundOver` only if the spec says so.

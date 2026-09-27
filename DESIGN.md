@@ -96,13 +96,14 @@ Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model
 - **Hint:** count on or back across the changing rows, dot by dot for ×2–×5 and "plus 7 is 42" for bigger tables.
 - **Why:** walking in order shows the structure (one more group), but only unpredictable problems make him recall the fact. So Stairs teaches the structure and Crates does the mixed practice. Jumping from landmarks trains derived facts (6×7 = 5×7 + 7) instead of reciting from 1×.
 
-### 3–6. The four newer games (built)
+### 3–7. The five newer games (built)
 
 Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is the source of truth: levels, generators, hints, spoken lines and parent text. Known rough edges and next steps are in [`docs/specs/follow-ups.md`](docs/specs/follow-ups.md).
 
 | Game | Skill | Spec |
 |---|---|---|
 | 🪺 Nest Builder | Make-ten / bridging ten, add **and subtract** (13 − 5 → 10 → 8; 43 − 5 → 40 → 38) | [nest-builder.md](docs/specs/nest-builder.md) |
+| 🔟 Make Ten | The make-ten chain step by step: partners, splitting, bridging to ten or the next ten, and subtraction | [make-ten.md](docs/specs/make-ten.md) |
 | 💎 Gem Bags | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
 | 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
 | 📖 Dino Story | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
@@ -137,3 +138,4 @@ Differences from the specs:
 7. ~~Nest Builder~~ (done)
 8. ~~Stomp Path~~ (done)
 9. ~~Dino Story~~ (done)
+10. ~~Make Ten~~ (done)

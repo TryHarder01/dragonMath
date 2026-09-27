@@ -1,6 +1,6 @@
 # 🔟 Make Ten: a practice module on the map
 
-- **Status:** Ready to build. Read [README.md](README.md) first (the shared contract), then [nest-builder.md](nest-builder.md) for the nest model this reuses.
+- **Status:** Built. Read [README.md](README.md) first (the shared contract), then [nest-builder.md](nest-builder.md) for the nest model this reuses.
 - **What it is:** a new game on the home map, next to the others, dedicated to the make-ten strategy, so it can be picked on its own. **Nest Builder is not changed.**
 
 ## Why (research)

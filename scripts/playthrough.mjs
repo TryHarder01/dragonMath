@@ -108,7 +108,7 @@ async function playRound(id, level) {
     ({ KEY, id, level }) =>
       localStorage.setItem(KEY, JSON.stringify({
         levels: { [id]: level },
-        placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, story: true },
+        placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, maketen: true, story: true },
         hatched: [],
         games: {},
       })),
