@@ -2,8 +2,9 @@ import type { Game, GameInfo } from './types';
 import { eggCrates } from './eggCrates';
 import { eggStairs } from './eggStairs';
 import { eggWarmer } from './eggWarmer';
+import { stompPath } from './stompPath';
 
-export const GAMES: Game[] = [eggWarmer, eggStairs, eggCrates];
+export const GAMES: Game[] = [eggWarmer, eggStairs, eggCrates, stompPath];
 
 /** Shown greyed-out on the map, and as "Coming soon" in the parent guide, until built. */
 export const UPCOMING: GameInfo[] = [
@@ -12,12 +13,6 @@ export const UPCOMING: GameInfo[] = [
     name: 'Gem Bags',
     skill: 'Place value: tens and ones to 100',
     about: 'Dragons keep their gems in bags of ten plus a few loose ones. How many gems is that? Who has more? Adding a bag at a time builds adding and subtracting tens.',
-  },
-  {
-    icon: '🦖',
-    name: 'Stomp Path',
-    skill: 'The number line to 100, and skip counting by 2, 5 and 10',
-    about: 'Walk a friendly T-rex home along a numbered path in hops of ten and one, saying each number out loud. Skip-counting hops feed straight into the times tables.',
   },
   {
     icon: '🪺',

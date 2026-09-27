@@ -36,6 +36,14 @@ const SCREENS = {
   'stairs-L1-first': { open: 'play', game: 'stairs', level: { stairs: 1 }, state: { stairs: { table: 2, phase: 'up-low' } }, main: '.ez-target' },
   'stairs-L7-tall': { open: 'play', game: 'stairs', level: { stairs: 7 }, state: { stairs: { table: 7, phase: 'up-high' } }, main: '.ez-target' },
   'crates-L6': { open: 'play', game: 'crates', level: { crates: 6 }, main: '.ez-target' },
+  'stomp-L1-window': { open: 'play', game: 'stomp', level: { stomp: 1 }, main: '.stomp-path', ready: '.stomp-path.window' },
+  'stomp-L2-window': { open: 'play', game: 'stomp', level: { stomp: 2 }, main: '.stomp-path', ready: '.stomp-path.window' },
+  'stomp-L3-tens': { open: 'play', game: 'stomp', level: { stomp: 3 }, main: '.stomp-path', ready: '.stomp-path.ruler' },
+  'stomp-L4-skip': { open: 'play', game: 'stomp', level: { stomp: 4 }, main: '.stomp-path', ready: '.stomp-path.ruler' },
+  'stomp-L5-tens': { open: 'play', game: 'stomp', level: { stomp: 5 }, main: '.stomp-path', ready: '.stomp-path.ruler' },
+  'stomp-L6-ruler': { open: 'play', game: 'stomp', level: { stomp: 6 }, main: '.stomp-path', ready: '.stomp-path.ruler' },
+  'stomp-L7-ruler': { open: 'play', game: 'stomp', level: { stomp: 7 }, main: '.stomp-path', ready: '.stomp-path.ruler' },
+  'stomp-L8-estimate': { open: 'play', game: 'stomp', level: { stomp: 8 }, main: '.stomp-path', ready: '.stomp-line-hit' },
   hatch: { open: 'hatch', hatchIt: true, main: '.hatch-stage' },
   nest: { open: 'nest', main: '.nest-grid', spread: true },
   guide: { open: 'guide', main: '.guide' },
@@ -45,7 +53,7 @@ const SCREENS = {
 const CONTENT = [
   '.logo', '.intro-ember', '.start-ember', '.start-btn', '.grownups-link', '.map-ember', '.spot', '.nest-btn',
   '.ez-target', '.ez-ember', '.egg', '.skip-btn', '.big-egg', '.hatched-baby', '.baby-name', '.act',
-  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide',
+  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide', '.stomp-question', '.stomp-path', '.stomp-egg', '.stomp-estimate-reminder',
 ].join(',');
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, '').split('=')));

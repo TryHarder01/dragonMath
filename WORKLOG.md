@@ -1,5 +1,27 @@
 # Worklog
 
+## 2026-09-26 — Build Stomp Path
+
+**Goal:** Build the eight-level Stomp Path number-line game from `docs/specs/stomp-path.md`.
+
+**Done:**
+- Added `src/games/stompPath.ts`: window and ruler paths, prediction eggs, one-step stomps, skip counting, tens-first addition/subtraction hints, and tap-the-line estimation.
+- Registered Stomp Path, added its parent guide text, CSS, eight audit screens, and a Playwright driver for eggs, the stomp button, and estimation.
+- Marked the game built in `DESIGN.md` and recorded both accepted defaults in the spec.
+
+**Decisions:**
+- `[promote?]` Accepted the user-approved defaults: five problems per round and ±5 estimation tolerance — the user directed that every spec default be accepted.
+- The level 8 T-rex stays hidden until the answer is revealed, since showing it at the target would give away the answer.
+
+**Verified:**
+- `npm run typecheck` clean; `npm run build` succeeded (24 modules transformed).
+- `just audit`: 0 of 108 screen/size combinations flagged.
+- `just playthrough stomp --level=1`: hatch reached, 1 wrong tap, 48 steps; level 7: hatch reached, 1 wrong tap, 21 steps; level 8: hatch reached, 1 wrong tap, 17 steps.
+- `node scripts/.stomp-generator-check.mjs`: 8 levels × 1,000 problems passed; the throwaway script was removed. Inspected the L1, crossing-ten L7, L8 hint, and phone ruler screenshots.
+
+**Next:**
+- Merge this branch with the other game branches, then run the combined `just verify`.
+
 ## 2026-09-26 — Codex portability: AGENTS.md and shared skills
 
 **Goal:** Per the user, make the repo work the same for Codex as for Claude Code: one instruction file, and skills both tools find.
