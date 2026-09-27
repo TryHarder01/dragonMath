@@ -24,3 +24,7 @@ build:
 # Serve the production build
 preview: build
     npm run preview
+
+# Check every screen uses the window well (screenshots in audit-screens/)
+audit:
+    node scripts/audit.mjs

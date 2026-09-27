@@ -11,7 +11,7 @@ export const PROBLEMS_PER_ROUND = 5;
 export type Exit = 'map' | 'hatch';
 
 export async function playRound(app: HTMLElement, game: Game, onExit: (e: Exit) => void) {
-  const adaptive = new Adaptive(game.id);
+  const adaptive = new Adaptive(game.id, game.levels.length);
   let quit = false;
 
   const home = h('button', 'hud-btn', ['🏝️']);
@@ -35,7 +35,21 @@ export async function playRound(app: HTMLElement, game: Game, onExit: (e: Exit) 
     void repeatPrompt();
   });
 
-  await say(game.intro);
+  // The intro can be long; a big ⏭️ lets an impatient player (or parent) skip it.
+  const skip = h('button', 'skip-btn', ['⏭️', h('span', '', ['Skip'])]);
+  skip.setAttribute('aria-label', 'Skip the intro');
+  play.append(h('div', 'intro-ember', ['🐉']), skip);
+  await Promise.race([
+    say(game.intro),
+    new Promise<void>((resolve) =>
+      skip.addEventListener('click', () => {
+        sfx.tap();
+        speechSynthesis?.cancel();
+        resolve();
+      }),
+    ),
+  ]);
+  play.replaceChildren();
   game.startRound?.(adaptive.level);
 
   let done = 0;
@@ -44,7 +58,7 @@ export async function playRound(app: HTMLElement, game: Game, onExit: (e: Exit) 
     play.replaceChildren();
     const firstTry = await game.runProblem({ play, level: adaptive.level });
     if (quit || !play.isConnected) return;
-    adaptive.record(firstTry);
+    if (!game.ownsLevel) adaptive.record(firstTry);
     pips.children[done]?.replaceChildren('🐣');
     pips.children[done]?.classList.add('done');
     done++;

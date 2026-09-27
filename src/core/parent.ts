@@ -3,7 +3,7 @@
 import { GAMES } from '../games';
 import { h } from './dom';
 import { showGuide } from './guide';
-import { getLevel, resetProgress, setLevel } from './progress';
+import { getLevel, resetProgress, setLevel, setPlaced } from './progress';
 
 export function parentButton(app: HTMLElement, onClose: () => void): HTMLElement {
   const gear = h('button', 'gear', ['⚙️']);
@@ -29,12 +29,13 @@ function openPanel(app: HTMLElement, onClose: () => void) {
     const minus = h('button', 'lvl-btn', ['–']);
     const plus = h('button', 'lvl-btn', ['+']);
     const bump = (d: number) => {
-      setLevel(g.id, getLevel(g.id) + d);
+      setLevel(g.id, getLevel(g.id) + d, g.levels.length);
+      setPlaced(g.id); // a parent's choice ends fast placement
       val.textContent = String(getLevel(g.id));
     };
     minus.onclick = () => bump(-1);
     plus.onclick = () => bump(1);
-    return h('div', 'parent-row', [h('span', '', [`${g.icon} ${g.name}`]), minus, val, plus]);
+    return h('div', 'parent-row', [h('span', '', [`${g.icon} ${g.name} (1–${g.levels.length})`]), minus, val, plus]);
   });
   const reset = h('button', 'parent-reset', ['Reset all progress']);
   let armed = false;
@@ -55,7 +56,7 @@ function openPanel(app: HTMLElement, onClose: () => void) {
   };
   const panel = h('div', 'parent-panel', [
     h('h2', '', ['Parent corner']),
-    h('p', '', ['Levels go 1–5 per game and adjust automatically: up after 3 right in a row, down after 2 misses.']),
+    h('p', '', ['Levels adjust automatically. A new game climbs one level per right answer until the first miss. After that it goes up after 3 right in a row and down after 2 misses. Changing a level here ends that quick climb.']),
     guideBtn,
     ...rows,
     h('div', 'parent-foot', [reset, closeBtn]),

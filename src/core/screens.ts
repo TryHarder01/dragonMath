@@ -56,7 +56,7 @@ export function showMap(app: HTMLElement, greeting?: string) {
   }
 }
 
-function startGame(app: HTMLElement, g: Game) {
+export function startGame(app: HTMLElement, g: Game) {
   void playRound(app, g, (exit) => {
     if (exit === 'map') showMap(app);
     else showHatch(app, g);

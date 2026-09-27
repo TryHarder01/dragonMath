@@ -1,7 +1,8 @@
 import './styles.css';
 import { h } from './core/dom';
 import { showGuide } from './core/guide';
-import { showMap } from './core/screens';
+import { showHatch, showMap, showNest, startGame } from './core/screens';
+import { GAMES } from './games';
 import { unlockAudio } from './core/sound';
 
 const app = document.querySelector<HTMLElement>('#app')!;
@@ -32,3 +33,19 @@ else showStart();
 window.addEventListener('hashchange', () => {
   if (location.hash === '#parents') showGuide(app, showStart);
 });
+
+// `?audit` exposes screen shortcuts for scripts/audit.mjs (the layout check),
+// so it can open any screen without playing through to it.
+if (new URLSearchParams(location.search).has('audit')) {
+  const game = (id: string) => GAMES.find((g) => g.id === id) ?? GAMES[0];
+  Object.assign(window, {
+    __audit: {
+      start: showStart,
+      map: () => showMap(app),
+      nest: () => showNest(app),
+      hatch: () => showHatch(app, GAMES[0]),
+      guide: () => showGuide(app, showStart),
+      play: (id: string) => startGame(app, game(id)),
+    },
+  });
+}

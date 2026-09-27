@@ -1,6 +1,8 @@
 # Ember's Egg Rescue: game design
 
-A Math Blaster–style game for ages 4–6, built on the research in [docs/research/2026-09-26-early-math-pedagogy.md](docs/research/2026-09-26-early-math-pedagogy.md).
+A Math Blaster–style game for young kids, built on the research in [docs/research/2026-09-26-early-math-pedagogy.md](docs/research/2026-09-26-early-math-pedagogy.md).
+
+**Target player (2026-09-26):** adds within 20 confidently, subtraction is weak, and knows about a quarter to a half of the 10×10 times tables. The levels are sized for him, per [docs/research/2026-09-26-right-sizing-advanced-learner.md](docs/research/2026-09-26-right-sizing-advanced-learner.md). The original kindergarten ladders (counting and subitizing 1–10) are in git history, in the commit "Add Dino Egg Blaster game design".
 
 ## Premise
 
@@ -27,82 +29,84 @@ Island map → pick a mini-game → round of 5 problems → hatch a baby → bac
 
 ## Adaptive levels (per skill)
 
-- Each mini-game has levels 1–5 that follow its learning trajectory.
+- Each mini-game has **8 levels** that follow its learning trajectory. `Game.levels` in code holds a parent-facing description of each one.
 - The level is stored per mini-game in `localStorage`.
-- **Up** after 3 correct in a row. **Down** after 2 misses on separate problems in a row. A miss followed by a correct retry counts as a miss.
+- **Placement:** the first time a game is played, every first-try correct answer moves up a level, until the first miss (or the top level).
+- **After placement:** up after 3 correct in a row, down after 2 misses on separate problems in a row. A miss followed by a correct retry counts as a miss.
 - The level changes quietly between problems, so there's no "level down" message.
 
 ## Mini-games
 
-### 1. Egg Warmer: subitizing and matching numerals to quantities
-*The Math Blaster heart, made kind.* The eggs got chilly in the storm and bob gently on the meadow. Ember hovers at the top. The voice says "Warm the egg with **four**!" Tap an egg and Ember breathes a soft warm glow on it. The right egg hatches.
+Egg Warmer and Egg Crates share one scene (`src/games/eggScene.ts`):
+- The number sentence sits in Ember's bubble, with its picture model at the lower levels.
+- The chilly eggs bob below, each showing an answer.
+- Tapping an egg sends Ember's warm glow. The right one hatches.
+- On the first wrong tap the picture model appears (if it wasn't already shown) and plays its **strategy hint** aloud (`src/core/models.ts`).
 
-| Lvl | Target shown | Eggs show | Range |
-|---|---|---|---|
-| 1 | dots | dots (dice layout) | 1–3, 3 eggs |
-| 2 | numeral + dots | dots | 1–5, 3 eggs |
-| 3 | numeral only (spoken) | dots | 1–5, 4 eggs |
-| 4 | numeral only | ten-frame | 1–10, 4 eggs |
-| 5 | ten-frame | numerals | 1–10, 4 eggs |
+### 1. Egg Warmer: + and − within 20, weighted toward subtraction
+Addition is a warm-up. Most levels build subtraction step by step. The model is a **double ten-frame**:
+- **Addition:** the second addend fills the first frame to ten and spills over, so make-ten is visible, and the hint counts on.
+- **Subtraction:** the hint crosses dots out from the end while counting back. When the problem crosses ten, it says "take away the ones to get to ten, then the rest".
+- **Missing part:** empty rings fill in while counting on ("think addition").
 
-The eggs drift slowly and loop back if they float off the top, so there's no time pressure.
-
-### 2. Dino Count: one-to-one counting and cardinality
-Baby dinos wander in the meadow. The voice says "How many dinos?" Tapping a dino marks it and the voice counts ("one… two…"). After every dino is tapped, the child picks the total from 3 choices. That final choice checks cardinality.
-
-| Lvl | Count | Layout |
+| Lvl | Problems | Picture |
 |---|---|---|
-| 1 | 1–3 | a row |
-| 2 | 1–5 | a row |
-| 3 | 3–7 | scattered |
-| 4 | 5–10 | scattered |
-| 5 | "Give me N": tap N dinos into the nest (N from 3–10) | scattered |
+| 1 | add within 20 (warm-up) | hint only |
+| 2 | take away within 10 | shown |
+| 3 | teens without crossing ten (17 − 4) | shown |
+| 4 | think addition: 8 + ? = 13 | shown |
+| 5 | subtract crossing ten (13 − 5) | shown |
+| 6 | any subtraction within 20 | hint only |
+| 7 | mixed + / − / missing part | hint only |
+| 8 | mixed, plus ×2 / ×5 / ×10 facts (interleaving) | hint only |
 
-### 3. Gem Trade: comparing
-Two dragons each hold a pile of gems. The voice asks "Who has **more** gems?" (or "fewer" at level 3 and up). The child taps a dragon.
+Distractors are the neighbouring numbers, plus "added instead of subtracted" when it fits.
 
-| Lvl | Sizes | Difference | Display |
-|---|---|---|---|
-| 1 | 1–5 | 3 or more | gems in lined-up rows |
-| 2 | 1–6 | 2 or more | rows |
-| 3 | 1–8 | 1 or more, and asks "more" or "fewer" | rows |
-| 4 | 1–10 | 1 or more | scattered piles |
-| 5 | 1–10 | 1 or more | numerals only, with dots shown in the hint |
+### 2. Egg Crates: multiplication
+The rescued eggs are packed in crates, row by row. "a × b" always means **a rows of b**. The models are nests (equal groups) and egg arrays:
+- **Skip-count hint:** lights one row at a time ("4, 8, 12").
+- **×6–×9 hint:** lights 5 rows at once ("5 rows of 7 is 35"), then adds the remaining rows one at a time.
+- **Missing factor:** the rows appear one at a time until the product is reached.
 
-### 4. Stomp Path: the number line (Siegler & Ramani)
-A T-rex stands on a **straight** numbered path. Spin the stone spinner (1–3). The child taps each next square, and the voice says each number as the T-rex stomps forward: "four, five, six!" Reaching the end hatches the egg.
-
-| Lvl | Path | Spinner | Extra |
-|---|---|---|---|
-| 1 | 1–10 | 1–2 | the next square glows |
-| 2 | 1–10 | 1–3 | no glow |
-| 3 | 1–10 | 1–3 | after landing: "What number are you on?" |
-| 4 | 1–20 | 1–3 | landing question |
-| 5 | 1–20 | 1–4 | "Where will you land?" before moving (counting on) |
-
-A round is one trip down the path, not 5 problems.
-
-### 5. Nest Builder: making 5 and 10
-The nest is a **ten-frame** (a five-frame at level 1). Some eggs are already in it. The voice asks "How many more eggs to fill the nest?" The child taps eggs into the nest, or at higher levels picks the answer.
-
-| Lvl | Frame | Answer by |
+| Lvl | Facts | Picture |
 |---|---|---|
-| 1 | 5 | tapping eggs in |
-| 2 | 5 | choosing a number |
-| 3 | 10, with 5 or more already in | tapping eggs in |
-| 4 | 10, any starting amount | choosing a number |
-| 5 | "Make 7": the start is a ten-frame with some filled, and the target is any number up to 10 | choosing a number |
+| 1 | equal groups: 2–4 nests of 2–5 | shown |
+| 2 | ×2, ×10 | shown |
+| 3 | ×5 (with ×2, ×10) | shown |
+| 4 | ×3, ×4 | shown |
+| 5 | ×1–×5, ×10 | hint only |
+| 6 | ×6–×9 (as rows) | shown |
+| 7 | missing factor: ? × 4 = 20 | hint only |
+| 8 | all facts 2–10 × 2–10, some missing-factor problems mixed in | hint only |
 
-### 6. Dino Story: adding and subtracting
-Short animated stories. "**Three** dinos splash in the pond. **Two** more stomp over! How many dinos now?" The dinos actually walk in or out. The child picks from 3 answers, each shown as a numeral with dots.
+Distractors are the neighbouring facts (product ± a factor) and ±1.
 
-| Lvl | Type | Range |
-|---|---|---|
-| 1 | join | within 5 |
-| 2 | take away (dinos fly off on a dragon) | within 5 |
-| 3 | join or take away | within 10 |
-| 4 | missing part: "3 dinos are here. Some more came. Now there are 5." | within 10 |
-| 5 | mixed, with the pictures fading out (just numbers, with dots as a hint) | within 10 |
+### 2b. Egg Stairs: how the times tables work (`src/games/eggStairs.ts`)
+Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model** first: a table is a staircase, each step adds one more row of the same size, and you can reach any step from a landmark you know. The crate shows each row with its running total beside it (3, 6, 9, 12…).
+
+- **One level per table**, in this order: ×2, ×10, ×5, ×3, ×4, ×6, ×7, ×8, ×9.
+- **Each table has four 5-question phases:**
+  1. Walk up rows 1–5: "3 rows is 9. Add one more row of 3?"
+  2. Walk up rows 6–10, starting from the 5-row landmark.
+  3. Walk down from 10: "10 rows is 30. Take one row away?"
+  4. Jumps from a ⭐ landmark with no walking: "You know 5 rows of 3 is 15. How many is 6 rows?" (5→6, 5→4, 10→9, 5→7, 10→8, 2→4, 5→3).
+- **The game moves its own level** (`ownsLevel`), not the shared adaptive rule, so a table isn't left halfway through:
+  - A clean walk phase (no misses) skips straight to the jumps.
+  - Passing the jumps with at most 1 miss unlocks the next table. Otherwise the jumps repeat.
+- **Hint:** count on or back across the changing rows, dot by dot for ×2–×5 and "plus 7 is 42" for bigger tables.
+- **Why:** walking in order shows the structure (one more group), but only unpredictable problems make him recall the fact. So Stairs teaches the structure and Crates does the mixed practice. Jumping from landmarks trains derived facts (6×7 = 5×7 + 7) instead of reciting from 1×.
+
+### 3. Gem Bags: place value (planned)
+Dragons keep gems in bags of 10 plus loose gems. Levels: read tens and ones to 100 → compare 2-digit numbers → add or take away a bag (±10) → add and subtract 2-digit numbers without regrouping.
+
+### 4. Stomp Path: number line to 100 (planned)
+A T-rex walks home along a **straight** numbered path, saying each number (Siegler & Ramani). Levels: hops of 1 on 1–20 → hops of 10 and 1 on 0–100 → skip count by 2, 5 and 10 (feeding Egg Crates) → "Where will you land?" (e.g. 37 + 20).
+
+### 5. Nest Builder: make-ten strategies (planned)
+Nests of ten. Levels: fill to 10 → bridge through ten (8 + 5 = 8 + 2 + 3) → the same with 2-digit numbers (38 + 5 → 40 + 3) → subtract back through ten (43 − 5).
+
+### 6. Dino Story: word problems (planned)
+Short animated stories. Levels: join / separate within 20 → compare ("how many more?") → missing part → equal groups ("4 nests with 3 eggs each").
 
 ## Rewards: the Hatchery
 
@@ -120,11 +124,12 @@ Short animated stories. "**Three** dinos splash in the pond. **Two** more stomp 
 
 ## Build order
 
-1. Scaffold, voice, sound, progress, island map
-2. **Egg Warmer** (the MVP loop) and the hatch reward
-3. Dino Count
-4. Gem Trade
-5. Nest Builder
-6. Stomp Path
-7. Dino Story
-8. Break nudge and parent corner
+1. ~~Scaffold, voice, sound, progress, island map~~ (done)
+2. ~~Egg Warmer and the hatch reward~~ (done, retargeted to facts within 20)
+3. ~~Egg Crates~~ (done)
+4. ~~Egg Stairs~~ (done)
+5. ~~Break nudge and parent corner~~ (done)
+6. Gem Bags
+7. Nest Builder
+8. Stomp Path
+9. Dino Story

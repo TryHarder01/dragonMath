@@ -1,10 +1,11 @@
 # Ember's Egg Rescue
 
-A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme. Vite + vanilla TypeScript, DOM + CSS, with no game engine.
+A Math Blaster–style math game for young kids with a dragon and dinosaur theme. It's currently sized for a player who adds within 20, is weak at subtraction, and knows some of the times tables ([research](docs/research/2026-09-26-right-sizing-advanced-learner.md)). Vite + vanilla TypeScript, DOM + CSS, with no game engine ([why](docs/decisions/2026-09-26-vanilla-ts-no-engine.md)).
 
 ## Start here
 - Read the top entry of `WORKLOG.md` before starting work. Add an entry after each chunk of work, following `.claude/skills/worklog/SKILL.md`.
 - `DESIGN.md` is the game design. `docs/research/` holds the research behind it.
+- `docs/decisions/` holds one file per standing decision, with the reason and the rejected options. Check it before questioning a rule below.
 
 ## Commands
 - `just run`: install dependencies if needed and start the game. Run `just` to list all recipes (`typecheck`, `build`, `preview`, `install`).
@@ -12,8 +13,11 @@ A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme
 - `npm run typecheck`: run `tsc --noEmit`.
 - `npm run build`: typecheck plus a production build into `dist/`.
 - Add `?mute` to the URL to turn off speech, which is useful for automated checks.
+- `just audit` checks every screen's layout at 6 window sizes, from a phone to a big monitor at 70% zoom, using `scripts/audit.mjs` (Playwright on the system Chrome). It flags content that doesn't fill the window, is clipped, or where eggs cover the question card, and saves screenshots to `audit-screens/`. Run it after any layout or CSS change. `?audit` in the URL exposes `window.__audit` shortcuts for opening screens directly.
+- Sizing: screens scale with the window (`vmin`/`vh` in the "scale with the screen" block of `styles.css`), and fact-game cards are zoomed to fit by `fitBubble` in `games/eggScene.ts`. Don't add fixed pixel maximums that stop big screens from filling up.
 
 ## Docs and visual write-ups: local HTML files, not hosted artifacts
+[Why](docs/decisions/2026-09-26-visual-docs-as-local-html.md).
 - Any designed, visual page (research summaries, design explainers, plans meant to be viewed) goes in `docs/pages/<name>.html` as a **self-contained local HTML file**. Open it directly in a browser.
 - Don't publish these as claude.ai Artifacts unless asked for one explicitly.
 - Link between pages with relative paths (e.g. `edu-foundations.html`), never claude.ai URLs.
@@ -27,20 +31,23 @@ A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme
   - `progress` (localStorage)
   - `adaptive` (levels)
   - `visuals` (dots, ten-frames, `countAlong`)
+  - `models` (fact picture models, each with an animated strategy hint: `addModel`, `subModel`, `missingModel`, `arrayModel`, `groupsModel`)
   - `choices` (`awaitChoice`: the tap-an-answer pattern with a hint on wrong answers)
   - `round` (runs 5 problems, then the hatch)
   - `screens` (map, hatch, nest)
   - `parent` (the parent corner)
   - `guide` (the "For grown-ups" page, also at `/#parents`)
-- `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`. Every game carries parent-facing `skill`, `about` and `levels` text, which the guide page shows. Keep that text in sync when you change a game's levels.
+- `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`. Fact games build an `EggQuestion` and hand it to `eggScene` (`games/eggScene.ts`). Every game carries parent-facing `skill`, `about` and `levels` text, which the guide page shows. Keep that text in sync when you change a game's levels.
 - Kid-facing screens stay wordless (icons and voice). Anything explanatory goes in the parent guide.
 
 ## Tone: the hero only helps
 - The player and Ember are always kind and helpful to the eggs, dinos and dragons. Use verbs like warm, find, count, share, tuck in and walk home.
-- Never use zap, blast, shoot, fire or chomp, and never cast any creature as an enemy. This applies to code names, sounds, spoken lines and docs too.
+- Never use zap, blast, shoot, fire or chomp, and never cast any creature as an enemy. This applies to code names, sounds, spoken lines and docs too. Older `WORKLOG.md` entries and dated research files keep their original wording.
+- [Why](docs/decisions/2026-09-26-hero-only-helps.md).
 
 ## Teaching rules (from the research, don't break them)
-- No timers, lives or game over. Wrong answers show a hint model (count the dots aloud), then the child retries.
-- Every numeral appears with a picture of its quantity, except at the top levels, where the picture is still used in hints.
+The reasons are in [the research's design rules](docs/research/2026-09-26-early-math-pedagogy.md).
+- No timers, lives or game over. Wrong answers show a hint model (count the dots aloud), then the child retries ([why](docs/decisions/2026-09-26-no-timers-lives-or-game-over.md)).
+- Every problem has a picture model (ten-frames, egg arrays, nests). It's shown from the start on levels that teach a new idea, and appears as the hint on fact-practice levels. It's never missing entirely.
 - Say every instruction aloud with `prompt()`, because players can't read yet.
 - Rewards come only between problems, never during one.

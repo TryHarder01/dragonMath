@@ -87,9 +87,9 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 
 /* ---------- HUD ---------- */
 .hud { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.hud-btn { font-size: 2.2rem; width: 72px; height: 72px; border-radius: 50%; background: var(--card); box-shadow: 0 4px 0 #0000002a; flex: none; }
+.hud-btn { font-size: clamp(2.2rem, 4.5vh, 3.6rem); width: clamp(72px, 8vh, 120px); height: clamp(72px, 8vh, 120px); border-radius: 50%; background: var(--card); box-shadow: 0 4px 0 #0000002a; flex: none; }
 .hud-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #0000002a; }
-.pips { display: flex; gap: 6px; font-size: 1.8rem; }
+.pips { display: flex; gap: 6px; font-size: clamp(1.8rem, 3.5vh, 3rem); }
 .pip { opacity: .45; transition: transform .3s; }
 .pip.done { opacity: 1; transform: scale(1.2); }
 .play { flex: 1; position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
@@ -177,7 +177,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 /* ---------- animations ---------- */
 @keyframes hover { 50% { translate: 0 -10px; } }
 @keyframes pulse { 50% { scale: 1.07; } }
-@keyframes drift { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-110%) rotate(3deg); } }
+@keyframes drift { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(var(--rise, -110%)) rotate(3deg); } }
 @keyframes wobble { 0%, 100% { rotate: 0deg; } 25% { rotate: -8deg; } 75% { rotate: 8deg; } }
 @keyframes pop { 50% { scale: 1.2; } }
 @keyframes popin { from { scale: 0; } to { scale: 1; } }
@@ -242,3 +242,108 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 @media (max-width: 560px) {
   .guide .guide-facts, .guide-upcoming { grid-template-columns: 1fr; }
 }
+
+/* ---------- fact models (Egg Warmer / Egg Crates) ---------- */
+.ez-target:has(.expr) { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.expr { font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 700; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.frames20 { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.frames20 .frame { width: clamp(150px, 22vw, 200px); }
+.dot.two { background: #f5b301; }
+.dot.ghost { background: transparent; box-shadow: inset 0 0 0 3px #b9c3c6; }
+.dot.gone { background: #cfd6d8; position: relative; }
+.dot.gone::after { content: ''; position: absolute; inset: 42% -10%; background: var(--ink); border-radius: 2px; rotate: -35deg; }
+.egg-array { display: flex; flex-direction: column; gap: 4px; }
+.egg-row { display: grid; grid-template-columns: repeat(var(--cols), var(--size)); gap: 4px; border-radius: 8px; padding: 2px; transition: background .15s; }
+.egg-row.lit { background: #ffe9a8; }
+.egg-row.lit .egg-dot { background: var(--lava); }
+.egg-dot { width: var(--size); background: #e9c46a; box-shadow: inset 0 -2px 0 #0002; border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%; }
+.hidden-row { visibility: hidden; }
+.groups { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.nest-group { background: #c8955a; border-radius: 50%; padding: 18px; box-shadow: inset 0 -6px 0 #0002; transition: background .15s; }
+.nest-group .dice { width: 70px; height: 70px; }
+.nest-group.lit { background: #ffc53d; }
+.ez-sky { position: relative; z-index: 2; }
+/* Fact games (eggScene): the question card fills the sky (scaled in JS by
+   fitBubble); eggs sit in a band at the bottom that grows with screen height. */
+.play.fact-scene { justify-content: flex-start; gap: 8px; }
+.fact-scene .ez-sky { flex: 1; min-height: 0; }
+.fact-scene .ez-ember { font-size: clamp(3.5rem, min(13vh, 18vw), 11rem); }
+/* Eggs are 3:4 and at most min(21vw, 19vh) wide (≈25vh tall, 25vw apart for 4 eggs), so a
+   27vh-tall, full-width band always holds them without overlap. Keep these in step. */
+.fact-scene .ez-eggs { flex: none; height: max(170px, 27vh); min-height: 0; max-width: none; }
+.fact-scene .egg { width: clamp(72px, min(21vw, 19vh), 260px); --rise: -12%; container-type: inline-size; }
+.fact-scene .egg .numeral { font-size: 36cqi; }
+
+/* ---------- Egg Stairs ---------- */
+.stairs { display: flex; flex-direction: column; gap: 3px; align-items: stretch; }
+.stairs-row { display: grid; grid-template-columns: 1.6em auto 3.2em; align-items: center; gap: 10px; border-radius: 8px; padding: 1px 6px; transition: opacity .3s, background .15s; }
+.stairs-num { font-size: .9rem; opacity: .5; text-align: right; font-variant-numeric: tabular-nums; }
+.stairs-eggs { display: grid; grid-template-columns: repeat(var(--cols), var(--size)); gap: 3px; }
+.stairs-label { font-size: 1.35rem; font-weight: 700; text-align: left; font-variant-numeric: tabular-nums; min-height: 1.4em; }
+.stairs-label.landmark { color: var(--lava-dark); }
+.stairs-label.landmark::before { content: '⭐ '; font-size: .8em; }
+.stairs-label.pop { animation: pop .4s ease-out; color: var(--grass-dark); }
+.stairs-row.ghost .egg-dot { background: transparent; box-shadow: inset 0 0 0 2px #b9c3c6; }
+.stairs-row.leaving .egg-dot { opacity: .45; }
+.stairs-row.lit { background: #ffe9a8; }
+.stairs-row .egg-dot.lit { background: var(--lava); }
+.stairs-row.leaving .egg-dot.lit { background: #cfd6d8; opacity: .3; }
+.stairs-row.gone-row { display: none; }
+
+/* ---------- scale with the screen ----------
+   Sizes above were tuned for a laptop/iPad. These use vmin (the smaller of
+   width/height) so every screen fills a big monitor or a zoomed-out browser
+   too. `just audit` checks how much of the window each screen uses. */
+.logo { font-size: clamp(1.6rem, 5vmin, 4.5rem); }
+.logo.big { font-size: clamp(2.6rem, 10vmin, 16rem); }
+.start-ember { font-size: clamp(6rem, 34vmin, 60rem); }
+.start-btn { width: clamp(140px, 24vmin, 640px); height: clamp(140px, 24vmin, 640px); font-size: clamp(4rem, 11vmin, 18rem); }
+.grownups-link { font-size: clamp(1rem, 2.2vmin, 3rem); }
+
+.map-ember { font-size: clamp(3rem, 12vmin, 20rem); flex: none; }
+.spots { max-width: 100%; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; align-content: stretch; min-height: 0; }
+@media (max-aspect-ratio: 1/1) { .spots { grid-template-columns: repeat(2, 1fr); } }
+.spot { min-height: 0; border-radius: clamp(20px, 3vmin, 60px); }
+.spot-icon { font-size: clamp(2.4rem, 10vmin, 18rem); }
+.spot-name { font-size: clamp(.95rem, 2.6vmin, 4rem); }
+.nest-btn { width: clamp(72px, 8vmin, 180px); height: clamp(72px, 8vmin, 180px); font-size: clamp(2.6rem, 5vmin, 6rem); }
+.gear { width: clamp(52px, 6vh, 90px); height: clamp(52px, 6vh, 90px); font-size: clamp(1.4rem, 3vh, 2.4rem); }
+
+.big-egg, .hatched-baby { font-size: clamp(8rem, min(66vw, 50vh), 90rem); }
+.baby-name { font-size: clamp(1.6rem, 6vmin, 10rem); padding: .2em .8em; }
+.hatch-actions { gap: clamp(16px, 2.5vmin, 36px); }
+.act { font-size: clamp(2.6rem, 7vmin, 12rem); min-width: clamp(110px, 17vmin, 520px); padding: .25em .6em; border-radius: clamp(24px, 3vmin, 44px); }
+.act span { font-size: clamp(1.05rem, 2.4vmin, 4rem); }
+
+.nest-title { font-size: clamp(1.2rem, 3.5vmin, 5rem); }
+.hud-btn { width: clamp(64px, 8vmin, 180px); height: clamp(64px, 8vmin, 180px); font-size: clamp(2rem, 4.5vmin, 6rem); }
+.pips { font-size: clamp(1.6rem, 3.5vmin, 5rem); }
+.fact-scene .ez-ember { font-size: clamp(3.5rem, min(13vh, 18vw), 20rem); }
+.fact-scene .egg { width: clamp(72px, min(21vw, 19vh), 460px); }
+.nest-grid { max-width: 100%; grid-template-columns: repeat(auto-fill, minmax(clamp(100px, max(17vmin, 15vh), 520px), 1fr)); }
+.nest-cell { font-size: clamp(3.2rem, 10vmin, 18rem); }
+
+/* Tall, narrow screens (phones): Ember moves to the corner so the question
+   card can use the full width. */
+@media (max-aspect-ratio: 3/4) {
+  .fact-scene .ez-sky { position: relative; align-items: flex-end; }
+  .fact-scene .ez-ember { position: absolute; top: 0; right: 0; font-size: clamp(2.5rem, 14vw, 6rem); }
+}
+
+.skip-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: clamp(3rem, 10vmin, 14rem); line-height: 1;
+  background: var(--card); border-radius: clamp(24px, 3vmin, 44px); padding: .3em .5em .25em;
+  box-shadow: 0 6px 0 #0000002a; animation: pulse 1.6s ease-in-out infinite;
+}
+.skip-btn span { font-size: clamp(1.1rem, 2.6vmin, 4rem); font-weight: 700; }
+
+/* The guide is a document: it keeps a readable line length (46em) and
+   scales its type up on big screens instead of spreading out. */
+.guide { font-size: clamp(17px, 1.45vmin, 30px); max-width: 46em; }
+.guide h1 { font-size: 2.4em; }
+.guide h2 { font-size: 1.45em; }
+.guide h3 { font-size: 1.15em; }
+
+/* Intro: Ember introduces the game, with a big skip button. */
+.intro-ember { font-size: clamp(6rem, 36vmin, 60rem); line-height: 1; transform: scaleX(-1); animation: hover 3s ease-in-out infinite; }

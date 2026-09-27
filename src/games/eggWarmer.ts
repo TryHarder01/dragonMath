@@ -1,123 +1,120 @@
-// Egg Warmer: subitizing and matching numerals to quantities.
-// A storm left the eggs chilly. They bob gently (no time pressure) and Ember
-// breathes a warm glow on the one that matches, helping it hatch.
+// Egg Warmer: addition and (mostly) subtraction facts within 20.
+// The eggs got chilly in the storm. Ember reads a number sentence and the child
+// warms the egg with the answer. Addition is a warm-up; most levels build
+// subtraction step by step, because that's where this player is weak.
+// See docs/research/2026-09-26-right-sizing-advanced-learner.md.
 
-import { awaitChoice, type Choice } from '../core/choices';
-import { burst, distinctWith, h, pick, rand } from '../core/dom';
-import { sfx } from '../core/sound';
-import { countAlong, dots, numeralWithDots, tenFrame } from '../core/visuals';
-import { prompt, say, wait, word } from '../core/voice';
+import { nearChoices, pick, rand } from '../core/dom';
+import { addModel, arrayModel, missingModel, subModel } from '../core/models';
+import { word } from '../core/voice';
+import { eggScene, productChoices, type EggQuestion } from './eggScene';
 import type { Game } from './types';
 
-type Show = 'dots' | 'frame' | 'numeral' | 'both';
+const MINUS = '−';
 
-const LEVELS: Record<number, { min: number; max: number; eggs: number; target: Show; egg: Show }> = {
-  1: { min: 1, max: 3, eggs: 3, target: 'dots', egg: 'dots' },
-  2: { min: 1, max: 5, eggs: 3, target: 'both', egg: 'dots' },
-  3: { min: 1, max: 5, eggs: 4, target: 'numeral', egg: 'dots' },
-  4: { min: 1, max: 10, eggs: 4, target: 'numeral', egg: 'frame' },
-  5: { min: 1, max: 10, eggs: 4, target: 'frame', egg: 'numeral' },
+function add(showModel: boolean): EggQuestion {
+  const a = rand(2, 10), b = rand(2, 10);
+  return {
+    text: `${a} + ${b}`,
+    ask: `${word(a)} plus ${word(b)}. Warm the egg with the answer!`,
+    answer: a + b,
+    choices: nearChoices(a + b, 4, 0, 20),
+    model: addModel(a, b),
+    showModel,
+  };
+}
+
+function sub(a: number, b: number, showModel: boolean, takeAway = false): EggQuestion {
+  // Include the classic mistake of adding instead, when it fits.
+  const choices = nearChoices(a - b, 4, 0, 20);
+  if (a + b <= 20 && !choices.includes(a + b)) choices[choices.findIndex((c) => c !== a - b)] = a + b;
+  return {
+    text: `${a} ${MINUS} ${b}`,
+    ask: takeAway
+      ? `${word(a)} eggs. Take away ${word(b)}. How many are left?`
+      : `${word(a)} minus ${word(b)}. Warm the egg with the answer!`,
+    answer: a - b,
+    choices,
+    model: subModel(a, b),
+    showModel,
+  };
+}
+
+/** Take away within 10. */
+const subSmall = (show: boolean) => {
+  const a = rand(3, 10);
+  return sub(a, rand(1, Math.min(5, a - 1)), show, true);
 };
+/** Teens without crossing ten: 17 − 4. */
+const subTeen = (show: boolean) => {
+  const a = rand(11, 19);
+  return sub(a, rand(1, a - 10), show);
+};
+/** Crossing ten: 13 − 5. */
+const subCross = (show: boolean) => {
+  const a = rand(11, 18);
+  return sub(a, rand(a - 9, 9), show);
+};
+const subAny = (show: boolean) => pick([subSmall, subTeen, subCross, subCross])(show);
 
-function picture(n: number, show: Show): HTMLElement {
-  switch (show) {
-    case 'dots':
-      return dots(n);
-    case 'frame':
-      return tenFrame(n);
-    case 'numeral':
-      return h('span', 'numeral', [String(n)]);
-    case 'both':
-      return numeralWithDots(n);
-  }
+/** Think addition: 8 + ? = 13. */
+function missing(showModel: boolean): EggQuestion {
+  const c = rand(11, 18);
+  const a = rand(Math.max(3, c - 9), 9);
+  return {
+    text: `${a} + ? = ${c}`,
+    ask: `${word(a)} plus what makes ${word(c)}? Warm that egg!`,
+    answer: c - a,
+    choices: nearChoices(c - a, 4, 1, 12),
+    model: missingModel(a, c),
+    showModel,
+  };
 }
 
-function glow(from: HTMLElement, to: HTMLElement) {
-  const a = from.getBoundingClientRect();
-  const b = to.getBoundingClientRect();
-  const x1 = a.left + a.width / 2, y1 = a.top + a.height * 0.7;
-  const x2 = b.left + b.width / 2, y2 = b.top + b.height / 2;
-  const len = Math.hypot(x2 - x1, y2 - y1);
-  const el = h('div', 'glow-beam');
-  el.style.left = `${x1}px`;
-  el.style.top = `${y1}px`;
-  el.style.width = `${len}px`;
-  el.style.transform = `rotate(${Math.atan2(y2 - y1, x2 - x1)}rad)`;
-  document.body.append(el);
-  setTimeout(() => el.remove(), 600);
+function times(): EggQuestion {
+  const f = pick([2, 5, 10]), o = rand(1, 10);
+  const [r, c] = Math.random() < 0.5 ? [o, f] : [f, o];
+  return {
+    text: `${r} × ${c}`,
+    ask: `${r} times ${c}. Warm the egg with the answer!`,
+    answer: r * c,
+    choices: productChoices(r, c),
+    model: arrayModel(r, c),
+    showModel: false,
+  };
 }
 
-const PRAISE = ['Nice and warm! It hatched!', 'Great looking!', 'You helped it hatch!', 'You got it, rider!'];
+const LEVELS: (() => EggQuestion)[] = [
+  () => add(false),
+  () => subSmall(true),
+  () => subTeen(true),
+  () => missing(true),
+  () => subCross(true),
+  () => subAny(false),
+  () => pick([() => add(false), () => subAny(false), () => missing(false)])(),
+  () => pick([() => add(false), () => subAny(false), () => subAny(false), () => missing(false), times])(),
+];
 
 export const eggWarmer: Game = {
   id: 'egg',
   name: 'Egg Warmer',
   icon: '🥚',
-  skill: 'Seeing "how many" at a glance, and matching numbers to amounts',
+  skill: 'Adding and subtracting within 20, with extra practice on subtraction',
   about:
-    'The eggs got chilly in the storm. Your child listens for a number and taps the egg showing that many dots, and Ember warms it until it hatches. Recognising small amounts instantly (without counting one by one) is called subitizing, and it underpins adding later.',
+    'The eggs got chilly in the storm. Ember says a number sentence (like 13 − 5), and your child warms the egg with the answer so it hatches. Addition is a quick warm-up. Most levels build subtraction step by step. A wrong answer shows the strategy on a double ten-frame: counting on, counting back, or "take away to ten, then the rest".',
   levels: [
-    'Match dots to dots, 1–3',
-    'Number and dots shown, eggs have dots, 1–5',
-    'Only the spoken or written number, eggs have dots, 1–5',
-    'Only the number, eggs show ten-frames, 1–10',
-    'A ten-frame is shown, eggs show written numbers, 1–10',
+    'Addition warm-up within 20',
+    'Take away within 10, with a picture',
+    'Teens without crossing ten (17 − 4), with a picture',
+    'Think addition: 8 + ? = 13, with a picture',
+    'Subtract across ten (13 − 5), with a picture',
+    'Any subtraction within 20, number sentence only',
+    'Mixed + / − / missing numbers within 20',
+    'Mixed within 20, plus ×2, ×5 and ×10 facts',
   ],
-  intro: "Egg Warmer! These eggs got chilly in the storm. Help Ember warm the right one so it can hatch.",
+  intro: 'Egg Warmer! These eggs got chilly in the storm. Solve the number puzzle and warm the right egg so it can hatch.',
 
-  async runProblem({ play, level }) {
-    const L = LEVELS[level];
-    const target = rand(L.min, L.max);
-    const values = distinctWith(target, L.eggs, L.min, L.max);
-
-    const targetPic = picture(target, L.target);
-    const ember = h('div', 'ez-ember', ['🐉']);
-    const bubble = h('div', 'ez-target', [targetPic]);
-    const eggsBox = h('div', 'ez-eggs');
-    play.append(h('div', 'ez-sky', [bubble, ember]), eggsBox);
-
-    const choices: Choice<number>[] = values.map((v, i) => {
-      const egg = h('div', 'egg', [picture(v, L.egg)]);
-      egg.style.left = `${((i + 0.5) / values.length) * 100}%`;
-      egg.style.setProperty('--dur', `${rand(45, 70) / 10}s`);
-      egg.style.setProperty('--delay', `-${rand(0, 60) / 10}s`);
-      eggsBox.append(egg);
-      return { el: egg, value: v };
-    });
-
-    const ask =
-      L.target === 'frame'
-        ? 'How many eggs are in the nest? Warm the egg with that number!'
-        : `Warm the egg with ${word(target)}!`;
-    void prompt(ask);
-
-    return awaitChoice(choices, (v) => v === target, {
-      onTap: async (c) => {
-        sfx.glow();
-        glow(ember, c.el);
-        c.el.classList.add('warming');
-        await wait(450);
-        c.el.classList.remove('warming');
-      },
-      onRight: async (c) => {
-        c.el.replaceChildren(h('span', 'hatchling', ['🐣']));
-        burst(c.el);
-        await say(pick(PRAISE));
-        await wait(200);
-      },
-      onWrong: async (c) => {
-        play.classList.add('paused');
-        if (L.egg === 'numeral') {
-          await say(`That egg says ${word(c.value)}. Let's count the nest together.`);
-          await countAlong(bubble);
-        } else {
-          await say("Hmm, let's count that egg.");
-          await countAlong(c.el);
-          await say(`That one has ${word(c.value)}. We need ${word(target)}.`);
-        }
-        play.classList.remove('paused');
-        void prompt(ask);
-      },
-    });
+  runProblem({ play, level }) {
+    return eggScene(play, LEVELS[level - 1]());
   },
 };
