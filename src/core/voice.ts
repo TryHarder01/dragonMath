@@ -5,6 +5,8 @@ let chosen: SpeechSynthesisVoice | null = null;
 let lastPrompt = '';
 // `?mute` in the URL silences speech (handy for automated checks), and `?fast`
 // runs every pause ~20× quicker so scripts/playthrough.mjs can play whole rounds fast.
+// These are the only test hooks allowed in game code: they change timing and
+// sound, never which problems appear, so they don't narrow what the checks cover.
 const params = new URLSearchParams(location.search);
 const muted = params.has('mute');
 const pace = params.has('fast') ? 0.05 : 1;

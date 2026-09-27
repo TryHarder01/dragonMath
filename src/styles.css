@@ -687,7 +687,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 }
 .story-incoming .story-actor { animation-name: story-walk-in; }
 .story-compare-row { grid-template-columns: repeat(20, max-content); justify-content: start; margin-inline: auto; }
-.story-compare-row .story-actor { font-size: clamp(.82rem, min(4.1vw, 7.2vh), 8rem); }
+.story-compare-row .story-actor { font-size: clamp(.7rem, min(3.3vw, 6vh), 8rem); }
 .story-part { padding: 1vmin; border-radius: 2vmin; background: #fff4; }
 .story-part + .story-part { background: #9edbff88; }
 .story-ember, .story-friend {
