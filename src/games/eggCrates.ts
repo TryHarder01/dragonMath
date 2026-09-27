@@ -90,7 +90,7 @@ export const eggCrates: Game = {
     'Missing factor: ? × 4 = 20 (first division)',
     'All facts to 10 × 10, mixed',
   ],
-  intro: 'Egg Crates! The rescued eggs are packed in rows. Help Ember count them fast!',
+  intro: "Egg Crates! Let's count rows of eggs!",
 
   runProblem({ play, level }) {
     return eggScene(play, LEVELS[level - 1]());

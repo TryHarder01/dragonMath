@@ -53,8 +53,8 @@ export function addModel(a: number, b: number): Model {
     async hint() {
       await say(`Start at ${word(a)}. Count on ${word(b)}.`);
       for (let i = 0; i < b; i++) await light(second[i], a + i + 1, word(a + i + 1));
-      if (a < 10 && a + b > 10) await say(`${word(a)} and ${word(10 - a)} make ten. Ten and ${word(a + b - 10)} is ${word(a + b)}.`);
-      else await say(`${word(a)} plus ${word(b)} is ${word(a + b)}.`);
+      if (a < 10 && a + b > 10) await say(`${word(a)} and ${word(10 - a)}. Ten! Ten and ${word(a + b - 10)}. ${word(a + b)}!`);
+      else await say(`${word(a)} and ${word(b)} is ${word(a + b)}.`);
     },
   };
 }
@@ -68,8 +68,8 @@ export function subModel(a: number, b: number): Model {
     async hint() {
       const ones = a - 10;
       const crosses = a > 10 && b > ones;
-      if (crosses) await say(`Take away ${word(ones)} to get to ten. Then ${word(b - ones)} more.`);
-      else await say(`Start at ${word(a)}. Take away ${word(b)}, counting back.`);
+      if (crosses) await say(`Take away ${word(ones)}. Down to ten. Then ${word(b - ones)} more.`);
+      else await say(`Start at ${word(a)}. Take away ${word(b)}. Count back.`);
       for (let i = 0; i < b; i++) {
         const d = ds[a - 1 - i];
         d.classList.add('gone');
@@ -90,12 +90,12 @@ export function missingModel(a: number, c: number): Model {
   return {
     el,
     async hint() {
-      await say(`Start at ${word(a)}. How many more to get to ${word(c)}?`);
+      await say(`Start at ${word(a)}. How many more to ${word(c)}?`);
       for (let i = 0; i < gaps.length; i++) {
         gaps[i].classList.replace('ghost', 'two');
         await light(gaps[i], a + i + 1, word(a + i + 1));
       }
-      await say(`That's ${word(c - a)} more. ${word(a)} plus ${word(c - a)} is ${word(c)}.`);
+      await say(`That's ${word(c - a)} more. ${word(a)} and ${word(c - a)} is ${word(c)}.`);
     },
   };
 }
@@ -117,7 +117,7 @@ export function arrayModel(rows: number, cols: number, opts: { hidden?: boolean 
     el: grid,
     async hint() {
       if (opts.hidden) {
-        await say(`Let's build rows of ${cols} until we get to ${product}.`);
+        await say(`Let's build rows of ${cols}. Count up to ${product}.`);
         for (let r = 0; r < rows; r++) {
           rowEls[r].classList.remove('hidden-row');
           await light(rowEls[r], r + 1, String((r + 1) * cols));
