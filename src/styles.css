@@ -736,9 +736,9 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   z-index: 3; font-size: clamp(2.5rem, 8vmin, 14rem); transform: scaleX(-1);
 }
 .story-model-card {
-  position: absolute; z-index: 8; left: 50%; top: 38%; translate: -50% -50%;
+  position: absolute; z-index: 8; left: 50%; top: 50%; translate: -50% -50%;
   background: #fffffff2; border-radius: 24px; padding: 14px 20px; box-shadow: 0 1vmin 3vmin #0005;
-  display: grid; place-items: center; pointer-events: none;
+  display: grid; place-items: center; pointer-events: none; max-width: 90%; max-height: 90%;
 }
 .story-two-model { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
 .story-deal-model { display: flex; gap: 10px; align-items: stretch; justify-content: center; }

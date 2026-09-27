@@ -240,7 +240,7 @@ function changeUnknown(level = 4): StoryProblem {
 
 function compare(level = 5): StoryProblem {
   const bigger = rand(6, 20);
-  const difference = rand(2, Math.min(9, bigger - 1));
+  const difference = rand(2, Math.min(9, bigger - 2));
   const smaller = bigger - difference;
   const askMore = Math.random() < 0.5;
   return base(
@@ -472,16 +472,16 @@ function hintModel(p: StoryProblem): Model {
 }
 
 function preHint(p: StoryProblem): Promise<void> {
-  if (p.kind === 'compare') return say('Match them up. The extra ones are the answer.');
+  if (p.kind === 'compare') return say('Match them up: the extra ones are the answer.');
   if (p.kind === 'start-unknown') return say('Put the ones who left back!');
   return Promise.resolve();
 }
 
-function fitModel(card: HTMLElement, shell: HTMLElement) {
+function fitModel(card: HTMLElement, stage: HTMLElement) {
   card.style.zoom = '1';
   const rect = card.getBoundingClientRect();
   if (!rect.width || !rect.height) return;
-  const scale = Math.max(0.55, Math.min((shell.clientWidth * 0.82) / rect.width, (shell.clientHeight * 0.55) / rect.height, 4));
+  const scale = Math.max(0.55, Math.min((stage.clientWidth * 0.82) / rect.width, (stage.clientHeight * 0.78) / rect.height, 4));
   card.style.zoom = scale.toFixed(3);
 }
 
@@ -572,8 +572,8 @@ async function answerBeat(shell: HTMLElement, stage: HTMLElement, p: StoryProble
         await say("Hmm, not that one. Let's act it out.");
         await playStory(stage, p, true);
         const card = h('div', 'story-model-card', [model.el]);
-        shell.append(card);
-        requestAnimationFrame(() => fitModel(card, shell));
+        stage.append(card);
+        requestAnimationFrame(() => fitModel(card, stage));
         await preHint(p);
         await model.hint();
         await say(p.equation.replace('?', word(p.answer)).replace(MINUS, ' minus ').replace(TIMES, ' times ').replace(DIVIDE, ' divided by '));
