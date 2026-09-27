@@ -23,7 +23,7 @@ One file per agent per task: `docs/retros/YYYY-MM-DD-<task-slug>.md` (e.g. `2026
 Keep it short: 5–20 lines. **Only real friction you hit this time.** No praise, no general advice, no restating the task. If nothing got in the way, write the header and `No friction.`
 
 ```markdown
-# Retro: <task> (<agent, e.g. Codex / Claude Sonnet 5>)
+# Retro: <task> (brief: docs/briefs/<file>)
 
 **Friction** (most costly first; tag each with one category):
 - [tooling] `just playthrough` hung for 30 s when the intro ended before Skip was clicked. Worked around it by re-running.

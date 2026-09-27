@@ -15,21 +15,14 @@ This is the repo-specific playbook. For the Orca commands themselves, load the g
 
 ## 1. The brief (every worker, from the start)
 
-Self-contained: the worker has none of your context. Include, in this order:
-
-1. **Task and target:** the spec file to follow, and the exact files it may edit.
-2. **Read first:** `AGENTS.md` (especially **Scale**), the top of `WORKLOG.md`, the spec, and a sibling file to copy the style of (e.g. `src/games/eggCrates.ts`).
-3. **Ownership:** what it must not touch, and who else is working in parallel on what. Shared files: append to its own section only. In `styles.css`, keep `{ }` balanced **inside its own section, including a trailing `@media` block**.
-4. **The quality bar:** read like the surrounding code; no speculative options or defensive checks for impossible states; no exports just for tests and no `?audit` branches in game code (`just check` runs Knip); reuse `src/core` helpers; the smallest diff; plain prose; only claim checks it ran; before reporting, read its own `git diff main` as a strict reviewer and delete what the spec or the child wouldn't miss.
-5. **Verify:** typecheck and build, `node scripts/audit.mjs --only=<its screens>`, `node scripts/playthrough.mjs <id> --level=all` (plus `--size=phone` and `--real` for screens it changed, and **look at the screenshots**), then `just verify`.
-6. **Finish:** commit on its branch with the right `Co-Authored-By` line; don't push or merge. Write a retro (`.claude/skills/retro/SKILL.md`), then send `worker_done` once, with the SHA, diff stat, verification results, deviations and `Friction: …`.
+Write it from `docs/briefs/TEMPLATE.md` (see `docs/briefs/README.md` for naming and the `--spec` pointer), run `just brief-check docs/briefs/<file>`, then commit it to `main` with any other spec files before launching — the worktree branches from the committed brief.
 
 Add a size budget when the job is review or tightening (e.g. "the file must not grow").
 
 ## 2. Launch
 
-- `orca orchestration run-create …` once per batch, then one `worker-start --worktree new-top-level --repo path:<repo> --base-branch main --name <slug> --agent codex|claude [--model … --effort …] --setup run` per worker. `orca.yaml` runs `npm install` in each new worktree.
-- **Commit specs to `main` before launching**, so the worktrees branch from them.
+- `orca orchestration run-create …` once per batch, then one `worker-start --worktree new-top-level --repo path:<repo> --base-branch main --name <slug> --agent codex|claude --spec "Your brief is docs/briefs/<file>. Read it and do it." [--model … --effort …] --setup run` per worker. `orca.yaml` runs `npm install` in each new worktree.
+- **Commit the brief to `main` before launching**, so the worktree branches from it.
 - Launch one worker first when the environment is new or updated, since startup prompts block everyone.
 - **Models:** Sonnet at high effort for build and review work, with the coordinator (Opus) reading every diff. Keep Opus for fresh reviews of teaching-critical logic. Don't switch a worker's model mid-task: it restarts from scratch.
 

@@ -39,6 +39,10 @@ deadcode:
 retros:
     @ls -1r docs/retros/*.md | grep -v README | head -20
 
+# Check a brief for a missing section, a bad "You own" path, or vague scope words
+brief-check file:
+    node scripts/check-brief.mjs {{file}}
+
 # Check every screen uses the window well (screenshots in audit-screens/)
 audit:
     node scripts/audit.mjs
