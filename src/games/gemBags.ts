@@ -478,9 +478,10 @@ function buildScene(play: HTMLElement, target: number): Promise<boolean> {
 
 function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   const values = [p.a, p.b ?? 0];
+  // Hue alone gives pastel pink and teal, so saturate and darken to read as plain red and blue.
   const colours = shuffle([
-    { name: 'red', hue: 230 },
-    { name: 'blue', hue: 100 },
+    { name: 'red', filter: 'hue-rotate(270deg) saturate(4) brightness(.8)' },
+    { name: 'blue', filter: 'hue-rotate(140deg) saturate(3) brightness(.75)' },
   ]);
   const models = values.map((n, i) => {
     const [tens, ones] = split(n);
@@ -489,7 +490,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   const contents: HTMLElement[] = [];
   const choices: Choice<number>[] = models.map(({ n, model, colour }) => {
     const dragon = h('div', 'gem-dragon ez-ember', ['🐉']);
-    dragon.style.filter = `hue-rotate(${colour.hue}deg)`;
+    dragon.style.filter = colour.filter;
     const content = h('div', 'gem-dragon-content', [dragon, model.el]);
     const el = h('button', 'gem-dragon-choice ez-target', [content]);
     el.dataset.value = String(n);
