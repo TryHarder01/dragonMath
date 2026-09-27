@@ -1,5 +1,13 @@
 # Worklog
 
+## 2026-09-27 — Gem Bags "more / fewer" cue on screen
+
+**Goal:** Per the user: Gem Bags L3 flips between "which has more?" and "which has fewer?", only by voice; show it on screen too, in case the child or grown-up missed the prompt.
+
+**Done:** A cue card above the two dragons, "💎💎💎 more?" or "💎 fewer?" (`compareScene` in `gemBags.ts`, plus `.gem-compare-scene` / `.gem-compare-cue` in the Gem Bags CSS). The user then loosened the wordless rule (he's starting to read): screens may show one to three short, phonics-friendly words (no contractions or tricky spellings), always with a picture and the voice. Recorded in `docs/decisions/2026-09-27-on-screen-cue-words.md`, `AGENTS.md`, the specs README and `gem-bags.md` L3. Follow-on work is listed in `docs/specs/follow-ups.md` under "Early reading".
+
+**Verified:** typecheck; `just check`; `node scripts/audit.mjs --only=bags-L3-compare` 0 of 6; `playthrough bags --level=3` passes; looked at the phone and laptop screenshots ("more?" variant; "fewer" only appears after the first round).
+
 ## 2026-09-27 — Brief template and check script
 
 **Goal:** Give every delegated task a written, checked brief in `docs/briefs/`, following `docs/briefs/2026-09-27-brief-template.md`, so scope stops being left implicit (the top retro-review finding).

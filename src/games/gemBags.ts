@@ -488,7 +488,14 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
     return { el, value: n };
   });
   const compare = h('div', 'gem-compare', choices.map((choice) => choice.el));
-  play.append(compare);
+  // The question flips between "more" and "fewer", so show which one it is: a
+  // picture for the child, and the word for a grown-up (and early reading),
+  // in case the spoken prompt was missed.
+  const cue = h('div', 'gem-compare-cue', [
+    h('span', 'gem-compare-pile', [p.askFewer ? '💎' : '💎💎💎']),
+    h('span', 'gem-compare-word', [p.askFewer ? 'fewer?' : 'more?']),
+  ]);
+  play.append(h('div', 'gem-compare-scene', [cue, compare]));
 
   const fit = () => {
     choices.forEach((choice, i) => {

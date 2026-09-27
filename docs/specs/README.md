@@ -31,7 +31,7 @@ He adds within 20 confidently. **Subtraction is weak.** He knows about ¼–½ o
 - **Tone: the hero only helps.** The player and Ember warm, find, count, share, tuck in and walk home. Never zap, blast, shoot, fire or chomp, and no enemies. Subtraction is framed kindly: babies hatch and walk home, a dragon shares gems with a friend, dinos fly home on Ember.
 - **No timers, lives, scores or game over.** A wrong answer greys out that choice, plays the hint, and the child tries again.
 - **Every problem has a picture model.** Show it from the start on levels that teach a new idea. On practice levels it appears as the hint.
-- **Speak every instruction with `prompt()`** (the 🔊 button repeats it). Use `say()` for one-off lines. Kid screens stay wordless apart from numerals and number sentences; explanations go in the parent guide.
+- **Speak every instruction with `prompt()`** (the 🔊 button repeats it). Use `say()` for one-off lines. Kid screens show numerals, number sentences, and at most a few short, simple words paired with a picture (see `docs/decisions/2026-09-27-on-screen-cue-words.md`); explanations go in the parent guide.
 - **Rewards only between problems.** The round runner handles the hatch.
 
 ## How a game plugs in

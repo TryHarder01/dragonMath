@@ -44,3 +44,12 @@ This is for one child, possibly on a phone:
 - Put the quality bar and the project's scale in the first task spec. Sent mid-run, they reached the workers late.
 - Four Codex workers at high effort use up a 5-hour Codex usage window in about 35 minutes. Run two at a time, or plan for a coordinator finish.
 - Orca won't accept a nudge to a worker stalled at the usage limit. Use `worker-stop`, then `worker-start --retry-of … --worktree <same>` and tell the new session the old work is on disk. See the coordinator's memory notes for the Codex startup prompts (hooks review, update).
+
+## Early reading (from 2026-09-27: he's starting to read)
+
+Screens may now show a few short, simple words with a picture (`docs/decisions/2026-09-27-on-screen-cue-words.md`). Come back to these after the current work:
+- **Find other places where a one-word cue helps,** where a missed prompt leaves the child guessing. Candidates: Stomp Path direction ("back?" when hopping back), Egg Warmer "take away" vs "plus" problems, and Dino Story's "more on top?" / "fewer below?".
+- **"fewer" is a tricky spelling** (the *ew* sound). Decide whether Gem Bags keeps "more / fewer" (correct for counting gems, and it matches the voice) or moves to plainer words, and keep the voice and the screen matching either way.
+- **Spoken lines that are also shown** should follow both guides: "How Ember talks" (short) and the reading rule (plain spelling, no contractions). Several spoken lines use "Let's …", which is fine spoken but shouldn't be copied onto the screen.
+- **The parent guide** could mention that on-screen words are simple and always read aloud.
+

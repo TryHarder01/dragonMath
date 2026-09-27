@@ -52,7 +52,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
   - `parent` (the parent corner)
   - `guide` (the "For grown-ups" page, also at `/#parents`)
 - `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`. Fact games build an `EggQuestion` and hand it to `eggScene` (`games/eggScene.ts`). Every game carries parent-facing `skill`, `about` and `levels` text, which the guide page shows. Keep that text in sync when you change a game's levels.
-- Kid-facing screens stay wordless (icons and voice). Anything explanatory goes in the parent guide.
+- Kid-facing screens: icons and voice first. He's starting to read, so a few simple words may appear **with** a picture and the spoken prompt, never instead of them: one to three short, phonics-friendly words (no contractions or tricky spellings), e.g. "💎💎💎 more?" ([why](docs/decisions/2026-09-27-on-screen-cue-words.md)). Anything explanatory goes in the parent guide.
 
 ## Tone: the hero only helps
 - The player and Ember are always kind and helpful to the eggs, dinos and dragons. Use verbs like warm, find, count, share, tuck in and walk home.
