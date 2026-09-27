@@ -1,0 +1,215 @@
+<title>Dino Egg Blaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&family=Azeret+Mono:wght@500&display=swap">
+<style>
+/* Single-theme by design: an island at dusk. */
+:root{
+  --bg:#12252A; --surface:#1B343A; --surface2:#244349; --ink:#F3EEE2; --muted:#A9BDB9; --rule:#2F5057;
+  --lava:#FF8A3D; --leaf:#7BD389; --sky:#8EC9FF; --gem:#C58CFF; --shell:#FFF1D0;
+  --display:"Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --body:"Nunito", "Avenir Next", system-ui, sans-serif;
+  --mono:"Azeret Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.6; padding-inline:20px}
+.wrap{max-width:1040px; margin:0 auto; padding-block:40px 80px; display:flex; flex-direction:column; gap:72px}
+h1,h2,h3{font-family:var(--display); font-weight:400; line-height:1.05; margin:0; text-wrap:balance}
+h1{font-size:clamp(3rem,9vw,6rem); letter-spacing:.01em}
+h1 .egg{color:var(--shell)} h1 .blast{color:var(--lava)}
+h2{font-size:clamp(1.8rem,4vw,2.6rem)}
+h3{font-size:1.4rem}
+p{margin:0; max-width:62ch}
+.label{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--leaf)}
+.muted{color:var(--muted)}
+section{display:flex; flex-direction:column; gap:22px}
+
+/* hero */
+.hero{display:grid; grid-template-columns:1.3fr 1fr; gap:36px; align-items:center}
+.hero-copy{display:flex; flex-direction:column; gap:18px}
+.lede{font-size:1.25rem}
+.screen{background:linear-gradient(#1E4A55,#173840 60%,#2B4A2F); border:4px solid var(--shell); border-radius:22px; aspect-ratio:4/3.3; position:relative; overflow:hidden; max-width:100%}
+.screen .sky-say{position:absolute; top:12px; left:12px; right:12px; background:rgba(0,0,0,.35); border-radius:14px; padding:8px 12px; font-weight:800; font-size:.95rem; display:flex; gap:10px; align-items:center}
+.screen .sky-say b{font-family:var(--display); font-size:1.6rem; color:var(--shell); font-weight:400}
+.ember{position:absolute; top:62px; left:50%; transform:translateX(-50%) scaleX(-1); font-size:3rem; animation:hover 3s ease-in-out infinite}
+@keyframes hover{50%{transform:translateX(-50%) scaleX(-1) translateY(-8px)}}
+.eggs{position:absolute; bottom:18px; left:0; right:0; display:flex; justify-content:space-around; align-items:flex-end}
+.egg-el{width:22%; aspect-ratio:3/4; background:var(--shell); border-radius:50% 50% 46% 46% / 60% 60% 40% 40%; display:grid; place-items:center; animation:bob 4s ease-in-out infinite}
+.egg-el:nth-child(2){animation-delay:-1s; margin-bottom:30px} .egg-el:nth-child(3){animation-delay:-2s; margin-bottom:12px} .egg-el:nth-child(4){animation-delay:-3s; margin-bottom:40px}
+.egg-el.right{outline:4px solid var(--lava); outline-offset:3px}
+@keyframes bob{50%{translate:0 -10px}}
+.pips{display:grid; grid-template-columns:repeat(3,10px); gap:4px}
+.pips i{width:10px; height:10px; border-radius:50%; background:#2A2A2A}
+.pips i.x{visibility:hidden}
+@media (prefers-reduced-motion:reduce){.ember,.egg-el{animation:none}}
+
+/* keep/drop */
+.kd{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+.kd > div{background:var(--surface); border-radius:16px; padding:22px; display:flex; flex-direction:column; gap:12px}
+.kd ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px}
+.kd li{display:grid; grid-template-columns:22px 1fr; gap:8px}
+.kd .keep li::before{content:"✓"; color:var(--leaf); font-weight:800}
+.kd .drop li::before{content:"✕"; color:var(--lava); font-weight:800}
+.kd h3.k{color:var(--leaf)} .kd h3.d{color:var(--lava)}
+
+/* loop */
+.loop{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.loop .node{background:var(--surface2); border-radius:999px; padding:10px 18px; font-weight:800}
+.loop .node.hot{background:var(--lava); color:#1B1208}
+.loop .arr{color:var(--muted); font-family:var(--mono)}
+.miss{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+.miss > div{border-left:4px solid var(--sky); padding-left:14px; display:flex; flex-direction:column; gap:6px}
+.miss > div.bad{border-color:var(--lava)}
+
+/* games */
+.games{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+.game{background:var(--surface); border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:12px}
+.game .icon{font-size:2.4rem; line-height:1}
+.game .skill{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--sky)}
+.game p{font-size:.95rem; color:var(--muted)}
+.game .say{font-weight:800; color:var(--ink); font-size:.95rem}
+.lvls{display:flex; gap:4px; margin-top:auto}
+.lvls span{flex:1; height:8px; border-radius:4px; background:var(--surface2)}
+.lvls span:nth-child(-n+2){background:var(--leaf)}
+.lvl-cap{font-family:var(--mono); font-size:.7rem; color:var(--muted)}
+
+/* adaptive */
+.adapt{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+.adapt > div{display:flex; flex-direction:column; gap:6px}
+.big{font-family:var(--display); font-size:2.6rem; color:var(--shell); line-height:1}
+
+/* hatchery */
+.hatch{display:grid; grid-template-columns:repeat(10,1fr); gap:8px}
+.hatch span{aspect-ratio:1; border-radius:14px; background:var(--surface); display:grid; place-items:center; font-size:1.7rem}
+.hatch span.empty{font-size:1.2rem; color:var(--rule); border:2px dashed var(--rule); background:transparent}
+
+/* build */
+.build{margin:0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; counter-reset:b}
+.build li{counter-increment:b; background:var(--surface); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:4px; font-weight:600}
+.build li::before{content:"Step " counter(b); font-family:var(--mono); font-size:.7rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+.build li.mvp{background:var(--lava); color:#1B1208}
+.build li.mvp::before{color:#1B1208}
+.foot{font-size:.9rem; color:var(--muted)}
+.foot a{color:var(--sky)}
+
+@media (max-width:860px){
+  .hero,.kd,.miss{grid-template-columns:1fr}
+  .games{grid-template-columns:1fr 1fr}
+  .adapt{grid-template-columns:1fr}
+  .build{grid-template-columns:1fr 1fr}
+  .hatch{grid-template-columns:repeat(5,1fr)}
+}
+@media (max-width:520px){
+  .games{grid-template-columns:1fr}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-copy">
+      <span class="label">Part 2 · Game design · Ages 4–6</span>
+      <h1><span class="egg">Dino Egg</span><br><span class="blast">Blaster</span></h1>
+      <p class="lede">You ride <b>Ember</b>, a young dragon who guards the Dino Nest. Zap the right egg, count the babies, and share the gems. Every finished round hatches a new friend.</p>
+      <p class="muted">It has Math Blaster's arcade loop and hero mission, rebuilt around how 4–6 year olds actually learn number. Nothing is timed and you can't lose.</p>
+    </div>
+    <div class="screen" role="img" aria-label="Mock-up of Egg Zapper: Ember hovers over four floating eggs; the egg with four dots is the right one">
+      <div class="sky-say">🔊 Zap the egg with <b>4</b></div>
+      <div class="ember">🐉</div>
+      <div class="eggs">
+        <div class="egg-el"><div class="pips"><i class="x"></i><i class="x"></i><i></i><i class="x"></i><i></i><i class="x"></i><i></i><i class="x"></i><i class="x"></i></div></div>
+        <div class="egg-el right"><div class="pips"><i></i><i class="x"></i><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i></i><i class="x"></i><i></i></div></div>
+        <div class="egg-el"><div class="pips"><i></i><i class="x"></i><i></i><i class="x"></i><i></i><i class="x"></i><i></i><i class="x"></i><i></i></div></div>
+        <div class="egg-el"><div class="pips"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div></div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <span class="label">From Math Blaster</span>
+    <h2>What we keep and what we drop</h2>
+    <div class="kd">
+      <div class="keep"><h3 class="k">Keep</h3><ul>
+        <li>A hero with a mission (Ember and the Nest)</li>
+        <li>The arcade loop of zapping the right answer</li>
+        <li>A map of mini-games to choose from</li>
+        <li>Collectibles that make you want one more round</li>
+      </ul></div>
+      <div class="drop"><h3 class="d">Drop</h3><ul>
+        <li>Countdown timers and falling-too-fast pressure</li>
+        <li>Lives, health bars and game over</li>
+        <li>Bare flashcard numerals with no picture</li>
+        <li>Written instructions (players can't read yet)</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Core loop</span>
+    <h2>Five problems, then something hatches</h2>
+    <div class="loop">
+      <span class="node">Island map</span><span class="arr">→</span>
+      <span class="node">Pick a mini-game</span><span class="arr">→</span>
+      <span class="node">5 problems</span><span class="arr">→</span>
+      <span class="node hot">Egg hatches</span><span class="arr">→</span>
+      <span class="node">Back to map</span>
+    </div>
+    <div class="miss">
+      <div><h3>Right answer</h3><p>A sparkle burst and praise that names the strategy: "You counted every egg!"</p></div>
+      <div class="bad"><h3>Wrong answer</h3><p>A gentle "hmm". The dots light up one at a time while the voice counts them, that choice greys out, and the child tries again. No buzzer.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Six mini-games · one learning trajectory each</span>
+    <h2>The island</h2>
+    <div class="games">
+      <article class="game"><span class="icon">🥚</span><span class="skill">Subitizing · numeral ↔ quantity</span><h3>Egg Zapper</h3><p class="say">"Zap the egg with four!"</p><p>Eggs drift up showing dice dots, then ten-frames, then numerals. Ember's sparkle breath cracks the right one.</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 dots 1–3 → L5 ten-frame vs. numerals to 10</span></article>
+      <article class="game"><span class="icon">🦕</span><span class="skill">One-to-one · cardinality</span><h3>Dino Count</h3><p class="say">"How many dinos?"</p><p>Tap each baby once while the voice counts along, then pick the total. At level 5 it flips to "Give me 7."</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 1–3 in a row → L5 count out N</span></article>
+      <article class="game"><span class="icon">💎</span><span class="skill">Comparing</span><h3>Gem Trade</h3><p class="say">"Who has more gems?"</p><p>Two dragons hold gem piles. The gap between them shrinks each level, from 1 vs. 5 down to 7 vs. 8. "Fewer" questions start at level 3.</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 lined-up rows → L5 numerals only</span></article>
+      <article class="game"><span class="icon">🦖</span><span class="skill">Number line · counting on</span><h3>Stomp Path</h3><p class="say">"Four, five, six!"</p><p>A T-rex stomps down a straight numbered path. Spin, then tap each square as the voice says it. This is the Siegler &amp; Ramani board game as a mini-game.</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 1–10 path → L5 1–20, predict where you'll land</span></article>
+      <article class="game"><span class="icon">🪺</span><span class="skill">Composing · make 5 and 10</span><h3>Nest Builder</h3><p class="say">"How many more to fill the nest?"</p><p>The nest is a ten-frame. Tap eggs in to fill it, then later answer with just the number.</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 five-frame → L5 "make 7"</span></article>
+      <article class="game"><span class="icon">📖</span><span class="skill">Add &amp; subtract</span><h3>Dino Story</h3><p class="say">"Three dinos splash. Two more stomp over!"</p><p>Animated stories where dinos actually walk in and fly off. Every answer choice shows a numeral with its dots.</p><div class="lvls"><span></span><span></span><span></span><span></span><span></span></div><span class="lvl-cap">L1 join within 5 → L5 missing part within 10</span></article>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Adaptive difficulty · per mini-game</span>
+    <h2>Always one step ahead of the child</h2>
+    <div class="adapt">
+      <div><span class="big">3 in a row</span><p>correct answers moves that mini-game up a level.</p></div>
+      <div><span class="big">2 misses</span><p>on problems in a row quietly moves it back down. There's no "level down" message.</p></div>
+      <div><span class="big">~80%</span><p>success rate is the target: hard enough to stretch them without being discouraging.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Rewards</span>
+    <h2>The Hatchery</h2>
+    <p class="muted">About 20 babies to collect, each with a name, like "Pip the Purple Raptor". One hatches after every finished round, never in the middle of a problem, so the reward doesn't pull attention away from the math.</p>
+    <div class="hatch" aria-label="Hatchery grid: 6 collected, 14 still to find">
+      <span>🦖</span><span>🦕</span><span>🐉</span><span>🐲</span><span>🦎</span><span>🐢</span>
+      <span class="empty">?</span><span class="empty">?</span><span class="empty">?</span><span class="empty">?</span>
+      <span class="empty">?</span><span class="empty">?</span><span class="empty">?</span><span class="empty">?</span><span class="empty">?</span>
+      <span class="empty">?</span><span class="empty">?</span><span class="empty">?</span><span class="empty">?</span><span class="empty">?</span>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Build plan · Vite + TypeScript, emoji art, browser voice</span>
+    <h2>Playable after step 2</h2>
+    <ol class="build">
+      <li>Scaffold, voice, sound, island map</li>
+      <li class="mvp">Egg Zapper and hatching</li>
+      <li>Dino Count</li>
+      <li>Gem Trade</li>
+      <li>Nest Builder</li>
+      <li>Stomp Path</li>
+      <li>Dino Story</li>
+      <li>Break nudge and parent corner</li>
+    </ol>
+    <p class="foot">Part 1, the research behind these choices: <a href="https://claude.ai/artifact/GNKCnZfsWwHg7CSjHJX4gr">Early Math Foundations</a>.</p>
+  </section>
+
+</div>
