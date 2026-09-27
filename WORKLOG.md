@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-09-27 — Build Make Ten practice module
+
+**Goal:** Add the spec's dedicated Make Ten game to the island map without changing Nest Builder's behaviour.
+
+**Done:**
+- Added `src/games/makeTen.ts`: eight levels for partners of ten, basket splits, full add/subtract chains, next-ten work and mixed one-step practice, with a nest, basket, number bond and growing chain.
+- Reused exported Nest Builder helpers, registered `maketen`, added its styles, audit screens, split-beat play-through driver and parent/design docs.
+- Merged `main`'s dynamic placement lists and faster audit tooling; the map now has eight games.
+
+**Decisions:**
+- One-step levels reserve the hidden bond/chain's space — only the nest is visible before a miss, and revealing the hint cannot push the card over the answer eggs.
+
+**Verified:** `npm run typecheck && npm run build`; the required audit selection: 0/30 flagged; `node scripts/playthrough.mjs maketen --level=all`: 0 failed; real-speed L4 phone and L7 iPad rounds reached the hatch, and their hint screenshots were checked; an 8,000-problem browser check passed all generator ranges, non-trivial splits and choice assertions. Final `just verify`: `just check` clean, build passed, 0/180 audit flags, all 65 game/level rounds passed.
+
+**Next:** Have the child try the full-chain and subtraction levels on the usual device.
+
 ## 2026-09-27 — Delegation tooling: delegate and retro skills, just check, faster audit
 
 **Goal:** Per the user, make future multi-agent runs smoother: capture tonight's lessons, and have agents report friction so patterns can be fixed.

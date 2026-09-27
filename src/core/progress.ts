@@ -1,7 +1,7 @@
 // Saved progress: a level per mini-game, whether placement is done, and the
 // hatched collection.
 
-export type GameId = 'egg' | 'crates' | 'stairs' | 'bags' | 'stomp' | 'nest' | 'story';
+export type GameId = 'egg' | 'crates' | 'stairs' | 'bags' | 'stomp' | 'nest' | 'maketen' | 'story';
 
 interface Progress {
   levels: Partial<Record<GameId, number>>;
