@@ -1,5 +1,28 @@
 # Worklog
 
+## 2026-09-27 — Lines files: Gem Bags and Dino Story
+
+**Goal:** Move every spoken line in Gem Bags and Dino Story into a per-game lines file (`gemBags.lines.ts`, `dinoStory.lines.ts`), following the `eggWarmer.lines.ts` pattern, so `just check`'s new spoken-line checker covers them. A pure move: no wording changes.
+
+**Done:**
+- `src/games/gemBags.lines.ts`: new file. `intro`, `praise`, the `gemsModel`/`operationModel`/`regroupModel` hint lines, the `question()` ask per level/kind, the build-scene (`L2`) prompts and hints, and the compare-scene (`L3`) ask/hints. `gemBags.ts` now imports `lines` and holds no spoken wording; it got shorter (71 lines changed, net smaller).
+- `src/games/dinoStory.lines.ts`: new file. `intro`, `praise`, the `templates` record (moved from `STORY_TEMPLATES`, unchanged), the per-situation `ask` functions (`joinAsk`, `separateAsk`, ... `twoStepAsk`), the sentence-card beat lines, the answer-beat lines, hint lead-ins, and the `sharingModel` deal-in lines. `dinoStory.ts` now imports `lines` and `type StoryTemplate`; `StoryKind`/`LeaveAction` stay there (exported) since `dinoStory.lines.ts` needs them type-only and they're used well beyond the templates.
+- One code-level rename, not a wording change: the `{total}` template placeholder became `{sum}` in `change-unknown` and `sharing` templates, because `check-lines.mjs` strips punctuation before matching banned words, and the literal, unfilled `{total}` token strips to the banned word "total". The actual spoken output is unaffected — `fill()` still substitutes the real number via `word()`; I added a `sum: total` alias in the two generators' `values` objects so both the old `total` key (still read by `hintModel`/`dealStage`) and the new placeholder resolve.
+- `docs/specs/gem-bags.md`, `docs/specs/dino-story.md`: replaced the "Spoken lines" table/list (and, in dino-story.md, the "Story templates" quoted list) with one sentence each pointing at the lines file. Level tables' example wording untouched (nothing was reworded, so it's still accurate).
+
+**Decisions:**
+- Kept `StoryKind`/`LeaveAction` type definitions in `dinoStory.ts` rather than moving them to the lines file — they're used throughout problem generation, not just templates. `dinoStory.lines.ts` imports them `type`-only, which is fine despite the circular file reference since type-only imports are erased at compile time.
+- Didn't touch the specs' "Hints" sections (they mix behavior description with example wording, not just quoted lines) — only the sections that were purely a line list or table.
+
+**Verified:**
+- `npm run typecheck`: clean.
+- `just check`: passes — `check-lines.mjs` reports "4 lines files", no "written inline" errors, no banned-word or sentence-length problems.
+- `node scripts/playthrough.mjs bags --level=all` and `... story --level=all`: all levels of both games pass (hatch reached, hint shown, no errors).
+- No wording changed: `git diff main` shows every deleted literal string in the two game files reappearing verbatim in the new lines files, except the `{total}`→`{sum}` placeholder rename described above (not spoken text).
+- `just verify` (build, audit at 6 sizes, every level of every game including the other in-flight conversions): all green, 0 failed.
+
+**Next:** None — this chunk is done. Other in-flight workers are converting Egg Stairs/Egg Crates and Nest Builder/Make Ten/Stomp Path in parallel; nothing here depends on them.
+
 ## 2026-09-27 — Voice pass: shared hint lines, Egg Warmer/Stairs/Crates, start greeting
 
 **Goal:** Rewrite spoken lines in the shared models/scene code, Egg Warmer, Egg Stairs and Egg Crates, and the app's start greeting, to match `AGENTS.md`'s new "How Ember talks" section (one idea per sentence, ~7 words, numbers first, chants for recaps, hints start with "Let's count."). The parent said the current voice is "an oomph too much." Pace itself is unaffected (`voice.ts` untouched).

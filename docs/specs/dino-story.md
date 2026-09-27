@@ -55,29 +55,13 @@ A custom scene following the README's layout contract:
 
 ## Story templates
 
-Build each level's stories from templates. Keep them in a data array in `dinoStory.ts` so more can be added easily. **Word numbers:** `word(n)` covers 0–20, which is all this game needs. At least four templates per type, rotated so repeats are rare:
-
-| Type | Templates (`{a}` `{b}` are numbers) |
-|---|---|
-| Join | "{a} dinos splash in the pond. {b} more come to play." · "{a} eggs are in the nest. Ember brings {b} more." · "{a} baby dinos are napping. {b} more curl up with them." · "A dragon has {a} gems. A friend gives her {b} more." |
-| Separate | "{a} dinos splash in the pond. {b} fly home on Ember." · "{a} eggs are in the nest. {b} hatch and walk home." · "{a} dinos are playing. {b} go for a nap." · "A dragon has {a} gems. She shares {b} with a friend." |
-| Part-part-whole | "{a} green dinos are at the pond. {b} blue dinos are there too." · "The nest has {a} white eggs. {b} more eggs are speckled." · "{a} dinos are in the pond. {b} more are on the sand." · "Ember found {a} red gems. {b} more are blue." |
-| Compare | "{a} dinos are in the pond. {b} dinos are on the hill." · "Ember has {a} gems. Her friend has {b} gems." · "The big nest has {a} eggs. The little nest has {b} eggs." · "{a} turtles are at the beach. {b} dinos are there too." |
-| Equal groups / sharing | "{a} nests with {b} eggs in each." · "{a} dragons each have {b} gems." · "{total} eggs for {a} nests. The same in each nest!" · "{total} gems for {a} dragons. The same for each dragon!" |
-
-Every template is two short sentences, one idea each, per "How Ember talks" in AGENTS.md.
+Build each level's stories from templates, kept as data (`lines.templates` in `src/games/dinoStory.lines.ts`) so more can be added easily. **Word numbers:** `word(n)` covers 0–20, which is all this game needs. At least four templates per type, rotated so repeats are rare. Every template is two short sentences, one idea each, per "How Ember talks" in AGENTS.md.
 
 **Compare staging:** line the two groups up in two rows, one above the other, so the extra ones stick out. That's the matching picture the research recommends for "how many more".
 
 ## Spoken lines
 
-Short sentences, one idea each, per "How Ember talks" in AGENTS.md.
-
-- **The story:** the template sentences, one `say()` each, synced to the animation.
-- **The question:** "How many now?" / "How many are still splashing?" / "How many came?" / "How many more on top?" / "How many were playing at the start?" / "How many in each?"
-- **The `ask` for 🔊:** a compact retelling plus the question, e.g. "Thirteen were playing. Five went home. How many are left?"
-- **Praise:** "You acted it out in your head!", "That was a tricky one!", "You found the missing part!"
-- **Intro:** "Dino Story! Help Ember answer the question!"
+Every spoken line lives in `src/games/dinoStory.lines.ts`, per "How Ember talks" in AGENTS.md. The story templates play as one `say()` per sentence, synced to the animation; the `ask` for 🔊 is a compact retelling plus the question, e.g. "Thirteen were playing. Five went home. How many are left?"
 
 ## Hints: "Watch! Let's act it out."
 

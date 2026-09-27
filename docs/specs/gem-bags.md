@@ -57,20 +57,7 @@ Levels 1 and 4–8 use `eggScene`: the question card shows the gem model and the
 
 ## Spoken lines
 
-Short sentences, one idea each, per "How Ember talks" in AGENTS.md.
-
-| Moment | Line |
-|---|---|
-| L1 | "Count the bags by tens. How many gems now?" |
-| L2 | "Make forty-seven. Tap the bags and the gems!" After a wrong ✓: see Hints. |
-| L3 | "Red dragon. Blue dragon. Which has more gems?" / "…fewer gems?" |
-| L4 | "Forty-seven gems. A friend gives one more bag! How many now?" / "Forty-seven gems. Share one bag with a friend. How many are left?" |
-| L5 | "Thirty-four gems. Two more bags come! How many now?" / "Fifty-six gems. Share three bags. How many are left?" |
-| L6 | "Thirty-four gems. Twenty-five more gems. How many altogether?" |
-| L7 | "Fifty-eight gems. Share twenty-three with a friend. How many are left?" |
-| L8 | the number sentence, then "Warm the egg with the answer!" |
-| Praise | "Bags first, then gems. Smart!", "Four tens and seven ones!" |
-| Intro | "Gem Bags! Help Ember count and share gems!" |
+Every spoken line lives in `src/games/gemBags.lines.ts`, per "How Ember talks" in AGENTS.md.
 
 ## Hints
 
