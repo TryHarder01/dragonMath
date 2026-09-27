@@ -10,7 +10,7 @@ One file per mini-game. Each spec is meant to be picked up by an agent (or perso
 | [gem-bags.md](gem-bags.md) | 💎 Gem Bags | Place value: tens and ones to 100 | 2nd |
 | [stomp-path.md](stomp-path.md) | 🦖 Stomp Path | Number line 0–100, hops, skip counting, estimation | 3rd |
 | [dino-story.md](dino-story.md) | 📖 Dino Story | Word problems | 4th: needs animation, and benefits from the others' models |
-| [nest-builder-split-level.md](nest-builder-split-level.md) | 🪺 Nest Builder, new L6 | Split the second number to make ten (8 + 5 = 8 + 2 + 3 = 10 + 3) | Added 2026-09-27 |
+| [make-ten.md](make-ten.md) | 🔟 Make Ten | The make-ten strategy step by step: partners of ten, split the number, the whole chain, on to the tens, down to ten | Added 2026-09-27 |
 
 The order is a recommendation, not a dependency. Every spec is independent and can be built in parallel (see "Working in parallel").
 
