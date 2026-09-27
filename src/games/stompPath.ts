@@ -111,16 +111,20 @@ class PathView {
   el: HTMLElement;
   private marker: HTMLElement;
   private arcs: HTMLElement;
+  private labels?: HTMLElement;
+  private positions = new Map<number, number>();
   private min = 0;
   private max = 100;
 
   constructor(problem: StompProblem, estimate = false) {
-    this.el = h('div', `stomp-path ${problem.level <= 2 ? 'window' : 'ruler'}`);
+    const layout = problem.level <= 2 ? 'window' : problem.level <= 5 || estimate ? 'ruler' : 'open';
+    this.el = h('div', `stomp-path ${layout}`);
     this.arcs = h('div', 'stomp-arcs');
     this.marker = h('div', 'stomp-marker', [h('span', 'stomp-number', [String(problem.start)]), h('span', 'stomp-rex', ['🦖'])]);
 
     if (problem.level <= 2) this.buildWindow(problem);
-    else this.buildRuler(estimate);
+    else if (layout === 'ruler') this.buildRuler(estimate);
+    else this.buildOpen(problem);
     this.setMarker(problem.start);
     if (estimate) this.marker.hidden = true;
   }
@@ -148,9 +152,33 @@ class PathView {
     this.el.append(this.arcs, this.marker, h('div', 'stomp-line'), ticks);
   }
 
+  private buildOpen(problem: StompProblem) {
+    const total = problem.hops.reduce((sum, size) => sum + (size === 10 ? 3 : 1), 0);
+    let at = problem.start;
+    let distance = 0;
+    this.positions.set(at, problem.direction === 1 ? 5 : 95);
+    for (const size of problem.hops) {
+      distance += size === 10 ? 3 : 1;
+      at += problem.direction * size;
+      const percent = 5 + distance / total * 90;
+      this.positions.set(at, problem.direction === 1 ? percent : 100 - percent);
+    }
+    this.labels = h('div', 'stomp-open-labels');
+    this.el.append(this.arcs, this.marker, h('div', 'stomp-line'), this.labels);
+    this.addLanding(problem.start);
+  }
+
   private percent(n: number): number {
+    if (this.positions.size) return this.positions.get(n)!;
     if (this.max - this.min === 10) return ((n - this.min + .5) / 11) * 100;
     return ((n - this.min) / (this.max - this.min)) * 100;
+  }
+
+  private addLanding(n: number) {
+    if (!this.labels) return;
+    const label = h('span', 'stomp-open-label', [String(n)]);
+    label.style.left = `${this.percent(n)}%`;
+    this.labels.append(label);
   }
 
   setMarker(n: number) {
@@ -173,13 +201,13 @@ class PathView {
     const arc = h('div', `stomp-arc${shown ? ' shown' : ''}`, [h('span', '', [label])]);
     arc.style.left = `${left}%`;
     arc.style.width = `${Math.max(width, 1.8)}%`;
-    if (width < 3) arc.style.setProperty('--lane', String(this.arcs.children.length % 5));
     this.arcs.append(arc);
   }
 
   async hop(from: number, to: number, label: string) {
     this.addHop(from, to, label);
     this.setMarker(to);
+    this.addLanding(to);
     sfx.stomp();
     await say(String(to), { rate: 1.05 });
     await wait(100);

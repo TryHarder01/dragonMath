@@ -367,10 +367,10 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 }
 .stomp-ticks { position: absolute; inset: 0; pointer-events: none; }
 .stomp-tick {
-  position: absolute; top: 63%; width: max(2px, .18vmin); height: 6%;
-  background: var(--ink); translate: -50% 0;
+  position: absolute; top: 64%; width: max(1px, .1vmin); height: 3%;
+  background: var(--ink); opacity: .3; translate: -50% 0;
 }
-.stomp-tick.major { top: 59%; height: 14%; width: max(3px, .28vmin); }
+.stomp-tick.major { top: 59%; height: 14%; width: max(3px, .28vmin); opacity: 1; }
 .stomp-tick span {
   position: absolute; top: 112%; left: 50%; translate: -50% 0;
   font-size: clamp(.7rem, 2vmin, 6rem); font-style: normal; font-weight: 700;
@@ -390,8 +390,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 }
 .stomp-arcs { position: absolute; inset: 0; pointer-events: none; }
 .stomp-arc {
-  position: absolute; z-index: 3; top: calc(49% - var(--lane, 0) * 5%); height: calc(18% + var(--lane, 0) * 5%);
-  border: max(3px, .35vmin) solid var(--lava-dark);
+  position: absolute; z-index: 3; top: 49%; height: 18%; border: max(3px, .35vmin) solid var(--lava-dark);
   border-bottom: 0; border-radius: 50% 50% 0 0; transform-origin: left bottom;
   animation: stomp-arc-in .35s ease-out both;
 }
@@ -401,6 +400,11 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   padding: .05em .25em; border-radius: .4em; background: var(--card);
   color: var(--lava-dark); font-size: clamp(.65rem, 1.6vmin, 4rem); font-weight: 700;
   white-space: nowrap;
+}
+.stomp-open-labels { position: absolute; inset: 0; pointer-events: none; }
+.stomp-open-label {
+  position: absolute; top: 70%; translate: -50% 0;
+  font-size: clamp(.7rem, 2vmin, 3rem); font-weight: 700; font-variant-numeric: tabular-nums;
 }
 .stomp-window-cells {
   position: absolute; left: 0; right: 0; top: 62%; display: grid;

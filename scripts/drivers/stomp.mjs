@@ -33,21 +33,21 @@ export async function step(page, ctx) {
   }
 
   const eggs = page.locator('.stomp-egg.tappable:not(.nope):not(.yes)');
-  if (await eggs.count()) {
-    const answer = await eggs.first().getAttribute('data-answer');
-    let picked = page.locator(`.stomp-egg.tappable[data-value="${answer}"]`);
-    if (ctx.wrong === 0) {
-      for (let i = 0; i < await eggs.count(); i++) {
-        const candidate = eggs.nth(i);
-        if (await candidate.getAttribute('data-value') !== answer) { picked = candidate; break; }
+  const handles = await eggs.elementHandles();
+  if (handles.length) {
+    const answer = await handles[0].getAttribute('data-answer');
+    let picked = handles[0];
+    for (const candidate of handles) {
+      const value = await candidate.getAttribute('data-value');
+      if ((ctx.wrong === 0 && value !== answer) || (ctx.wrong > 0 && value === answer)) {
+        picked = candidate;
+        break;
       }
     }
-    const handle = await picked.elementHandle();
-    if (!handle) throw new Error('answer egg disappeared before the tap');
-    await handle.dispatchEvent('pointerdown');
+    await picked.dispatchEvent('pointerdown');
     await page.waitForFunction(
       (el) => !el.isConnected || el.classList.contains('yes') || el.classList.contains('nope'),
-      handle,
+      picked,
       { timeout: 30000 },
     );
     await page.waitForTimeout(500);

@@ -96,7 +96,7 @@ Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model
 - **Hint:** count on or back across the changing rows, dot by dot for ×2–×5 and "plus 7 is 42" for bigger tables.
 - **Why:** walking in order shows the structure (one more group), but only unpredictable problems make him recall the fact. So Stairs teaches the structure and Crates does the mixed practice. Jumping from landmarks trains derived facts (6×7 = 5×7 + 7) instead of reciting from 1×.
 
-### 3–6. Additional games
+### 3–6. Planned games
 
 Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is the source of truth: levels, generators, hints, spoken lines and parent text. Build them in this order:
 
