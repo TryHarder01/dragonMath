@@ -517,7 +517,8 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   gap: 2vmin;
   overflow: hidden;
 }
-.gem-dragon.ez-ember { font-size: clamp(4rem, 14vmin, 22vh); transform: none; animation: hover 3s ease-in-out infinite; }
+.gem-dragon-content { display: flex; flex-direction: column; align-items: center; gap: 2vmin; }
+.gem-dragon.ez-ember { font-size: clamp(4rem, 28vmin, 22vh); transform: none; animation: hover 3s ease-in-out infinite; }
 .gem-dragon-choice .gem-hoard { --gem-size: clamp(24px, min(4vmin, 7vh), 9vh); flex-direction: column; }
 
 @keyframes gem-arrive { from { translate: 10vmin -5vmin; opacity: 0; rotate: 20deg; } }
