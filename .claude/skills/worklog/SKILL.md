@@ -21,7 +21,7 @@ The log sits alongside git history and doesn't replace it. Commits record *what*
 
 ## When starting work
 
-1. Read only the top of `WORKLOG.md` (Read with `limit: 80`). Newest entries come first, so this covers the latest one or two. Don't read the whole file.
+1. Read only the first 80 lines of `WORKLOG.md` (e.g. `head -80 WORKLOG.md`, or your file-read tool with a line limit). Newest entries come first, so this covers the latest one or two. Don't read the whole file.
 2. For an older entry, run `grep -n '^## ' WORKLOG.md` to list every entry's date and title with line numbers, then read just that entry with `offset`. Older months are in `docs/worklog/`.
 3. Run `git status` and `git log --oneline -10`. A dirty working tree with no matching entry means work was left unlogged. Tell the user and sort it out before starting anything new.
 4. Check the latest entry's **Open / broken** and **Next** before picking up new work.
@@ -30,7 +30,7 @@ The log sits alongside git history and doesn't replace it. Commits record *what*
 
 A chunk is one coherent unit, such as a feature, a bug fix, a refactor or an investigation. It also counts as a chunk when a session has to stop partway through, and that is exactly when an entry matters most. Don't log trivial edits.
 
-Add the new entry at the **top**, with a single Edit that inserts it directly below the `# Worklog` title line. Never rewrite `WORKLOG.md` with Write: that can silently drop or alter old entries. If the file doesn't exist, create it with `# Worklog` as the first line.
+Add the new entry at the **top**, with a single targeted edit (a patch or string replacement) that inserts it directly below the `# Worklog` title line. Never rewrite the whole of `WORKLOG.md`, whether with a whole-file write or a script: that can silently drop or alter old entries. If the file doesn't exist, create it with `# Worklog` as the first line.
 
 ### Entry format
 

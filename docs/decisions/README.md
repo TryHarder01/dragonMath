@@ -3,7 +3,7 @@
 One short file per decision that shapes future work: what we chose, why, and what we rejected. Run `ls docs/decisions/` to see everything that has been decided.
 
 - **Research** (`docs/research/`) holds the evidence. **Decisions** (here) hold the choice. A decision links to its research. It doesn't copy it.
-- `CLAUDE.md` states each rule in a line and links here for the reasons.
+- `AGENTS.md` (loaded by Claude Code through `CLAUDE.md`) states each rule in a line and links here for the reasons.
 - Small, local choices stay as bullets in `WORKLOG.md`. A decision gets a file here when it constrains future work, is costly to undo, or is likely to be re-argued.
 - Agents don't create these on their own. They tag the worklog bullet `[promote?]` and ask. See `.claude/skills/worklog/SKILL.md`.
 - Never edit a decision's substance after the fact. To change one, write a new file and set the old one's status to `Superseded by <file>`. Fixing typos and adding links is fine.

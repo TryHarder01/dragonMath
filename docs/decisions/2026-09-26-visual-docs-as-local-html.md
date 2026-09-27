@@ -15,5 +15,5 @@ User request. No further reason was given.
 - **Hosted claude.ai Artifacts:** the original approach, used for the first two pages. Those artifacts still exist online but are superseded, and the worklog entries that link to them are left as they were.
 
 ## Links
-- `CLAUDE.md` → "Docs and visual write-ups".
+- `AGENTS.md` → "Docs and visual write-ups".
 - Worklog: "Scaffold + Egg Zapper MVP; docs pages moved local".

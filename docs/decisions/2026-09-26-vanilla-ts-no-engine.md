@@ -15,5 +15,5 @@ Reason not recorded. The choice shows up first in the "Game design" worklog entr
 Not recorded.
 
 ## Links
-- `CLAUDE.md` intro line.
+- `AGENTS.md` intro line.
 - Worklog: "Game design: Dino Egg Blaster" (Next) and "Scaffold + Egg Zapper MVP".

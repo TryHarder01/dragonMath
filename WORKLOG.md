@@ -1,5 +1,30 @@
 # Worklog
 
+## 2026-09-26 — Codex portability: AGENTS.md and shared skills
+
+**Goal:** Per the user, make the repo work the same for Codex as for Claude Code: one instruction file, and skills both tools find.
+
+**Done:**
+- `CLAUDE.md` → `AGENTS.md` (via `git mv`, so history follows). The new `CLAUDE.md` is just `@AGENTS.md`, a Claude Code import.
+- `.agents/skills` → `../.claude/skills` (symlink). Codex looks for repo skills in `.agents/skills`: I found that path in the Codex 0.150.1 binary, next to its other repo paths.
+- `AGENTS.md`: a new "Agent setup" section (edit only `AGENTS.md`, add skills under `.claude/skills/`, keep instructions tool-neutral).
+- Worklog skill made tool-neutral: "first 80 lines" instead of "Read with `limit: 80`", and "a single targeted edit" instead of the Edit/Write tool names.
+- "Where the rule lives" pointers updated to `AGENTS.md` in `docs/specs/README.md`, `docs/decisions/README.md` and the four decisions' Links lines. Historical text left alone (old worklog entries, the research notes about Claude's memory).
+
+**Decisions:**
+- Keep `.claude/skills` as the real location and symlink it for Codex. It already worked for Claude Code, and one copy means no drift. `[promote?]`
+- `CLAUDE.md` imports `AGENTS.md` rather than being a symlink. That way it can carry a comment saying where to edit, and it avoids symlink problems for editors that follow links oddly.
+
+**Verified:**
+- `codex debug prompt-input` in the repo includes the `AGENTS.md` content ("Ember's Egg Rescue…") and lists the skill `worklog` (file: `.claude/skills/worklog/SKILL.md`).
+- Claude Code's `@AGENTS.md` import wasn't tested in a fresh session. This session loaded the old `CLAUDE.md` at start.
+
+**Open / broken:**
+- Symlinks need `core.symlinks=true` on Windows checkouts. That's fine on macOS and Linux.
+
+**Next:**
+- Start a fresh Claude Code session and confirm the `AGENTS.md` rules are loaded. Then hand `docs/specs/nest-builder.md` to an agent (Claude or Codex).
+
 ## 2026-09-26 — Build specs for the four unbuilt games
 
 **Goal:** Write handoff documents that let other agents build Nest Builder, Gem Bags, Stomp Path and Dino Story without re-planning.

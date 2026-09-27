@@ -13,7 +13,7 @@ The order is a recommendation, not a dependency. Every spec is independent and c
 
 ## Before you start
 
-1. Read `CLAUDE.md` (rules, commands, layout), the top of `WORKLOG.md`, and `DESIGN.md`.
+1. Read `AGENTS.md` (rules, commands, layout), the top of `WORKLOG.md`, and `DESIGN.md`.
 2. Read the research the games are based on:
    - `docs/research/2026-09-26-early-math-pedagogy.md`
    - `docs/research/2026-09-26-right-sizing-advanced-learner.md`
@@ -23,7 +23,7 @@ The order is a recommendation, not a dependency. Every spec is independent and c
 
 He adds within 20 confidently. **Subtraction is weak.** He knows about ¼–½ of the 10×10 times tables. He probably can't read sentences yet, so everything is spoken; numerals and number sentences are fine on screen.
 
-## Rules every game must follow (from `CLAUDE.md`)
+## Rules every game must follow (from `AGENTS.md`)
 
 - **Tone: the hero only helps.** The player and Ember warm, find, count, share, tuck in and walk home. Never zap, blast, shoot, fire or chomp, and no enemies. Subtraction is framed kindly: babies hatch and walk home, a dragon shares gems with a friend, dinos fly home on Ember.
 - **No timers, lives, scores or game over.** A wrong answer greys out that choice, plays the hint, and the child tries again.

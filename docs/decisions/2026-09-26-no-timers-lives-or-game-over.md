@@ -17,5 +17,5 @@ Math anxiety appears as early as 1st–2nd grade and is linked to lower achievem
 
 ## Links
 - [Early-math research](../research/2026-09-26-early-math-pedagogy.md), "Math anxiety" and design rule 5.
-- `CLAUDE.md` → "Teaching rules".
+- `AGENTS.md` → "Teaching rules".
 - Worklog: "Education foundations for ages 4–6" and "Scaffold + Egg Zapper MVP".

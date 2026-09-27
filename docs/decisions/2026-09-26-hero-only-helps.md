@@ -18,5 +18,5 @@ User request: the main character must be kind and helpful to the eggs, dinos and
 - **Rescue from a villain:** it still brings in an enemy.
 
 ## Links
-- `CLAUDE.md` → "Tone: the hero only helps"; `DESIGN.md` → tone rule.
+- `AGENTS.md` → "Tone: the hero only helps"; `DESIGN.md` → tone rule.
 - Worklog: "Re-theme: the hero only helps (Ember's Egg Rescue)", commit `git log --grep "Re-theme"`.
