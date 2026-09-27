@@ -43,8 +43,12 @@ Pick the **one** with the best recurrence × cost among the solvable ones. Tie-b
    - `Declined: <why>` (a real reason: not solvable here, too rare, cost exceeds benefit)
    - `Noted: <why no action>` (no change needed, e.g. resolved by reading the guide)
 2. **Update the ledger** in `docs/retros/README.md`: Open / Chosen / Fixed / Declined, each pattern listing the retros that raised it. Update "Last review" (date, retros reviewed, pick, runner-up).
-3. **Write the pick up** as a spec (`docs/specs/<slug>.md`) with how to measure that it worked (which future retro complaint should stop appearing), and hand it out with the delegate skill.
+3. **Write the pick up as a brief** (`docs/briefs/YYYY-MM-DD-<slug>.md`, same headings as the existing briefs), with **Worked if** in the ledger (which retro complaint should stop appearing). **If the fix is a check, the brief requires red then green:** show the check failing on a deliberately broken case (paste the output), then passing. A check that has never failed isn't proven. Hand it out with the delegate skill.
 4. **When the fix merges,** move the pattern to Fixed with the commit. **If later retros raise it again, reopen it** with a note: the fix didn't work.
+
+## More than one fix
+
+If the user asks for another fix before new retros arrive, **don't re-score**: take the ledger's runner-up, move it to Chosen, and name the next runner-up (or "none: next review"). Run it in parallel with the current pick only if the two briefs' **You own** lists don't overlap.
 
 ## 6. Report
 
@@ -56,4 +60,5 @@ This skill is new. After each use, add one line to "Changelog" below: what was a
 
 ## Changelog
 
-- 2026-09-27: first use (7 retros, 20 items). Written alongside the decision note; see its "First review" section for the result.
+- 2026-09-27: first use (8 retros, 21 items). Written alongside the decision note; see its "First review" section for the result.
+- 2026-09-27: the user asked for a second fix straight away. Added "More than one fix" (take the runner-up, no re-scoring; run in parallel only if ownership doesn't overlap). Briefs now go in `docs/briefs/`, and briefs for a new check must require red-then-green proof (the audit-overflow bug couldn't be reproduced from history, so the worker has to create one on purpose).

@@ -2,15 +2,17 @@
 
 One short file per agent per delegated task (`YYYY-MM-DD-<task>.md`), written with `.claude/skills/retro/SKILL.md`. After each run the coordinator processes them with `.claude/skills/retro-review/SKILL.md`: it appends an `## Outcome` to each retro and updates this ledger. The rules are in `docs/decisions/2026-09-27-retro-handling.md`. `just retros` lists the newest.
 
-**Last review:** 2026-09-27, covering 8 retros (21 items). **Pick:** Briefs leave scope implicit. **Runner-up:** Audit misses overflow inside the question card.
+**Last review:** 2026-09-27, covering 8 retros (21 items). **Picks:** Briefs leave scope implicit; then, at the user's request, the runner-up: the audit misses overflow inside the question card. **Next runner-up:** none. The next review starts from new retros.
 
 ## Chosen (being fixed)
 
 - **[instructions] Briefs leave scope implicit.** Which files or sections count, "if any" for files that don't exist, catchphrases the guide listed but the code didn't have yet, "a new level" meaning a new module. Raised by: coordinator-games-build, voice-core-eggs, voice-nest-maketen-stomp, lines-stairs-crates, lines-bags-story. Fix: `docs/briefs/2026-09-27-brief-template.md`. **Worked if** no retro in the next two runs raises an [instructions] item about scope or ownership.
 
+- **[checks] The audit misses overflow inside the question card.** It measures the card's own box, not descendants spilling out or into the answer band. Raised by: make-ten (~15 min, child-visible). Fix: `docs/briefs/2026-09-27-audit-card-overflow.md`. **Worked if** no retro reports layout problems the audit passed.
+
 ## Open
 
-- **[checks] The audit misses overflow inside the question card.** It measures the `.ez-target` box, not descendants spilling out of it or into the answer band (make-ten, ~15 min, child-visible). Proposed: flag visible descendants of `.ez-target` whose box leaves the card or overlaps the egg band. *Runner-up; the next review starts here.*
+None solvable right now (see Declined).
 
 ## Fixed
 
