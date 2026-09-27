@@ -6,15 +6,15 @@
 
 import { nearChoices, pick, rand } from '../core/dom';
 import { arrayModel, groupsModel } from '../core/models';
-import { word } from '../core/words';
 import { eggScene, productChoices, type EggQuestion } from './eggScene';
+import { lines } from './eggCrates.lines';
 import type { Game } from './types';
 
 function groups(): EggQuestion {
   const n = rand(2, 4), k = rand(2, 5);
   return {
     text: `${n} × ${k}`,
-    ask: `${word(n)} nests with ${word(k)} eggs each. How many eggs?`,
+    ask: lines.groups(n, k),
     answer: n * k,
     choices: productChoices(n, k),
     model: groupsModel(n, k),
@@ -28,7 +28,7 @@ function arr(facts: number[], showModel: boolean, other: [number, number] = [1, 
   const [r, c] = Math.random() < 0.5 ? [o, f] : [f, o];
   return {
     text: `${r} × ${c}`,
-    ask: showModel ? `${r} rows of ${c} eggs. How many eggs?` : `${r} times ${c}. Warm the egg with the answer!`,
+    ask: showModel ? lines.rows(r, c) : lines.fact(r, c),
     answer: r * c,
     choices: productChoices(r, c),
     model: arrayModel(r, c),
@@ -41,7 +41,7 @@ function big(): EggQuestion {
   const r = rand(6, 9), c = rand(2, 9);
   return {
     text: `${r} × ${c}`,
-    ask: `${r} rows of ${c} eggs. How many eggs?`,
+    ask: lines.rows(r, c),
     answer: r * c,
     choices: productChoices(r, c),
     model: arrayModel(r, c),
@@ -54,7 +54,7 @@ function missingFactor(): EggQuestion {
   const c = pick([2, 3, 4, 5, 10]), r = rand(2, 10);
   return {
     text: `? × ${c} = ${r * c}`,
-    ask: `How many rows of ${c} make ${r * c}?`,
+    ask: lines.missingFactor(c, r * c),
     answer: r,
     choices: nearChoices(r, 4, 1, 10),
     model: arrayModel(r, c, { hidden: true }),
@@ -90,7 +90,7 @@ export const eggCrates: Game = {
     'Missing factor: ? × 4 = 20 (first division)',
     'All facts to 10 × 10, mixed',
   ],
-  intro: "Egg Crates! Let's count rows of eggs!",
+  intro: lines.intro,
 
   runProblem({ play, level }) {
     return eggScene(play, LEVELS[level - 1]());
