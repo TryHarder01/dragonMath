@@ -308,9 +308,10 @@ async function runFill(play: HTMLElement, plan: NestProblem): Promise<boolean> {
   const bridge = plan.beats[0].answer;
   const firstTry = await eggScene(play, question(
     `${plan.a} + ? = 10`,
-    `${word(plan.a)} eggs in the nest. How many more to fill it?`,
+    `${word(plan.a)} in the nest. How many fill the nest?`,
     plan.beats[0], nest,
     async () => {
+      await say("Let's count.");
       await nest.fillTo10();
       await say(`That's ${word(bridge)} more.`);
     }, true,
@@ -328,9 +329,10 @@ async function runAdd(play: HTMLElement, plan: NestProblem, showModel: boolean):
   const rest = b - bridge;
   const nest = nestModel({ tens: Math.floor(plan.a / 10), ones: plan.a % 10 });
   const explain = async () => {
+    await say("Let's count.");
     await nest.fillTo10();
     await nest.spill(rest);
-    await say(`${word(plan.a)} and ${word(bridge)} make ${word(nextTen)}. ${word(nextTen)} and ${word(rest)} is ${word(plan.a + b)}.`);
+    await say(`${word(plan.a)} and ${word(bridge)}. ${word(nextTen)}! ${word(nextTen)} and ${word(rest)}. ${word(plan.a + b)}!`);
   };
 
   if (plan.oneBeat) {
@@ -352,10 +354,11 @@ async function runAdd(play: HTMLElement, plan: NestProblem, showModel: boolean):
   const first = await eggScene(play, question(
     `${plan.a} + ${b} → ${nextTen}`,
     isSmall
-      ? `${word(plan.a)} plus ${word(b)}. How many of the ${word(b)} fill the nest?`
+      ? `${word(plan.a)} plus ${word(b)}. How many fill the nest?`
       : `${word(plan.a)} plus ${word(b)}. How many more to make ${word(nextTen)}?`,
     plan.beats[0], nest,
     async () => {
+      await say("Let's count.");
       await nest.fillTo10();
       await say(`That's ${word(bridge)} more.`);
     }, true,
@@ -387,6 +390,7 @@ async function runNextTen(play: HTMLElement, plan: NestProblem): Promise<boolean
     `${word(plan.a)}. How many more to make ${word(target)}?`,
     plan.beats[0], nest,
     async () => {
+      await say("Let's count.");
       await nest.fillTo10();
       await say(`That's ${word(answer)} more.`);
     }, true,
@@ -405,9 +409,10 @@ async function runSub(play: HTMLElement, plan: NestProblem, showModel: boolean):
   const final = plan.a - b;
   const nest = nestModel({ tens: Math.floor(plan.a / 10), ones });
   const explain = async () => {
+    await say("Let's count.");
     await nest.hatchTo(target);
     await nest.hatchTo(final);
-    await say(`${word(plan.a)} minus ${word(b)} is ${word(final)}.`);
+    await say(`${word(plan.a)} minus ${word(ones)}. ${word(target)}! ${word(target)} minus ${word(rest)}. ${word(final)}!`);
   };
 
   if (plan.oneBeat) {
@@ -424,9 +429,10 @@ async function runSub(play: HTMLElement, plan: NestProblem, showModel: boolean):
 
   const first = await eggScene(play, question(
     `${plan.a} ${MINUS} ${b} → ${target}`,
-    `${word(plan.a)} minus ${word(b)}. How many babies hatch and walk home to get down to ${word(target)}?`,
+    `${word(plan.a)} in the nest. Some babies hatch and walk home. How many get down to ${word(target)}?`,
     plan.beats[0], nest,
     async () => {
+      await say("Let's count.");
       await nest.hatchTo(target);
       await say(`${word(ones)} walked home. Now we're at ${word(target)}.`);
     }, true,
@@ -463,7 +469,7 @@ export const nestBuilder: Game = {
     'Subtract across a ten with bigger numbers (43 − 5 → 40 → 38)',
     'Mixed adding and subtracting across ten',
   ],
-  intro: 'Nest Builder! Every nest holds ten eggs. Help Ember fill the nests, one nest at a time.',
+  intro: "Nest Builder! Let's fill the nests!",
 
   runProblem({ play, level }) {
     const plan = LEVELS[level - 1]();

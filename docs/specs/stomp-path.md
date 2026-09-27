@@ -64,25 +64,29 @@ Two path views:
 
 ## Spoken lines
 
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
+
 | Moment | Line |
 |---|---|
-| L1 | "The T-rex is on twelve. Hop three. Where will it land?" then "Now you stomp! Tap the foot." |
+| L1 | "The T-rex is on twelve. Hop three. Where will it land?" then "Now you stomp! Tap the foot for every hop." |
 | L2 | "The T-rex is on fifteen. Hop back four to the pond. Where will it land?" |
 | L3 | "Twenty-three. One big ten-hop! Where does it land?" / "…two big ten-hops back?" |
-| L4 | "Hopping by fives: five, ten, fifteen. Where next?" |
+| L4 | "Hopping by fives. Five. Ten. Fifteen. Where next?" |
 | L5 | "Thirty-seven plus twenty. Where does the T-rex land?" |
-| L6 | "Thirty-eight plus twenty-five. Hop the tens first, then the ones!" |
-| L7 | "Sixty-two minus twenty-five. Hop back the tens, then the ones!" |
+| L6 | "Thirty-eight plus twenty-five. Tens first, then ones!" |
+| L7 | "Sixty-two minus twenty-five. Tens first, then ones!" |
 | L8 | "Where does sixty-three live? Tap the path!" |
 | Praise | "Big hops first. Smart!", "You counted every stomp!" |
 
 ## Hints
 
-- **L1–L2:** animate the hops one at a time, saying each number ("thirteen, fourteen, fifteen"). Point out the classic mistake: "We don't count the square we start on."
-- **L3/L5:** ten-hop arcs one at a time: "twenty-three… thirty-three… forty-three". Note that the ones digit stays the same.
-- **L4:** replay the three hops, then the fourth, saying the count ("five, ten, fifteen, **twenty**").
-- **L6/L7:** open-line arcs: the tens as ten-hops ("38, 48, 58"), then the ones one at a time ("59, 60, 61, 62, 63"). For crossing cases, say "…to sixty, then three more."
-- **L8:** flag the true spot. Count from the nearest labelled ten: "Fifty… sixty… and three more is sixty-three."
+Every hint opens with "Watch!", then shows and counts.
+
+- **L1–L2:** "Watch!", then animate the hops one at a time, saying each number ("thirteen, fourteen, fifteen"). Point out the classic mistake: "Don't count the start. Count each new square."
+- **L3/L5:** "Watch!", then ten-hop arcs one at a time: "twenty-three… thirty-three… forty-three". Note that the ones digit stays the same.
+- **L4:** "Watch!", then replay the three hops, then the fourth, saying the count ("five, ten, fifteen, **twenty**").
+- **L6/L7:** "Watch! Tens first, then ones!", then open-line arcs: the tens as ten-hops ("38, 48, 58"), then the ones one at a time ("59, 60, 61, 62, 63"). For crossing cases, say "Go to sixty. Three more."
+- **L8:** "Let's count. Find the nearest big number.", then flag the true spot and count from the nearest labelled ten: "Start at fifty. Count the tens. Sixty. Three more. Sixty-three!"
 
 ## Answer choices
 
@@ -110,7 +114,7 @@ levels: [
   'Subtracting with hops: tens first, then ones (62 − 25)',
   'Where does 63 live? Tap the path',
 ],
-intro: 'Stomp Path! The T-rex is walking home. Help it hop along the path!',
+intro: 'Stomp Path! Help the T-rex hop home!',
 ```
 
 ## Build checklist
