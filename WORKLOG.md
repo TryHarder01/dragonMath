@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-09-27 — Fit and colour the Gem Bags compare scene
+
+**Goal:** Make Gem Bags level 3 fill its two cards with clear red and blue dragons and name those colours aloud.
+
+**Done:**
+- `src/games/gemBags.ts`: randomized the red/blue dragon sides, named colours in the prompt, hint and right-answer speech, and fitted each dragon-and-hoard unit to its choice card on resize.
+- `src/styles.css`: enlarged the compare dragons and added the fitted unit's layout, within the Gem Bags section.
+- `docs/specs/gem-bags.md`: recorded the red/blue dragons and randomized sides; level 3 remains pictures-only.
+
+**Decisions:**
+- Used the hatchery's existing 230° red and 100° blue emoji hue rotations so the variants match the rest of the game.
+
+**Verified:** `npm run typecheck` and `npm run build` passed; `node scripts/audit.mjs --only=bags-L3-compare` reported 0 of 6 flagged; inspected all six `audit-screens/*--bags-L3-compare.png` images (phone through big-zoomed-out), with large, distinct dragons and hoards and no clipping. `node scripts/playthrough.mjs bags --level=all` passed all 8 levels; `node scripts/playthrough.mjs bags --level=3 --real` passed, and all 7 images in `playthrough-screens/bags-L3/` were inspected, including the hint state. `just verify` passed: build, 0 of 156 audit combinations flagged, and all 57 game/level rounds reached the hatch with a hint shown.
+
+**Next:** Have the parent try Gem Bags level 3 on the child's usual device.
+
 ## 2026-09-27 — Fast, fanned-out play-throughs
 
 **Goal:** Per the user, make the play-through check efficient and fan it out across levels.

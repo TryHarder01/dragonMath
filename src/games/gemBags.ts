@@ -478,26 +478,56 @@ function buildScene(play: HTMLElement, target: number): Promise<boolean> {
 
 function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
   const values = [p.a, p.b ?? 0];
-  const models = values.map((n) => {
+  const colours = shuffle([
+    { name: 'red', hue: 230 },
+    { name: 'blue', hue: 100 },
+  ]);
+  const models = values.map((n, i) => {
     const [tens, ones] = split(n);
-    return { n, tens, ones, model: gemsModel(tens, ones) };
+    return { n, tens, ones, model: gemsModel(tens, ones), colour: colours[i] };
   });
-  const choices: Choice<number>[] = models.map(({ n, model }, i) => {
+  const contents: HTMLElement[] = [];
+  const choices: Choice<number>[] = models.map(({ n, model, colour }) => {
     const dragon = h('div', 'gem-dragon ez-ember', ['🐉']);
-    const el = h('button', 'gem-dragon-choice ez-target', [dragon, model.el]);
+    dragon.style.filter = `hue-rotate(${colour.hue}deg)`;
+    const content = h('div', 'gem-dragon-content', [dragon, model.el]);
+    const el = h('button', 'gem-dragon-choice ez-target', [content]);
     el.dataset.value = String(n);
-    el.setAttribute('aria-label', `Dragon ${i + 1}`);
+    el.setAttribute('aria-label', `${colour.name} dragon`);
+    contents.push(content);
     return { el, value: n };
   });
-  play.append(h('div', 'gem-compare', choices.map((choice) => choice.el)));
-  const ask = `Which dragon has ${p.askFewer ? 'fewer' : 'more'} gems?`;
+  const compare = h('div', 'gem-compare', choices.map((choice) => choice.el));
+  play.append(compare);
+
+  const fit = () => {
+    choices.forEach((choice, i) => {
+      const content = contents[i];
+      content.style.zoom = '1';
+      const box = choice.el.getBoundingClientRect();
+      const inner = content.getBoundingClientRect();
+      const style = getComputedStyle(choice.el);
+      const availableWidth = box.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const availableHeight = box.height - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+      if (inner.width === 0 || inner.height === 0) return;
+      const scale = Math.min(availableWidth / inner.width, availableHeight / inner.height, 10) * .9;
+      content.style.zoom = scale.toFixed(3);
+    });
+  };
+  requestAnimationFrame(fit);
+  const resize = new ResizeObserver(() => (compare.isConnected ? fit() : resize.disconnect()));
+  resize.observe(compare);
+
+  const word = p.askFewer ? 'fewer' : 'more';
+  const ask = `Which dragon has ${word} gems, the red one or the blue one?`;
   void prompt(ask);
   let hinted = false;
+  const answer = models.find((model) => model.n === p.answer)!;
 
   return awaitChoice(choices, (value) => value === p.answer, {
     onRight: async (choice) => {
       burst(choice.el, '💎');
-      await say(PRAISE);
+      await say(`The ${answer.colour.name} dragon has ${word}! ${PRAISE}`);
     },
     onWrong: async () => {
       if (!hinted) {
@@ -513,8 +543,9 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
         } else {
           await say(`The bags match. Compare the loose gems: ${first.ones} and ${second.ones}.`);
         }
+        await say(`The ${answer.colour.name} dragon has ${word}!`);
       } else {
-        await say('Look at the bags first, then the loose gems.');
+        await say('Look at the red and blue dragons. Bags first, then the loose gems.');
       }
       void prompt(ask);
     },
