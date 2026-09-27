@@ -1,5 +1,23 @@
 # Worklog
 
+## 2026-09-26 — Re-theme: the hero only helps (Ember's Egg Rescue)
+
+**Goal:** Per user request, remove violent or mean verbs. The main character must be kind and helpful to the eggs, dinos and dragons.
+
+**Done:**
+- New story: a storm scattered the Dino Nest's eggs, and the rider and Ember find them, warm them, and bring the babies home. The game is renamed to **Ember's Egg Rescue** (title, logo, `package.json`, localStorage key `embers-egg-rescue:v1`).
+- Egg Zapper → **Egg Warmer** (`src/games/eggZapper.ts` → `src/games/eggWarmer.ts`): "Warm the egg with four!", a soft glow beam and egg halo instead of a zap beam, and `sfx.zap` → `sfx.glow` (a gentle sine shimmer).
+- Renamed the creature "Chompers" to "Giggles".
+- Added a tone rule to `CLAUDE.md` and `DESIGN.md`, and updated `docs/pages/*.html`.
+
+**Decisions:**
+- The verb is "warm" because dragons keeping eggs warm is a natural, kind fit, and hatching stays the reward. Rejected "rescue from a villain" because it brings in an enemy.
+
+**Verified:** `npx tsc --noEmit` clean. Playwright full round (`?mute`), including a wrong-answer hint, got to the hatch with no console errors. The map screenshot shows the new title and "Egg Warmer". A grep for zap/blast/chomp finds them only in the tone rules.
+
+**Next:**
+- Build Dino Count (`src/games/dinoCount.ts`) with helper framing ("count the babies so nobody's left behind"). Then Gem Trade, Nest Builder, Stomp Path and Dino Story.
+
 ## 2026-09-26 — Scaffold + Egg Zapper MVP; docs pages moved local
 
 **Goal:** Get a playable game running, starting with the core Egg Zapper loop.

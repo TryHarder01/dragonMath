@@ -1,6 +1,6 @@
-// Egg Zapper: subitizing and matching numerals to quantities.
-// Eggs drift gently (they never escape, so there's no time pressure) and Ember
-// zaps the one that matches the target.
+// Egg Warmer: subitizing and matching numerals to quantities.
+// A storm left the eggs chilly. They bob gently (no time pressure) and Ember
+// breathes a warm glow on the one that matches, helping it hatch.
 
 import { awaitChoice, type Choice } from '../core/choices';
 import { burst, distinctWith, h, pick, rand } from '../core/dom';
@@ -32,28 +32,28 @@ function picture(n: number, show: Show): HTMLElement {
   }
 }
 
-function beam(from: HTMLElement, to: HTMLElement) {
+function glow(from: HTMLElement, to: HTMLElement) {
   const a = from.getBoundingClientRect();
   const b = to.getBoundingClientRect();
   const x1 = a.left + a.width / 2, y1 = a.top + a.height * 0.7;
   const x2 = b.left + b.width / 2, y2 = b.top + b.height / 2;
   const len = Math.hypot(x2 - x1, y2 - y1);
-  const el = h('div', 'beam');
+  const el = h('div', 'glow-beam');
   el.style.left = `${x1}px`;
   el.style.top = `${y1}px`;
   el.style.width = `${len}px`;
   el.style.transform = `rotate(${Math.atan2(y2 - y1, x2 - x1)}rad)`;
   document.body.append(el);
-  setTimeout(() => el.remove(), 350);
+  setTimeout(() => el.remove(), 600);
 }
 
-const PRAISE = ['Zap! You found it!', 'Great looking!', 'Yes! Sparkle zap!', 'You got it, rider!'];
+const PRAISE = ['Nice and warm! It hatched!', 'Great looking!', 'You helped it hatch!', 'You got it, rider!'];
 
-export const eggZapper: Game = {
+export const eggWarmer: Game = {
   id: 'egg',
-  name: 'Egg Zapper',
+  name: 'Egg Warmer',
   icon: '🥚',
-  intro: "Egg Zapper! Help Ember zap the right egg.",
+  intro: "Egg Warmer! These eggs got chilly in the storm. Help Ember warm the right one so it can hatch.",
 
   async runProblem({ play, level }) {
     const L = LEVELS[level];
@@ -77,15 +77,17 @@ export const eggZapper: Game = {
 
     const ask =
       L.target === 'frame'
-        ? 'How many eggs are in the nest? Zap that number!'
-        : `Zap the egg with ${word(target)}!`;
+        ? 'How many eggs are in the nest? Warm the egg with that number!'
+        : `Warm the egg with ${word(target)}!`;
     void prompt(ask);
 
     return awaitChoice(choices, (v) => v === target, {
       onTap: async (c) => {
-        sfx.zap();
-        beam(ember, c.el);
-        await wait(250);
+        sfx.glow();
+        glow(ember, c.el);
+        c.el.classList.add('warming');
+        await wait(450);
+        c.el.classList.remove('warming');
       },
       onRight: async (c) => {
         c.el.replaceChildren(h('span', 'hatchling', ['🐣']));

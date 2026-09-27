@@ -1,7 +1,7 @@
 import type { Game } from './types';
-import { eggZapper } from './eggZapper';
+import { eggWarmer } from './eggWarmer';
 
-export const GAMES: Game[] = [eggZapper];
+export const GAMES: Game[] = [eggWarmer];
 
 /** Shown greyed-out on the map until built. */
 export const UPCOMING: { icon: string; name: string }[] = [

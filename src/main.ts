@@ -12,13 +12,13 @@ function showStart() {
   app.replaceChildren(
     h('div', 'screen start-screen', [
       h('div', 'start-ember', ['🐉']),
-      h('h1', 'logo big', ['Dino Egg ', h('span', '', ['Blaster'])]),
+      h('h1', 'logo big', ["Ember's ", h('span', '', ['Egg Rescue'])]),
       go,
     ]),
   );
   go.addEventListener('click', () => {
     unlockAudio();
-    showMap(app, "Hi rider! I'm Ember. Let's protect the Dino Nest! Tap a picture to play.");
+    showMap(app, "Hi rider! I'm Ember. A big storm scattered the dino eggs. Let's help them get home! Tap a picture to play.");
   });
 }
 

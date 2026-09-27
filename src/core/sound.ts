@@ -31,20 +31,8 @@ export function unlockAudio() {
 export const sfx = {
   tap: () => tone(660, 0, 0.08, 'triangle', 0.12),
   count: (n: number) => tone(440 + n * 40, 0, 0.12, 'triangle', 0.12),
-  zap: () => {
-    const a = ac();
-    const osc = a.createOscillator();
-    const gain = a.createGain();
-    const t = a.currentTime;
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(1200, t);
-    osc.frequency.exponentialRampToValueAtTime(300, t + 0.25);
-    gain.gain.setValueAtTime(0.08, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    osc.connect(gain).connect(a.destination);
-    osc.start(t);
-    osc.stop(t + 0.35);
-  },
+  // Soft rising shimmer for Ember's warm breath.
+  glow: () => [392, 494, 587, 698].forEach((f, i) => tone(f, i * 0.05, 0.4, 'sine', 0.08)),
   right: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.09, 0.3, 'triangle')),
   hmm: () => {
     tone(330, 0, 0.18, 'sine', 0.12);

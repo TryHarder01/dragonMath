@@ -1,12 +1,14 @@
-# Dino Egg Blaster: game design
+# Ember's Egg Rescue: game design
 
 A Math Blaster–style game for ages 4–6, built on the research in [docs/research/2026-09-26-early-math-pedagogy.md](docs/research/2026-09-26-early-math-pedagogy.md).
 
 ## Premise
 
-You're **Ember's rider**. Ember is a young dragon who guards the **Dino Nest**, an island full of eggs, gems, and baby dinosaurs. Every time you finish a round, something hatches into your nest.
+A big storm blew across Dino Island and scattered the eggs from the **Dino Nest**. You're **Ember's rider**. Ember is a kind young dragon, and together you find the lost eggs, warm them, count the babies, and bring everyone safely home. Every time you finish a round, a baby hatches into your nest.
 
-What we keep from Math Blaster: a hero with a mission, the arcade loop of "zap the right answer," a map of mini-games, and collectibles that make you want one more round.
+**Tone rule:** the hero only ever *helps*. The verbs are warm, find, count, share, tuck in, and walk home. Never zap, blast, shoot, or chomp, and nothing is an enemy.
+
+What we keep from Math Blaster: a hero with a mission, the arcade loop of "tap the right answer fast and see something happen," a map of mini-games, and collectibles that make you want one more round.
 
 What we leave out: timers, lives, game over, and pure speed drills.
 
@@ -32,8 +34,8 @@ Island map → pick a mini-game → round of 5 problems → hatch a baby → bac
 
 ## Mini-games
 
-### 1. Egg Zapper: subitizing and matching numerals to quantities
-*The Math Blaster heart.* Eggs float up from the bottom of the screen. Ember hovers at the top. The voice says "Zap the egg with **four**!" Tap an egg and Ember's sparkle breath hits it. The right egg cracks open.
+### 1. Egg Warmer: subitizing and matching numerals to quantities
+*The Math Blaster heart, made kind.* The eggs got chilly in the storm and bob gently on the meadow. Ember hovers at the top. The voice says "Warm the egg with **four**!" Tap an egg and Ember breathes a soft warm glow on it. The right egg hatches.
 
 | Lvl | Target shown | Eggs show | Range |
 |---|---|---|---|
@@ -119,7 +121,7 @@ Short animated stories. "**Three** dinos splash in the pond. **Two** more stomp 
 ## Build order
 
 1. Scaffold, voice, sound, progress, island map
-2. **Egg Zapper** (the MVP loop) and the hatch reward
+2. **Egg Warmer** (the MVP loop) and the hatch reward
 3. Dino Count
 4. Gem Trade
 5. Nest Builder

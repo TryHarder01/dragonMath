@@ -1,4 +1,4 @@
-# Dino Egg Blaster
+# Ember's Egg Rescue
 
 A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme. Vite + vanilla TypeScript, DOM + CSS, with no game engine.
 
@@ -31,6 +31,10 @@ A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme
   - `screens` (map, hatch, nest)
   - `parent` (the parent corner)
 - `src/games/`: one file per mini-game, each exporting a `Game` (see `types.ts`), registered in `games/index.ts`.
+
+## Tone: the hero only helps
+- The player and Ember are always kind and helpful to the eggs, dinos and dragons. Use verbs like warm, find, count, share, tuck in and walk home.
+- Never use zap, blast, shoot, fire or chomp, and never cast any creature as an enemy. This applies to code names, sounds, spoken lines and docs too.
 
 ## Teaching rules (from the research, don't break them)
 - No timers, lives or game over. Wrong answers show a hint model (count the dots aloud), then the child retries.

@@ -26,7 +26,7 @@ export const CREATURES: Creature[] = [
   { id: 'lizard', emoji: '🦎', name: 'Zippy the Lizard', hue: 0 },
   { id: 'lizard-blue', emoji: '🦎', name: 'Twinkle Tail', hue: 120 },
   { id: 'turtle', emoji: '🐢', name: 'Shelly', hue: 0 },
-  { id: 'croc', emoji: '🐊', name: 'Chompers', hue: 0 },
+  { id: 'croc', emoji: '🐊', name: 'Giggles', hue: 0 },
   { id: 'croc-gold', emoji: '🐊', name: 'Goldie Grin', hue: 290 },
 ];
 

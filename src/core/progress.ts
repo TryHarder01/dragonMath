@@ -7,7 +7,7 @@ interface Progress {
   hatched: string[];
 }
 
-const KEY = 'dino-egg-blaster:v1';
+const KEY = 'embers-egg-rescue:v1';
 
 function load(): Progress {
   try {

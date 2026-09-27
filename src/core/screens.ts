@@ -42,7 +42,7 @@ export function showMap(app: HTMLElement, greeting?: string) {
 
   app.replaceChildren(
     h('div', 'screen map-screen', [
-      h('div', 'map-top', [parentButton(app, () => showMap(app)), h('h1', 'logo', ['Dino Egg ', h('span', '', ['Blaster'])]), nest]),
+      h('div', 'map-top', [parentButton(app, () => showMap(app)), h('h1', 'logo', ["Ember's ", h('span', '', ['Egg Rescue'])]), nest]),
       ember,
       spots,
     ]),
