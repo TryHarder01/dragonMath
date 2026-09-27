@@ -16,7 +16,7 @@ const MINUS = '−';
 
 type MakeTenKind = 'partner' | 'fill' | 'split' | 'add-chain' | 'add-total' | 'sub-chain' | 'sub-total';
 
-export interface MakeTenProblem {
+interface MakeTenProblem {
   kind: MakeTenKind;
   a: number;
   b: number;
@@ -112,11 +112,6 @@ function levelProblem(level: number): MakeTenProblem {
       return addPlan('add-total', a, b);
     }
   }
-}
-
-/** Exported so every level's ranges and choices can be stress-tested. */
-export function generateMakeTenProblem(level: number): MakeTenProblem {
-  return levelProblem(level);
 }
 
 interface MakeTenModel extends NestModel {
@@ -479,12 +474,7 @@ export const makeTen: Game = {
   intro: 'Make Ten! Fill the nest to ten first, then the rest. Let\'s split the eggs!',
 
   runProblem({ play, level }) {
-    const audit = new URLSearchParams(location.search).has('audit');
-    const plan = audit && level === 1 ? partnerProblem(8)
-      : audit && level === 4 ? addPlan('add-chain', 8, 5)
-      : audit && level === 5 ? addPlan('add-chain', 89, 9)
-      : audit && level === 7 ? subPlan('sub-chain', 18, 9)
-      : generateMakeTenProblem(level);
+    const plan = levelProblem(level);
     switch (plan.kind) {
       case 'partner': return runPartner(play, plan);
       case 'fill': return runFill(play, plan);
