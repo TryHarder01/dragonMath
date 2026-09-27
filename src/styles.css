@@ -530,4 +530,116 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   .gem-compare { gap: 2vmin; }
   .gem-dragon-choice.ez-target { padding: 1vmin; }
   .gem-dragon-choice .gem-hoard { --gem-size: clamp(22px, 7vw, 5vh); }
+/* ---------- Stomp Path ---------- */
+.play.stomp-scene { justify-content: flex-start; gap: 1.2vh; width: 100%; }
+.stomp-question {
+  flex: none; min-height: 9vh; display: grid; place-items: center;
+  padding: .15em .65em; border-radius: 2.5vmin; background: var(--card);
+  box-shadow: 0 .7vh 0 #0002; font-size: clamp(2.2rem, 7vmin, 16rem);
+  font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.stomp-path {
+  --path-inset: 4.5%;
+  position: relative; flex: 1; min-height: 0; width: 91%; margin-inline: auto;
+}
+.stomp-path.ruler { margin-inline: var(--path-inset); width: calc(100% - 2 * var(--path-inset)); }
+.stomp-line {
+  position: absolute; left: 0; right: 0; top: 66%; height: max(6px, .7vmin);
+  translate: 0 -50%; border-radius: 999px; background: var(--ink);
+}
+.stomp-ticks { position: absolute; inset: 0; pointer-events: none; }
+.stomp-tick {
+  position: absolute; top: 64%; width: max(1px, .1vmin); height: 3%;
+  background: var(--ink); opacity: .3; translate: -50% 0;
+}
+.stomp-tick.major { top: 59%; height: 14%; width: max(3px, .28vmin); opacity: 1; }
+.stomp-tick span {
+  position: absolute; top: 112%; left: 50%; translate: -50% 0;
+  font-size: clamp(.7rem, 2vmin, 6rem); font-style: normal; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.stomp-marker {
+  position: absolute; z-index: 5; top: 43%; translate: -50% -100%;
+  display: flex; flex-direction: column; align-items: center;
+  transition: left .35s ease-out;
+}
+.stomp-marker[hidden] { display: none; }
+.stomp-rex { font-size: clamp(3.2rem, 10vmin, 24rem); line-height: .9; transform: scaleX(-1); }
+.stomp-number {
+  min-width: 1.8em; padding: .08em .35em; border-radius: 999px; background: var(--card);
+  box-shadow: 0 .35vmin 0 #0002; text-align: center;
+  font-size: clamp(1rem, 3vmin, 8rem); font-weight: 700;
+}
+.stomp-arcs { position: absolute; inset: 0; pointer-events: none; }
+.stomp-arc {
+  position: absolute; z-index: 3; top: 49%; height: 18%; border: max(3px, .35vmin) solid var(--lava-dark);
+  border-bottom: 0; border-radius: 50% 50% 0 0; transform-origin: left bottom;
+  animation: stomp-arc-in .35s ease-out both;
+}
+.stomp-arc.shown { opacity: .72; animation: none; }
+.stomp-arc span {
+  position: absolute; left: 50%; top: -.25em; translate: -50% -100%;
+  padding: .05em .25em; border-radius: .4em; background: var(--card);
+  color: var(--lava-dark); font-size: clamp(.65rem, 1.6vmin, 4rem); font-weight: 700;
+  white-space: nowrap;
+}
+.stomp-open-labels { position: absolute; inset: 0; pointer-events: none; }
+.stomp-open-label {
+  position: absolute; top: 70%; translate: -50% 0;
+  font-size: clamp(.7rem, 2vmin, 3rem); font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.stomp-window-cells {
+  position: absolute; left: 0; right: 0; top: 62%; display: grid;
+  grid-template-columns: repeat(11, 1fr); gap: clamp(2px, .5vmin, 12px);
+}
+.stomp-cell {
+  min-width: 0; height: clamp(72px, 10vmin, 300px); display: grid; place-items: center;
+  border: max(3px, .35vmin) solid var(--ink); border-radius: 1.4vmin; background: var(--shell);
+  box-shadow: 0 .6vmin 0 #0002; font-size: clamp(1rem, 3.2vmin, 8rem); font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.stomp-more {
+  position: absolute; top: 50%; translate: 0 -50%; font-size: clamp(1.4rem, 4vmin, 5rem);
+  font-weight: 700;
+}
+.stomp-more.before { right: calc(100% + .25em); }
+.stomp-more.after { left: calc(100% + .25em); }
+.stomp-answers { flex: none; position: relative; width: 100%; height: max(170px, 27vh); }
+.stomp-egg { width: clamp(72px, min(21vw, 19vh), 460px); --rise: -12%; container-type: inline-size; }
+.stomp-egg .numeral { font-size: 36cqi; }
+.stomp-foot {
+  position: absolute; left: 50%; bottom: 8%; translate: -50% 0;
+  width: clamp(90px, 18vmin, 500px); aspect-ratio: 1; display: grid; place-items: center;
+  border-radius: 50%; background: var(--card); box-shadow: 0 1vh 0 #0003;
+  font-size: clamp(4rem, 12vmin, 30rem); line-height: 1;
+}
+.stomp-foot.pressed { translate: -50% .7vh; box-shadow: 0 .3vh 0 #0003; }
+.stomp-estimate-reminder {
+  position: absolute; left: 50%; bottom: 12%; translate: -50% 0;
+  min-width: clamp(100px, 16vmin, 500px); min-height: 72px; display: grid; place-items: center;
+  padding: .15em .5em; border-radius: 999px; background: var(--card);
+  font-size: clamp(2.5rem, 7vmin, 16rem); font-weight: 700;
+}
+.stomp-line-hit {
+  position: absolute; z-index: 7; left: 0; right: 0; top: calc(66% - 36px);
+  width: 100%; height: 72px; padding: 0; cursor: crosshair;
+}
+.stomp-line-hit.stomp-missed { animation: wobble .5s ease-in-out 2; }
+.stomp-flag {
+  position: absolute; z-index: 8; top: 50%; translate: -50% -100%;
+  width: clamp(72px, 9vmin, 260px); height: clamp(72px, 9vmin, 260px);
+  display: grid; place-items: center; font-size: clamp(2.6rem, 6vmin, 14rem); line-height: 1;
+  border-radius: 50%;
+}
+.stomp-true-spot { background: var(--card); box-shadow: 0 0 0 1vmin var(--dot-lit); animation: pulse 1s ease-in-out infinite; }
+@keyframes stomp-arc-in { from { scale: 0 1; opacity: 0; } to { scale: 1; opacity: 1; } }
+
+@media (max-width: 560px) {
+  .stomp-path { width: 88%; }
+  .stomp-path.ruler { --path-inset: 7%; }
+  .stomp-cell { height: 72px; font-size: .9rem; border-width: 2px; }
+  .stomp-window-cells { gap: 2px; }
+  .stomp-rex { font-size: clamp(3rem, 15vw, 5rem); }
+  .stomp-tick span { font-size: .62rem; }
+  .stomp-arc span { font-size: .6rem; }
 }

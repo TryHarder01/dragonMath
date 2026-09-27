@@ -105,7 +105,11 @@ Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is
 | 🪺 Nest Builder | Make-ten / bridging ten, add **and subtract** (13 − 5 → 10 → 8; 43 − 5 → 40 → 38) | [nest-builder.md](docs/specs/nest-builder.md) |
 | 💎 Gem Bags (done) | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
 | 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
+| 💎 Gem Bags | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
+| 🦖 Stomp Path (built) | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
 | 📖 Dino Story | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
+
+Difference from the spec: on the estimation level, the T-rex marker stays hidden until the child taps, because showing it at the target would reveal the answer. A wrong tap reveals the exact spot as a large glowing flag for the retry.
 
 ## Rewards: the Hatchery
 
@@ -130,5 +134,5 @@ Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is
 5. ~~Break nudge and parent corner~~ (done)
 6. ~~Gem Bags~~ (done)
 7. ~~Nest Builder~~ (done)
-8. Stomp Path
+8. ~~Stomp Path~~ (done)
 9. Dino Story

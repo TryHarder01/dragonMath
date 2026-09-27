@@ -135,7 +135,9 @@ intro: 'Stomp Path! The T-rex is walking home. Help it hop along the path!',
 ## Open questions for the user (defaults in bold, so build with the default)
 
 - Should a round be 5 problems, or one "trip home" as in the original kindergarten design? **5 problems.** It keeps the shared adaptive rule and hatch rhythm. The T-rex moving closer to the nest with each correct answer can be purely decorative.
+  - Resolved: default accepted by user.
 - How precise does estimation need to be? **±5.** Tighten to ±3 if he finds it easy.
+  - Resolved: default accepted by user.
 
 ## Out of scope
 
