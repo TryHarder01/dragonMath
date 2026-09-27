@@ -16,7 +16,8 @@ import { createServer } from 'vite';
 
 const MAX_WORDS = 7;
 const BANNED = ['equally', 'compare', 'digit', 'digits', 'situation', 'total', 'zap', 'blast', 'shoot', 'fire', 'chomp', 'enemy'];
-const SAMPLE_ARGS = [[8, 5, 3, 2], [38, 5, 2, 3], [13, 5, 3, 2]];
+// The last set ends in 0 so a trailing true/false switch is also rendered the false way.
+const SAMPLE_ARGS = [[8, 5, 3, 2], [38, 5, 2, 3], [13, 5, 3, 2], [12, 4, 3, 0]];
 
 const files = ['src/core/lines.ts', ...readdirSync('src/games').filter((f) => f.endsWith('.lines.ts')).map((f) => `src/games/${f}`)];
 const server = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' });
@@ -74,7 +75,8 @@ function render(key, value, samples, file) {
 
 function checkText(where, text) {
   for (const sentence of text.match(/[^.!?]+[.!?]*/g) ?? []) {
-    const words = sentence.trim().split(/\s+/).filter(Boolean);
+    // Template placeholders ({a}, {total}) are filled in later, so they're not words yet.
+    const words = sentence.replace(/\{\w+\}/g, 'N').trim().split(/\s+/).filter(Boolean);
     if (words.length > longest.words) longest = { words: words.length, text: sentence.trim() };
     if (words.length > MAX_WORDS) problems.push(`${where}: ${words.length} words: "${sentence.trim()}"`);
     const banned = words.map((w) => w.toLowerCase().replace(/[^a-z]/g, '')).filter((w) => BANNED.includes(w));
