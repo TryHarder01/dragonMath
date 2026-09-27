@@ -1,5 +1,31 @@
 # Worklog
 
+## 2026-09-26 — Scaffold + Egg Zapper MVP; docs pages moved local
+
+**Goal:** Get a playable game running, starting with the core Egg Zapper loop.
+
+**Done:**
+- Vite + TS scaffold (`package.json`, `tsconfig.json`, `index.html`, `src/main.ts`, `src/styles.css`).
+- `src/core/`: voice (Web Speech, `?mute`), sound (WebAudio), progress (localStorage), adaptive levels, visuals (dice dots, ten-frames, `countAlong` hint), `awaitChoice`, round runner, screens (start, map, hatch, nest), parent corner (hold ⚙️ for 1s).
+- `src/games/eggZapper.ts`: 5 levels from DESIGN.md, drifting eggs, zap beam. A wrong tap counts that egg's dots aloud.
+- The other 5 games show greyed-out on the map (`UPCOMING` in `src/games/index.ts`).
+- Per user request, visual docs are now local HTML: moved `docs/artifacts/` → `docs/pages/` and changed the cross-link to a relative path. The pattern is recorded in the new `CLAUDE.md`. The claude.ai artifact links in the entries below are superseded. Those artifacts still exist online and weren't deleted.
+
+**Decisions:**
+- Eggs bob up and down in place rather than floating away, so there's no time pressure.
+- A start screen with a big ▶ button is needed because browsers block audio and speech until a tap.
+
+**Verified:** `npx tsc --noEmit` clean, and `vite build` succeeds. Drove a full round with Playwright in headless Chrome (`?mute`): start → map → 5 problems, including a deliberate wrong tap (dots lit up while counting, egg greyed out, retry worked) → egg hatched into "Blue Bolt". No console errors. Real speech output not checked by ear.
+
+**Open / broken:**
+- Speech voice quality depends on the browser. Not tested on an iPad.
+- If you leave a game mid-hint, the hint's remaining speech can still play.
+
+**Next:**
+- Build Dino Count (`src/games/dinoCount.ts`), register it in `GAMES`, and remove it from `UPCOMING`. Then Gem Trade, Nest Builder, Stomp Path, and Dino Story.
+
+**Gotchas:** Playwright clicks need `{ force: true }` because the buttons animate constantly. Use the system Chrome (`channel: 'chrome'`).
+
 ## 2026-09-26 — Game design: Dino Egg Blaster
 
 **Goal:** Turn the research into a concrete game design with a dragon/dino theme.
