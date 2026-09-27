@@ -25,10 +25,11 @@ build:
 preview: build
     npm run preview
 
-# Fast guards (~1 s): conflict markers, { } balance per styles.css section, and dead code (knip)
+# Fast guards (~1 s): conflict markers, { } balance per styles.css section, dead code (knip), spoken lines
 check:
     node scripts/check.mjs
     npx knip --no-progress
+    node scripts/check-lines.mjs
 
 # Dead code: unused exports, files and dependencies (config in knip.json)
 deadcode:

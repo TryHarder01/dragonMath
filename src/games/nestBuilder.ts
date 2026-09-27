@@ -5,7 +5,8 @@
 import { h, nearChoices, pick, rand } from '../core/dom';
 import type { Model } from '../core/models';
 import { sfx } from '../core/sound';
-import { prompt, say, wait, word } from '../core/voice';
+import { prompt, say, wait } from '../core/voice';
+import { word } from '../core/words';
 import { eggScene, type EggQuestion } from './eggScene';
 import type { Game } from './types';
 

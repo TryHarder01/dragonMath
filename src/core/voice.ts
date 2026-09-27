@@ -84,10 +84,3 @@ export function repeatPrompt(): Promise<void> {
 export function wait(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms * pace));
 }
-
-const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
-
-export function word(n: number): string {
-  return WORDS[n] ?? String(n);
-}

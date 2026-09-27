@@ -5,6 +5,7 @@ import type { Game } from '../games/types';
 import { CREATURES, creatureEl, type Creature } from './creatures';
 import { burst, h, pick } from './dom';
 import { addHatched, hatched } from './progress';
+import { lines } from './lines';
 import { playRound } from './round';
 import { sfx } from './sound';
 import { prompt, say, wait } from './voice';
@@ -50,9 +51,9 @@ export function showMap(app: HTMLElement, greeting?: string) {
 
   if (sleepy && !breakSuggested) {
     breakSuggested = true;
-    void prompt('Ember is getting sleepy. Great work today, rider! Maybe time for a break?');
+    void prompt(lines.breakNudge);
   } else {
-    void prompt(greeting ?? 'Where should we fly, rider? Tap a picture!');
+    void prompt(greeting ?? lines.map);
   }
 }
 
@@ -77,7 +78,7 @@ export async function showHatch(app: HTMLElement, from: Game) {
   const stage = h('div', 'hatch-stage', [egg]);
   const actions = h('div', 'hatch-actions');
   app.replaceChildren(h('div', 'screen hatch-screen', [h('div', 'hatch-sun'), stage, actions]));
-  void prompt('You did it! Tap the egg to hatch it!');
+  void prompt(lines.hatch);
 
   let taps = 0;
   egg.addEventListener('pointerdown', async () => {
@@ -94,7 +95,7 @@ export async function showHatch(app: HTMLElement, from: Game) {
     const baby = creatureEl(c, 'creature hatched-baby');
     stage.replaceChildren(baby, h('div', 'baby-name', [c.name]));
     addHatched(c.id);
-    await say(isNew ? `It's ${c.name}! Welcome to your nest!` : `Another ${c.name}! They love you!`);
+    await say(isNew ? lines.newFriend(c.name) : lines.againFriend(c.name));
 
     const again = h('button', 'act act-again', ['🔁', h('span', '', ['Again'])]);
     const map = h('button', 'act', ['🏝️', h('span', '', ['Island'])]);
@@ -124,7 +125,5 @@ export function showNest(app: HTMLElement) {
       grid,
     ]),
   );
-  void prompt(
-    have.length ? `You have ${have.length} friends in your nest! Tap one to hear their name.` : 'Your nest is empty. Play a game to hatch a friend!',
-  );
+  void prompt(have.length ? lines.nest(have.length) : lines.nestEmpty);
 }

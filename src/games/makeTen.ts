@@ -1,6 +1,7 @@
 import { h, rand } from '../core/dom';
 import { sfx } from '../core/sound';
-import { say, wait, word } from '../core/voice';
+import { say, wait } from '../core/voice';
+import { word } from '../core/words';
 import { eggScene } from './eggScene';
 import {
   addProblem,

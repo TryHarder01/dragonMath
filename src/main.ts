@@ -3,6 +3,7 @@ import { h } from './core/dom';
 import { showGuide } from './core/guide';
 import { showHatch, showMap, showNest, startGame } from './core/screens';
 import { GAMES } from './games';
+import { lines } from './core/lines';
 import { unlockAudio } from './core/sound';
 
 const app = document.querySelector<HTMLElement>('#app')!;
@@ -23,7 +24,7 @@ function showStart() {
   );
   go.addEventListener('click', () => {
     unlockAudio();
-    showMap(app, "Hi rider! I'm Ember. A storm scattered the dino eggs. Let's help them get home! Tap a picture to play.");
+    showMap(app, lines.greeting);
   });
 }
 

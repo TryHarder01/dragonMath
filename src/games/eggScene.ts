@@ -4,11 +4,10 @@
 
 import { awaitChoice, type Choice } from '../core/choices';
 import { burst, h, pick, rand } from '../core/dom';
+import { lines } from '../core/lines';
 import type { Model } from '../core/models';
 import { sfx } from '../core/sound';
 import { prompt, say, wait } from '../core/voice';
-
-const PRAISE = ['Nice and warm! It hatched!', 'You helped it hatch!', 'You got it, rider!', 'Great thinking!'];
 
 function glow(from: HTMLElement, to: HTMLElement) {
   const a = from.getBoundingClientRect();
@@ -98,7 +97,7 @@ export function eggScene(play: HTMLElement, q: EggQuestion): Promise<boolean> {
       burst(c.el);
       await q.onSolved?.();
       fit();
-      await say(pick(PRAISE));
+      await say(pick(lines.praise));
       await wait(200);
     },
     onWrong: async () => {
@@ -109,10 +108,10 @@ export function eggScene(play: HTMLElement, q: EggQuestion): Promise<boolean> {
           bubble.append(q.model.el);
           fit();
         }
-        await say("Let's count.");
+        await say(lines.hintStart);
         await q.model.hint();
       } else {
-        await say('Not that one either. Look at the picture. Try again.');
+        await say(lines.missAgain);
       }
       play.classList.remove('paused');
       void prompt(q.ask);

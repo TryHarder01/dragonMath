@@ -6,7 +6,7 @@
 
 import { nearChoices, pick, rand } from '../core/dom';
 import { arrayModel, groupsModel } from '../core/models';
-import { word } from '../core/voice';
+import { word } from '../core/words';
 import { eggScene, productChoices, type EggQuestion } from './eggScene';
 import type { Game } from './types';
 

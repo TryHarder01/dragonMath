@@ -8,7 +8,9 @@
 import { h } from './dom';
 import { sfx } from './sound';
 import { dots } from './visuals';
-import { say, wait, word } from './voice';
+import { say, wait } from './voice';
+import { lines } from './lines';
+import { word } from './words';
 
 export interface Model {
   el: HTMLElement;
@@ -51,10 +53,9 @@ export function addModel(a: number, b: number): Model {
   return {
     el,
     async hint() {
-      await say(`Start at ${word(a)}. Count on ${word(b)}.`);
+      await say(lines.addStart(a, b));
       for (let i = 0; i < b; i++) await light(second[i], a + i + 1, word(a + i + 1));
-      if (a < 10 && a + b > 10) await say(`${word(a)} and ${word(10 - a)}. Ten! Ten and ${word(a + b - 10)}. ${word(a + b)}!`);
-      else await say(`${word(a)} and ${word(b)} is ${word(a + b)}.`);
+      await say(a < 10 && a + b > 10 ? lines.addBridge(a, b) : lines.addSum(a, b));
     },
   };
 }
@@ -66,10 +67,7 @@ export function subModel(a: number, b: number): Model {
   return {
     el,
     async hint() {
-      const ones = a - 10;
-      const crosses = a > 10 && b > ones;
-      if (crosses) await say(`Take away ${word(ones)}. Down to ten. Then ${word(b - ones)} more.`);
-      else await say(`Start at ${word(a)}. Take away ${word(b)}. Count back.`);
+      await say(a > 10 && b > a - 10 ? lines.subBridge(a, b) : lines.subCountBack(a, b));
       for (let i = 0; i < b; i++) {
         const d = ds[a - 1 - i];
         d.classList.add('gone');
@@ -77,7 +75,7 @@ export function subModel(a: number, b: number): Model {
         await say(word(a - 1 - i), { rate: 1 });
         await wait(60);
       }
-      await say(`${word(a)} take away ${word(b)} is ${word(a - b)}.`);
+      await say(lines.subResult(a, b));
     },
   };
 }
@@ -90,12 +88,12 @@ export function missingModel(a: number, c: number): Model {
   return {
     el,
     async hint() {
-      await say(`Start at ${word(a)}. How many more to ${word(c)}?`);
+      await say(lines.missingStart(a, c));
       for (let i = 0; i < gaps.length; i++) {
         gaps[i].classList.replace('ghost', 'two');
         await light(gaps[i], a + i + 1, word(a + i + 1));
       }
-      await say(`That's ${word(c - a)} more. ${word(a)} and ${word(c - a)} is ${word(c)}.`);
+      await say(lines.missingResult(a, c));
     },
   };
 }
@@ -117,24 +115,24 @@ export function arrayModel(rows: number, cols: number, opts: { hidden?: boolean 
     el: grid,
     async hint() {
       if (opts.hidden) {
-        await say(`Let's build rows of ${cols}. Count up to ${product}.`);
+        await say(lines.arrayBuild(cols, product));
         for (let r = 0; r < rows; r++) {
           rowEls[r].classList.remove('hidden-row');
           await light(rowEls[r], r + 1, String((r + 1) * cols));
         }
-        await say(`That's ${rows} rows. ${rows} times ${cols} is ${product}.`);
+        await say(lines.arrayBuilt(rows, cols));
         return;
       }
       if (rows >= 6 && rows <= 9) {
         rowEls.slice(0, 5).forEach((r) => r.classList.add('lit'));
         sfx.count(5);
-        await say(`Five rows of ${cols} is ${5 * cols}.`);
+        await say(lines.arrayFive(cols));
         for (let r = 5; r < rows; r++) await light(rowEls[r], r + 1, `${(r + 1) * cols}`);
       } else {
-        await say(`Count by ${cols}s.`);
+        await say(lines.arrayCountBy(cols));
         for (let r = 0; r < rows; r++) await light(rowEls[r], r + 1, String((r + 1) * cols));
       }
-      await say(`${rows} times ${cols} is ${product}.`);
+      await say(lines.arrayResult(rows, cols));
     },
   };
 }
@@ -145,9 +143,9 @@ export function groupsModel(n: number, k: number): Model {
   return {
     el: h('div', 'groups', nests),
     async hint() {
-      await say(`Count the nests by ${word(k)}s.`);
+      await say(lines.groupsCountBy(k));
       for (let i = 0; i < n; i++) await light(nests[i], i + 1, String((i + 1) * k));
-      await say(`${word(n)} nests of ${word(k)} is ${(n * k)} eggs.`);
+      await say(lines.groupsResult(n, k));
     },
   };
 }

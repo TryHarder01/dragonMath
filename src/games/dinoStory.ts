@@ -6,7 +6,8 @@ import { awaitChoice, type Choice } from '../core/choices';
 import { h, nearChoices, pick, rand, shuffle } from '../core/dom';
 import { addModel, groupsModel, missingModel, subModel, type Model } from '../core/models';
 import { sfx } from '../core/sound';
-import { prompt, say, wait, word } from '../core/voice';
+import { prompt, say, wait } from '../core/voice';
+import { word } from '../core/words';
 import type { Game } from './types';
 
 const MINUS = '−';

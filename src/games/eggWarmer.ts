@@ -6,7 +6,7 @@
 
 import { nearChoices, pick, rand } from '../core/dom';
 import { addModel, arrayModel, missingModel, subModel } from '../core/models';
-import { word } from '../core/voice';
+import { lines } from './eggWarmer.lines';
 import { eggScene, productChoices, type EggQuestion } from './eggScene';
 import type { Game } from './types';
 
@@ -16,7 +16,7 @@ function add(showModel: boolean): EggQuestion {
   const a = rand(2, 10), b = rand(2, 10);
   return {
     text: `${a} + ${b}`,
-    ask: `${word(a)} plus ${word(b)}. Warm the egg with the answer!`,
+    ask: lines.add(a, b),
     answer: a + b,
     choices: nearChoices(a + b, 4, 0, 20),
     model: addModel(a, b),
@@ -30,9 +30,7 @@ function sub(a: number, b: number, showModel: boolean, takeAway = false): EggQue
   if (a + b <= 20 && !choices.includes(a + b)) choices[choices.findIndex((c) => c !== a - b)] = a + b;
   return {
     text: `${a} ${MINUS} ${b}`,
-    ask: takeAway
-      ? `${word(a)} eggs. Take away ${word(b)}. How many are left?`
-      : `${word(a)} minus ${word(b)}. Warm the egg with the answer!`,
+    ask: takeAway ? lines.takeAway(a, b) : lines.sub(a, b),
     answer: a - b,
     choices,
     model: subModel(a, b),
@@ -63,7 +61,7 @@ function missing(showModel: boolean): EggQuestion {
   const a = rand(Math.max(3, c - 9), 9);
   return {
     text: `${a} + ? = ${c}`,
-    ask: `${word(a)} plus what makes ${word(c)}? Warm that egg!`,
+    ask: lines.missing(a, c),
     answer: c - a,
     choices: nearChoices(c - a, 4, 1, 12),
     model: missingModel(a, c),
@@ -76,7 +74,7 @@ function times(): EggQuestion {
   const [r, c] = Math.random() < 0.5 ? [o, f] : [f, o];
   return {
     text: `${r} × ${c}`,
-    ask: `${r} times ${c}. Warm the egg with the answer!`,
+    ask: lines.times(r, c),
     answer: r * c,
     choices: productChoices(r, c),
     model: arrayModel(r, c),
@@ -112,7 +110,7 @@ export const eggWarmer: Game = {
     'Mixed + / − / missing numbers within 20',
     'Mixed within 20, plus ×2, ×5 and ×10 facts',
   ],
-  intro: "Egg Warmer! Let's warm the eggs!",
+  intro: lines.intro,
 
   runProblem({ play, level }) {
     return eggScene(play, LEVELS[level - 1]());
