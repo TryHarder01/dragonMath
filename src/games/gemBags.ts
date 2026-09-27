@@ -101,7 +101,7 @@ function operationModel(a: number, b: number, operation: 'add' | 'sub'): Model {
   const left = hoard(aTens, aOnes);
   const change = hoard(bTens, bOnes, 'gem-change-hoard');
   const symbol = h('div', 'gem-operation', [operation === 'add' ? '+' : MINUS]);
-  const friend = operation === 'sub' ? h('div', 'gem-friend', ['🐲']) : h('div', 'gem-friend', ['🐉']);
+  const friend = h('div', 'gem-friend', ['🐉']);
   const el = h('div', 'gem-equation-model', [left.el, symbol, change.el, friend]);
   const answer = operation === 'add' ? a + b : a - b;
 
@@ -305,7 +305,11 @@ function question(p: GemProblem): EggQuestion {
     case 'add-tens':
       return {
         text: `${p.a} + ${b}`,
-        ask: b === 10 ? `${p.a} gems. A friend gives one more bag! How many now?` : `${p.a} gems, and ${b / 10} more bags! How many?`,
+        ask: p.level === 8
+          ? `${p.a} plus ${b}. Warm the egg with the answer!`
+          : b === 10
+            ? `${p.a} gems. A friend gives one more bag! How many now?`
+            : `${p.a} gems, and ${b / 10} more bags! How many?`,
         answer: p.answer,
         choices: p.choices,
         model: operationModel(p.a, b, 'add'),
@@ -314,7 +318,11 @@ function question(p: GemProblem): EggQuestion {
     case 'sub-tens':
       return {
         text: `${p.a} ${MINUS} ${b}`,
-        ask: b === 10 ? `${p.a} gems. Share one bag with a friend. How many are left?` : `${p.a} gems. Share ${b / 10} bags. How many are left?`,
+        ask: p.level === 8
+          ? `${p.a} minus ${b}. Warm the egg with the answer!`
+          : b === 10
+            ? `${p.a} gems. Share one bag with a friend. How many are left?`
+            : `${p.a} gems. Share ${b / 10} bags. How many are left?`,
         answer: p.answer,
         choices: p.choices,
         model: operationModel(p.a, b, 'sub'),
@@ -475,7 +483,7 @@ function compareScene(play: HTMLElement, p: GemProblem): Promise<boolean> {
     return { n, tens, ones, model: gemsModel(tens, ones) };
   });
   const choices: Choice<number>[] = models.map(({ n, model }, i) => {
-    const dragon = h('div', 'gem-dragon ez-ember', [i ? '🐲' : '🐉']);
+    const dragon = h('div', 'gem-dragon ez-ember', ['🐉']);
     const el = h('button', 'gem-dragon-choice ez-target', [dragon, model.el]);
     el.dataset.value = String(n);
     el.setAttribute('aria-label', `Dragon ${i + 1}`);
