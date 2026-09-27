@@ -63,6 +63,27 @@
 
 **Next:**
 - Nest Builder and Gem Bags still need their line-by-line review (`docs/specs/follow-ups.md`).
+## 2026-09-27 — Tighten Nest Builder (fresh-eyes review)
+
+**Goal:** Per `docs/specs/follow-ups.md`, review `src/games/nestBuilder.ts` line by line against `docs/specs/nest-builder.md` (his weak spot, so it matters most), fix the faint eggs, and run the generator stress test.
+
+**Done:**
+- Line-by-line review against the spec: all 8 level generators' ranges, the two-beat problems, tuck-in on L1–L2 only, distractor formulas, spoken lines and hints, and the parent text all matched.
+- Fixed the faint eggs: `.nest-frame .egg-dot` in `src/styles.css` now gets a brown inset outline, so eggs read clearly against the tan nest in both the mini full-nest tiles and the hint.
+- Tightened `src/games/nestBuilder.ts`: `nextTenProblem` no longer needs a rejection-sampling `while` loop (closed-form `rand(1,8)*10 + rand(1,9)` can't land on a multiple of ten); `addSmall`/`addBig` now share a new `addProblem` helper the same way `subSmall`/`subBig` already shared `subProblem`; the two-beat add's small-vs-big phrasing branch now checks `plan.kind === 'add-small'` instead of the incidental `plan.a < 10`. File went from 492 to 487 lines.
+
+**Decisions:**
+- Left the `hatchTo(target)` design (vs. the spec's `hatchAway(n)`) alone — it already implements the spec's "one full nest opens when the open nest empties" behavior, just via a target-total invariant instead of a count, which sidesteps double-bookkeeping across two beats. Not a spec violation since only `el`/`hint()` are a contract.
+
+**Verified:**
+- `npm run typecheck` and `npm run build`: clean.
+- `node scripts/audit.mjs --only=nest-L2,nest-L7`: 0 of 12 flagged.
+- `node scripts/playthrough.mjs nest --level=N` for N=1–8: all reach the hatch with a hint shown. `--size=phone` for L2 and L7 (the audit's two/two-frame and nine-full-nest cases): both pass.
+- Looked at hint/tuck screenshots for L1 (tuck), L2, L6, L7 at both default and phone size: eggs read clearly.
+- Throwaway generator stress test (not committed): looped `generateNestProblem` 1,000× per level via a Vite dev server + Playwright (needed since the module imports browser APIs). All 8,000 problems had valid ranges and included the answer among exactly 4 distinct choices; L8's mixed-level ratio came out sub:add ≈ 1.98 (specced ~2.0).
+
+**Next:**
+- Gem Bags and Dino Story still need the same line-by-line review and generator check (see `docs/specs/follow-ups.md`).
 
 ## 2026-09-27 — Merge the four games; rough cut ready to play
 
