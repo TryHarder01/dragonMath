@@ -1,5 +1,42 @@
 # Worklog
 
+## 2026-09-27 — Brief template and check script
+
+**Goal:** Give every delegated task a written, checked brief in `docs/briefs/`, following `docs/briefs/2026-09-27-brief-template.md`, so scope stops being left implicit (the top retro-review finding).
+
+**Done:**
+- `docs/briefs/TEMPLATE.md` (new): the brief's own section headings, each with one or two lines of guidance, folding in the delegate skill's old quality-bar and ownership prose.
+- `docs/briefs/README.md` (new): naming (`YYYY-MM-DD-<slug>.md`), commit-before-launch, the `--spec` pointer sentence, and that a retro names its brief.
+- `scripts/check-brief.mjs` (new) and `just brief-check <file>`: flags a missing required section, a `You own` path that doesn't exist and isn't marked `(new)`, and a vague scope word ("if any", "etc", "as needed", "where appropriate", "and so on") in `You own`/`In scope`/`Out of scope`. Styled like `check-lines.mjs` (header comment, `✗`/`✓` output, exit 1 on problems).
+- `.claude/skills/delegate/SKILL.md`: "1. The brief" now points at the template and `just brief-check`; "2. Launch" adds the `--spec` pointer to the `worker-start` example.
+- `.claude/skills/retro/SKILL.md`: the header line example now names the brief instead of the agent (`# Retro: <task> (brief: docs/briefs/<file>)`).
+
+**Decisions:**
+- Vague-word scanning only checks unindented top-level bullets/numbered items in `You own`/`In scope`/`Out of scope`, not indented sub-bullets — this brief's own "In scope" item 3 quotes the banned phrases as literal examples of what the checker flags, and that quoting sits in an indented sub-bullet under the item, not a scope statement itself.
+- `You own` path-existence check reads only the first backtick-quoted token per bullet (matches every example in this brief, including `justfile` and `WORKLOG.md`, where a second backticked token names a recipe or isn't a path at all).
+
+**Verified:**
+- `npm run typecheck`: clean.
+- `just check`: clean (`✓ no conflict markers...`, Knip clean, `✓ spoken lines OK (9 lines files...)`).
+- `just brief-check docs/briefs/2026-09-27-brief-template.md`: `✓ brief OK`.
+- A deliberately broken copy in scratch space (missing 4 sections, a nonexistent unmarked `You own` path, 3 vague words) failed with one `✗` line per problem:
+  ```
+  ✗ missing required section: "Current state (facts to rely on)"
+  ✗ missing required section: "Don't touch"
+  ✗ missing required section: "Done when"
+  ✗ missing required section: "Finish"
+  ✗ .../broken-brief.md:10: "You own" path doesn't exist and isn't marked (new): docs/briefs/does-not-exist.md
+  ✗ .../broken-brief.md:14: vague scope word "if any" in "In scope": "1. Fix the bug, and clean up other files if any."
+  ✗ .../broken-brief.md:15: vague scope word "etc" in "In scope": "2. Whatever else, etc."
+  ✗ .../broken-brief.md:18: vague scope word "as needed" in "Out of scope": "- Anything not listed, as needed."
+  8 problem(s)
+  ```
+- No game code touched, so no audit/playthrough run (per the brief's Verify section).
+
+**Open / broken:** None.
+
+**Next:** None for this chunk. The delegate skill's `docs/briefs/README.md` and `TEMPLATE.md` are ready for the next delegated task's brief.
+
 ## 2026-09-27 — First retro review: retro-review skill, retro-handling decision, WORKLOG union merge
 
 **Goal:** Per the user, review all retros, pick ONE devex improvement to hand out, decide how retro notes are handled once addressed, and build a skill for processing retros (a work in progress).
