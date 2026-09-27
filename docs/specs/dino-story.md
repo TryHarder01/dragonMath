@@ -44,11 +44,11 @@ A custom scene following the README's layout contract:
 |---|---|---|---|
 | 1 | Join, result unknown | "Eight dinos splash in the pond. Five more come to play. How many dinos now?" | a 3–12, b 2–8, sum ≤ 20 |
 | 2 | **Separate, result unknown** | "Thirteen dinos splash in the pond. Five fly home on Ember. How many are still splashing?" | a 6–20, b 2–9, result ≥ 1; 60% cross ten |
-| 3 | Part-part-whole | "Seven green dinos and six blue dinos. How many dinos?" / "Thirteen dinos. Seven are green, the rest are blue. How many blue?" | whole 8–20; 50% whole unknown / 50% part unknown |
+| 3 | Part-part-whole | "Seven in one group. Six in the other. How many altogether?" / "Thirteen altogether. Seven are in one group. How many are in the other group?" | whole 8–20; 50% whole unknown / 50% part unknown |
 | 4 | Join, change unknown | "Eight dinos at the pond. Some more came. Now there are thirteen. How many came?" | start 3–12, change 2–8, total ≤ 20 |
-| 5 | **Compare**: how many more / fewer | "Thirteen dinos in the pond, eight on the hill. How many more in the pond?" | bigger 6–20, difference 2–9; ask "more" or "fewer" |
+| 5 | **Compare**: how many more / fewer | "Thirteen and eight. How many more?" | bigger 6–20, difference 2–9; ask "more" or "fewer" |
 | 6 | **Separate, start unknown** | "Some dinos were playing. Five flew home. Eight are still playing. How many were playing at the start?" | change 2–9, result 2–11, start ≤ 20 |
-| 7 | Equal groups and sharing | "Four nests with three eggs each. How many eggs?" / "Twelve eggs shared into three nests. How many in each nest?" | groups 2–5, size 2–5; 50% product unknown / 50% sharing (size unknown) |
+| 7 | Equal groups and sharing | "Four nests with three eggs each. How many altogether?" / "Twelve eggs go into three nests. How many in each?" | groups 2–5, size 2–5; 50% product unknown / 50% sharing (size unknown) |
 | 8 | Mixed L1–L7, plus **two-step** within 20 on ~30% | "Nine dinos play. Four go home. Six more come. How many now?" | two-step: all intermediate values 0–20 |
 
 **Number-sentence beat (L6 and L8):** on half the problems, add a first beat: "Which number puzzle matches the story?" The choices are 3 sentence cards (e.g. `? − 5 = 8`, `8 − 5 = ?`, `8 + 5 = ?`), and the right one is the story's structure. Then comes beat 2: solve it. Build the cards as big tappable elements with `awaitChoice`. `firstTry` = both beats right the first time.
@@ -60,21 +60,26 @@ Build each level's stories from templates. Keep them in a data array in `dinoSto
 | Type | Templates (`{a}` `{b}` are numbers) |
 |---|---|
 | Join | "{a} dinos splash in the pond. {b} more come to play." · "{a} eggs are in the nest. Ember brings {b} more." · "{a} baby dinos are napping. {b} more curl up with them." · "A dragon has {a} gems. A friend gives her {b} more." |
-| Separate | "{a} dinos splash in the pond. {b} fly home on Ember." · "{a} eggs are in the nest. {b} hatch and walk home to their mums." · "{a} dinos are playing. {b} go for a nap." · "A dragon has {a} gems. She shares {b} with a friend." |
-| Part-part-whole | "{a} green dinos and {b} blue dinos are at the pond." · "The nest has {a} white eggs and {b} speckled eggs." · "{a} dinos are in the pond and {b} are on the sand." · "Ember found {a} red gems and {b} blue gems." |
-| Compare | "{a} dinos are in the pond. {b} dinos are on the hill." · "Ember has {a} gems. Her friend has {b} gems." · "The big nest has {a} eggs. The little nest has {b} eggs." · "{a} turtles and {b} dinos are at the beach." |
-| Equal groups / sharing | "{a} nests with {b} eggs in each." · "{a} dragons each have {b} gems." · "{total} eggs shared equally into {a} nests." · "{total} gems shared equally by {a} dragons." |
+| Separate | "{a} dinos splash in the pond. {b} fly home on Ember." · "{a} eggs are in the nest. {b} hatch and walk home." · "{a} dinos are playing. {b} go for a nap." · "A dragon has {a} gems. She shares {b} with a friend." |
+| Part-part-whole | "{a} green dinos are at the pond. {b} blue dinos are there too." · "The nest has {a} white eggs. {b} more eggs are speckled." · "{a} dinos are in the pond. {b} more are on the sand." · "Ember found {a} red gems. {b} more are blue." |
+| Compare | "{a} dinos are in the pond. {b} dinos are on the hill." · "Ember has {a} gems. Her friend has {b} gems." · "The big nest has {a} eggs. The little nest has {b} eggs." · "{a} turtles are at the beach. {b} dinos are there too." |
+| Equal groups / sharing | "{a} nests with {b} eggs in each." · "{a} dragons each have {b} gems." · "{total} eggs go into {a} nests." · "{total} gems go to {a} dragons." |
+
+Every template is two short sentences, one idea each, per "How Ember talks" in AGENTS.md.
 
 **Compare staging:** line the two groups up in two rows, one above the other, so the extra ones stick out. That's the matching picture the research recommends for "how many more".
 
 ## Spoken lines
 
-- **The story:** the template sentences, one `say()` each, synced to the animation.
-- **The question:** "How many dinos now?" / "How many are still splashing?" / "How many came?" / "How many more are in the pond?" / "How many were playing at the start?" / "How many in each nest?"
-- **The `ask` for 🔊:** a compact retelling plus the question, e.g. "Thirteen dinos. Five flew home. How many are left?"
-- **Praise:** "You acted it out in your head!", "That was a tricky one!", "You found the missing part!"
+Short sentences, one idea each, per "How Ember talks" in AGENTS.md.
 
-## Hints: "Let's act it out"
+- **The story:** the template sentences, one `say()` each, synced to the animation.
+- **The question:** "How many now?" / "How many are still splashing?" / "How many came?" / "How many more?" / "How many were playing at the start?" / "How many in each?"
+- **The `ask` for 🔊:** a compact retelling plus the question, e.g. "Thirteen were playing. Five went home. How many are left?"
+- **Praise:** "You acted it out in your head!", "That was a tricky one!", "You found the missing part!"
+- **Intro:** "Dino Story! Help Ember answer the question!"
+
+## Hints: "Watch! Let's act it out."
 
 1. Replay the story animation at double speed.
 2. Show the matching **model** in the card area, then run its `hint()`:
@@ -83,8 +88,8 @@ Build each level's stories from templates. Keep them in a data array in `dinoSto
 |---|---|
 | Join / part-part-whole (whole unknown) | `addModel(a, b)` |
 | Separate (result unknown) | `subModel(a, b)` |
-| Join change unknown, part unknown, compare | `missingModel(small, big)`. For compare, first say "Match them up: the extra ones are the answer." |
-| Start unknown | Say "Put the ones who left back!", then `addModel(result, change)` |
+| Join change unknown, part unknown, compare | `missingModel(small, big)`. For compare, first say "Watch! Match them up. Extra ones are the answer." |
+| Start unknown | Say "Watch! Put the ones who left back!", then `addModel(result, change)` |
 | Equal groups | `groupsModel(n, k)` |
 | Sharing | Deal the eggs one at a time into the nests while counting ("one for you, one for you…"). This is new: write it in `dinoStory.ts`. |
 
@@ -116,7 +121,7 @@ levels: [
   'Equal groups and sharing (4 nests of 3 eggs, 12 shared by 3)',
   'Mixed stories, including two-step stories',
 ],
-intro: 'Dino Story! Watch what the dinos do, then help Ember answer the question.',
+intro: 'Dino Story! Help Ember answer the question!',
 ```
 
 ## Build checklist

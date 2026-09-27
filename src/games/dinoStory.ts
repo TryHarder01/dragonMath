@@ -46,15 +46,15 @@ const STORY_TEMPLATES: Record<StoryKind, StoryTemplate[]> = {
   ],
   separate: [
     { lines: ['{a} dinos splash in the pond.', '{b} fly home on Ember.'], icon: '🦕', backdrop: 'pond', action: 'fly' },
-    { lines: ['{a} eggs are in the nest.', '{b} hatch and walk home to their mums.'], icon: '🥚', backdrop: 'nest', action: 'hatch' },
+    { lines: ['{a} eggs are in the nest.', '{b} hatch and walk home.'], icon: '🥚', backdrop: 'nest', action: 'hatch' },
     { lines: ['{a} dinos are playing.', '{b} go for a nap.'], icon: '🦖', backdrop: 'meadow', action: 'nap' },
     { lines: ['A dragon has {a} gems.', 'She shares {b} with a friend.'], icon: '💎', backdrop: 'cave', action: 'share' },
   ],
   'part-whole': [
-    { lines: ['{a} green dinos and {b} blue dinos are at the pond.'], partUnknownLines: ['{whole} dinos are at the pond.', '{a} are green. The rest are blue.'], icon: '🦕', backdrop: 'pond' },
-    { lines: ['The nest has {a} white eggs and {b} speckled eggs.'], partUnknownLines: ['The nest has {whole} eggs.', '{a} are white. The rest are speckled.'], icon: '🥚', backdrop: 'nest' },
-    { lines: ['{a} dinos are in the pond and {b} are on the sand.'], partUnknownLines: ['{whole} dinos are at the beach.', '{a} are in the pond. The rest are on the sand.'], icon: '🦖', backdrop: 'beach' },
-    { lines: ['Ember found {a} red gems and {b} blue gems.'], partUnknownLines: ['Ember found {whole} gems.', '{a} are red. The rest are blue.'], icon: '💎', backdrop: 'cave' },
+    { lines: ['{a} green dinos are at the pond.', '{b} blue dinos are there too.'], partUnknownLines: ['{whole} dinos are at the pond.', '{a} are green. The rest are blue.'], icon: '🦕', backdrop: 'pond' },
+    { lines: ['The nest has {a} white eggs.', '{b} more eggs are speckled.'], partUnknownLines: ['The nest has {whole} eggs.', '{a} are white. The rest are speckled.'], icon: '🥚', backdrop: 'nest' },
+    { lines: ['{a} dinos are in the pond.', '{b} more are on the sand.'], partUnknownLines: ['{whole} dinos are at the beach.', '{a} are in the pond. The rest are on the sand.'], icon: '🦖', backdrop: 'beach' },
+    { lines: ['Ember found {a} red gems.', '{b} more are blue.'], partUnknownLines: ['Ember found {whole} gems.', '{a} are red. The rest are blue.'], icon: '💎', backdrop: 'cave' },
   ],
   'change-unknown': [
     { lines: ['{a} dinos are at the pond.', 'Some more come to play.', 'Now there are {total}.'], icon: '🦕', backdrop: 'pond' },
@@ -66,7 +66,7 @@ const STORY_TEMPLATES: Record<StoryKind, StoryTemplate[]> = {
     { lines: ['{a} dinos are in the pond.', '{b} dinos are on the hill.'], icon: '🦕', backdrop: 'pond' },
     { lines: ['Ember has {a} gems.', 'Her friend has {b} gems.'], icon: '💎', backdrop: 'cave' },
     { lines: ['The big nest has {a} eggs.', 'The little nest has {b} eggs.'], icon: '🥚', backdrop: 'nest' },
-    { lines: ['{a} turtles and {b} dinos are at the beach.'], icon: '🐢', secondIcon: '🦖', backdrop: 'beach' },
+    { lines: ['{a} turtles are at the beach.', '{b} dinos are there too.'], icon: '🐢', secondIcon: '🦖', backdrop: 'beach' },
   ],
   'start-unknown': [
     { lines: ['Some dinos were splashing.', '{b} flew home on Ember.', '{result} are still splashing.'], icon: '🦕', backdrop: 'pond', action: 'fly' },
@@ -79,8 +79,8 @@ const STORY_TEMPLATES: Record<StoryKind, StoryTemplate[]> = {
     { lines: ['{a} dragons each have {b} gems.'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
   ],
   sharing: [
-    { lines: ['{total} eggs are shared equally into {a} nests.'], icon: '🥚', containerIcon: '🪺', backdrop: 'nest' },
-    { lines: ['{total} gems are shared equally by {a} dragons.'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
+    { lines: ['{total} eggs go into {a} nests.'], icon: '🥚', containerIcon: '🪺', backdrop: 'nest' },
+    { lines: ['{total} gems go to {a} dragons.'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
   ],
   'two-step': [
     { lines: ['{a} dinos play at the pond.', '{b} fly home on Ember.', '{c} more come to play.'], icon: '🦕', backdrop: 'pond', action: 'fly' },
@@ -211,7 +211,7 @@ function partWhole(level = 3): StoryProblem {
   if (wholeUnknown) {
     return base(
       level, 'part-whole', { a, b, whole, wholeUnknown }, whole,
-      `There are ${word(a)} in one group and ${word(b)} in the other. How many altogether?`,
+      `${word(a)} in one group. ${word(b)} in the other. How many altogether?`,
       [`${a}`, `+ ${b}`, '= ?'], `${a} + ${b} = ?`,
       [`${a} + ${b} = ?`, `${whole} ${MINUS} ${a} = ?`, `${a} ${MINUS} ${b} = ?`],
     );
@@ -246,8 +246,8 @@ function compare(level = 5): StoryProblem {
   return base(
     level, 'compare', { a: bigger, b: smaller, bigger, smaller, difference, askMore }, difference,
     askMore
-      ? `${word(bigger)} in the first group and ${word(smaller)} in the second. How many more are in the first group?`
-      : `${word(smaller)} in the second group and ${word(bigger)} in the first. How many fewer are in the second group?`,
+      ? `${word(bigger)} and ${word(smaller)}. How many more?`
+      : `${word(smaller)} and ${word(bigger)}. How many fewer?`,
     [`${bigger}`, `${MINUS} ${smaller}`, '= ?'], `${bigger} ${MINUS} ${smaller} = ?`,
     [`${bigger} ${MINUS} ${smaller} = ?`, `${bigger} + ${smaller} = ?`, `${smaller} ${MINUS} ${difference} = ?`],
     bigger + smaller,
@@ -260,7 +260,7 @@ function startUnknown(level = 6): StoryProblem {
   const start = b + result;
   return base(
     level, 'start-unknown', { a: start, b, result, start }, start,
-    `Some were playing. ${word(b)} went home and ${word(result)} stayed. How many were playing at the start?`,
+    `Some were playing. ${word(b)} went home. ${word(result)} stayed. How many were playing at the start?`,
     ['?', `${MINUS} ${b}`, `= ${result}`], `? ${MINUS} ${b} = ${result}`,
     [`? ${MINUS} ${b} = ${result}`, `${result} ${MINUS} ${b} = ?`, `${result} + ${b} = ?`],
     result,
@@ -275,7 +275,7 @@ function equalGroups(level = 7): StoryProblem {
   if (sharing) {
     return base(
       level, 'sharing', { a: groups, b: size, groups, size, total, sharing }, size,
-      `${word(total)} shared equally into ${word(groups)} groups. How many in each group?`,
+      `${word(total)} go into ${word(groups)} groups. How many in each?`,
       [`${total}`, `${DIVIDE} ${groups}`, '= ?'], `${total} ${DIVIDE} ${groups} = ?`,
       [`${total} ${DIVIDE} ${groups} = ?`, `${groups} ${TIMES} ${size} = ?`, `${total} ${MINUS} ${groups} = ?`],
       undefined, 25,
@@ -429,14 +429,14 @@ function sharingModel(groups: number, total: number, icon: string, containerIcon
   return {
     el: h('div', 'story-deal-model', nests),
     async hint() {
-      await say(`Share ${word(total)} equally. One for each group, over and over.`);
+      await say(`Share ${word(total)}. One for each group.`);
       for (let i = 0; i < total; i++) {
         const egg = actor(icon);
         nests[i % groups].append(egg);
         sfx.count(i + 1);
         await say('One for you.', { rate: 1.1 });
       }
-      await say(`${word(total)} shared into ${word(groups)} groups is ${word(total / groups)} in each group.`);
+      await say(`${word(groups)} groups. ${word(total / groups)} in each.`);
     },
   };
 }
@@ -471,8 +471,8 @@ function hintModel(p: StoryProblem): Model {
 }
 
 function preHint(p: StoryProblem): Promise<void> {
-  if (p.kind === 'compare') return say('Match them up: the extra ones are the answer.');
-  if (p.kind === 'start-unknown') return say('Put the ones who left back!');
+  if (p.kind === 'compare') return say('Watch! Match them up. Extra ones are the answer.');
+  if (p.kind === 'start-unknown') return say('Watch! Put the ones who left back!');
   return Promise.resolve();
 }
 
@@ -530,7 +530,7 @@ async function sentenceBeat(stage: HTMLElement, p: StoryProblem): Promise<boolea
         hinted = true;
         await say("Let's act it out once more.");
         await playStory(stage, p, true);
-      } else await say('Look at what happened, then try another number puzzle.');
+      } else await say('Think about the story. Try again.');
       void prompt('Which number puzzle matches the story?');
     },
   });
@@ -568,7 +568,7 @@ async function answerBeat(shell: HTMLElement, stage: HTMLElement, p: StoryProble
       shell.classList.add('paused');
       if (!hinted) {
         hinted = true;
-        await say("Hmm, not that one. Let's act it out.");
+        await say("Watch! Let's act it out.");
         await playStory(stage, p, true);
         const card = h('div', 'story-model-card', [model.el]);
         stage.append(card);
@@ -577,7 +577,7 @@ async function answerBeat(shell: HTMLElement, stage: HTMLElement, p: StoryProble
         await model.hint();
         await say(p.equation.replace('?', word(p.answer)).replace(MINUS, ' minus ').replace(TIMES, ' times ').replace(DIVIDE, ' divided by '));
       } else {
-        await say('Look at the picture and try another egg.');
+        await say('Look at the picture. Try another egg.');
       }
       shell.classList.remove('paused');
       void prompt(p.ask);
@@ -617,7 +617,7 @@ export const dinoStory: Game = {
     'Equal groups and sharing (4 nests of 3 eggs, 12 shared by 3)',
     'Mixed stories, including two-step stories',
   ],
-  intro: 'Dino Story! Watch what the dinos do, then help Ember answer the question.',
+  intro: 'Dino Story! Help Ember answer the question!',
 
   runProblem({ play, level }) {
     const hasSentenceBeat = level === 6 || level === 8;

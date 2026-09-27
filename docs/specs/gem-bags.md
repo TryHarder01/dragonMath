@@ -57,26 +57,29 @@ Levels 1 and 4–8 use `eggScene`: the question card shows the gem model and the
 
 ## Spoken lines
 
+Short sentences, one idea each, per "How Ember talks" in AGENTS.md.
+
 | Moment | Line |
 |---|---|
-| L1 | "How many gems does this dragon have? Count the bags by tens!" |
+| L1 | "Count the bags by tens. How many gems now?" |
 | L2 | "Make forty-seven. Tap the bags and the gems!" After a wrong ✓: see Hints. |
-| L3 | "Which dragon has more gems?" / "…fewer gems?" |
+| L3 | "Red dragon. Blue dragon. Which has more gems?" / "…fewer gems?" |
 | L4 | "Forty-seven gems. A friend gives one more bag! How many now?" / "Forty-seven gems. Share one bag with a friend. How many are left?" |
-| L5 | "Thirty-four gems, and two more bags! How many?" / "Fifty-six gems. Share three bags. How many are left?" |
-| L6 | "Thirty-four gems and twenty-five gems. How many altogether?" |
+| L5 | "Thirty-four gems. Two more bags come! How many now?" / "Fifty-six gems. Share three bags. How many are left?" |
+| L6 | "Thirty-four gems. Twenty-five more gems. How many altogether?" |
 | L7 | "Fifty-eight gems. Share twenty-three with a friend. How many are left?" |
 | L8 | the number sentence, then "Warm the egg with the answer!" |
 | Praise | "Bags first, then gems. Smart!", "Four tens and seven ones!" |
+| Intro | "Gem Bags! Help Ember count and share gems!" |
 
 ## Hints
 
-- **L1:** `countUp()`, then "Four bags is forty, and seven more is forty-seven."
-- **L2 (wrong ✓):** "You made thirty-seven: three bags and seven gems. Forty-seven needs **four** bags and seven gems." Then pulse the source button that needs tapping, and leave the hoard as it was.
-- **L3:** count both hoards with `countUp()`. Then say "Bags first! Three bags is more than two bags" (or compare the gems when the bags are equal).
-- **L4–L5:** `addBags` / `giveBags`, counting by tens from the start ("47… 57").
-- **L6–L7:** tens first, then ones: move the bags together ("30 and 20 is 50"), then the gems ("4 and 5 is 9"), then "59".
-- **L8 regrouping:** add the gems, then `trade()` when they reach ten: "Ten gems make a new bag!", then the total.
+- **L1:** "Let's count. Bags first!", then `countUp()`, then "Four bags is forty. Seven more is forty-seven."
+- **L2 (wrong ✓):** "You made thirty-seven. That's three bags and seven gems. Forty-seven needs **four** bags and seven gems." Then pulse the source button that needs tapping, and leave the hoard as it was.
+- **L3:** "Let's count. Bags first!", then count both hoards with `countUp()`. Then say "Three bags is more than two bags" (or "The bags match. Seven and four." when the bags are equal). A second wrong tap says "Look at both dragons. Bags first, then gems!"
+- **L4–L5:** "Watch!", then `addBags` / `giveBags`, counting by tens from the start ("47… 57").
+- **L6–L7:** "Tens first, then ones!", then move the bags together ("30 and 20 is 50"), then the gems ("4 and 5 is 9"), then "That makes 59."
+- **L8 regrouping:** "Watch! Start at 36. Add 7 loose gems.", add the gems, then `trade()` when they reach ten: "Ten gems make a new bag!", then "36 plus 7 is 43."
 
 ## Answer choices
 
@@ -103,7 +106,7 @@ levels: [
   'Share 2-digit numbers: 58 − 23',
   'Mixed, plus ten loose gems making a new bag (36 + 7)',
 ],
-intro: 'Gem Bags! Dragons keep their gems in bags of ten. Help Ember count and share them!',
+intro: 'Gem Bags! Help Ember count and share gems!',
 ```
 
 ## Build checklist
