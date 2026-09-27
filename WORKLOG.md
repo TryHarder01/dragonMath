@@ -1,5 +1,32 @@
 # Worklog
 
+## 2026-09-27 — Tighten Gem Bags (fresh-eyes review)
+
+**Goal:** Line-by-line review of `src/games/gemBags.ts` against `docs/specs/gem-bags.md`, plus the two child-visible rough edges from `docs/specs/follow-ups.md` (tiny L2 gem-source icon/thin empty hoard, fierce 🐲 friend dragon on L7–L8).
+
+**Done:**
+- Fixed a real spec mismatch: at L8, `add-tens`/`sub-tens` problems (e.g. "47 + 10" picked into the mixed practice) spoke the L4/L5 narrative ("A friend gives one more bag!...") even though `showModel` is false at L8 and the spec calls for "the number sentence, then 'Warm the egg with the answer!'" — a spoken line that no longer matched what was on screen. Added the same `level === 8` branch that `add`/`sub`/`regroup` already had.
+- Replaced the 🐲 (fierce face) friend dragon with 🐉 (the dragon used everywhere else in the game — Ember, the map, `dinoStory.ts`'s own gem-sharing dragon) in both `operationModel`'s friend and `compareScene`'s second dragon. Tone rule: every creature is a friend.
+- `styles.css` Gem Bags section: bumped `.gem-source .gem-loose`'s font-size (1.4× its box) so the single-gem button reads as prominently as the bag; gave `.gem-build-hoard.ez-target` a `min-height: max(130px, 22vh)` so the empty hoard is a visible box, not a thin strip.
+- Everything else in the file matched the spec: all 8 level generators (ranges, tricky pairs, no-regroup constraints, the ~30% L8 regroup rate), `placeChoices`'s place-value distractors, and every hint/spoken line I could find. Left it alone — no dead code, no unnecessary defensive checks, nothing that reads out of step with `eggCrates.ts`'s style.
+
+**Decisions:**
+- Left both L3 compare dragons as the same 🐉 rather than giving them different species/colors — position (left/right) plus each hoard's own pile is enough to tell them apart, and adding a second creature type wasn't asked for and isn't needed for this budget-limited, one-child game.
+- Did not touch regrouping subtraction (explicitly out of scope) or the `data-answer`/`data-target` driver attributes (a separate, already-tracked follow-up item, harmless).
+
+**Verified:**
+- `npm run typecheck` and `npm run build`: both clean.
+- `node scripts/audit.mjs --only=bags-L2-build,bags-L3-compare,bags-L6`: 0 of 18 flagged, at all 6 window sizes. Looked at the L2 build screenshots (phone + iPad): both icons now read at a similar size, and the empty hoard is a visible card.
+- `node scripts/playthrough.mjs bags --level=N` for N = 1–8, plus `--level=2 --size=phone`: all reached the hatch with a hint shown, no page errors. Looked at the L2 hint screenshot (bag pulses correctly) and the L7/L8 after-hint screenshots (both dragons now 🐉).
+- Threw together a Node script (not committed) that reimplements the pure generator functions and loops each of the 8 levels 1,000×: all ranges matched the spec, the answer was always among the choices with no duplicates, and the level-specific constraints held (L4 exactly one bag, L6 ones-sum ≤ 9, L7 a's-tens > b's-tens, L8 regroup ones-sum 10–17). No failures.
+- Note: this machine ran three other games' playthroughs concurrently (parallel tightening workers sharing the same system Chrome), which stalled a couple of my own playthrough runs; re-running them one at a time after killing the stuck process cleared it up. Not a code issue.
+
+**Open / broken:**
+- `follow-ups.md` item 3 ("small code tidy-ups": `data-answer`/`data-target` attributes) still applies to Gem Bags; left as-is per that item's own scope.
+
+**Next:**
+- Nest Builder and Dino Story still need the same line-by-line pass (per `docs/specs/follow-ups.md`); Nest Builder matters most (it targets the weak spot).
+
 ## 2026-09-27 — Merge the four games; rough cut ready to play
 
 **Goal:** Per the user, have four Codex agents (orchestrated with Orca) build the four specced games in parallel, then merge and verify. The user asked for a working rough cut by morning over polish, with follow-up work written down.
