@@ -1,5 +1,21 @@
 # Worklog
 
+## 2026-09-26 — justfile
+
+**Goal:** One-command start with `just run`.
+
+**Done:**
+- `justfile` at the root with these recipes:
+  - `run`: runs `npm install` if `node_modules` is missing, then `npm run dev`.
+  - `install`, `typecheck`, `build`, `preview`.
+  - `default`: lists the recipes.
+- Added `just run` to the Commands section of `CLAUDE.md`.
+
+**Verified:** `just --list` shows all recipes. `just typecheck` passes. `just run` started Vite at http://localhost:5173 (I then stopped it).
+
+**Next:**
+- Build Dino Count (`src/games/dinoCount.ts`), then Gem Trade, Nest Builder, Stomp Path and Dino Story.
+
 ## 2026-09-26 — Re-theme: the hero only helps (Ember's Egg Rescue)
 
 **Goal:** Per user request, remove violent or mean verbs. The main character must be kind and helpful to the eggs, dinos and dragons.

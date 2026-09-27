@@ -7,6 +7,7 @@ A Math Blaster–style math game for ages 4–6 with a dragon and dinosaur theme
 - `DESIGN.md` is the game design. `docs/research/` holds the research behind it.
 
 ## Commands
+- `just run`: install dependencies if needed and start the game. Run `just` to list all recipes (`typecheck`, `build`, `preview`, `install`).
 - `npm run dev`: play at http://localhost:5173. Uses `--host`, so an iPad on the same wifi can connect.
 - `npm run typecheck`: run `tsc --noEmit`.
 - `npm run build`: typecheck plus a production build into `dist/`.
