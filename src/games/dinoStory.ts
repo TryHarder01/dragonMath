@@ -79,8 +79,8 @@ const STORY_TEMPLATES: Record<StoryKind, StoryTemplate[]> = {
     { lines: ['{a} dragons each have {b} gems.'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
   ],
   sharing: [
-    { lines: ['{total} eggs go into {a} nests.'], icon: '🥚', containerIcon: '🪺', backdrop: 'nest' },
-    { lines: ['{total} gems go to {a} dragons.'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
+    { lines: ['{total} eggs for {a} nests.', 'The same in each nest!'], icon: '🥚', containerIcon: '🪺', backdrop: 'nest' },
+    { lines: ['{total} gems for {a} dragons.', 'The same for each dragon!'], icon: '💎', containerIcon: '🐉', backdrop: 'cave' },
   ],
   'two-step': [
     { lines: ['{a} dinos play at the pond.', '{b} fly home on Ember.', '{c} more come to play.'], icon: '🦕', backdrop: 'pond', action: 'fly' },
@@ -246,8 +246,8 @@ function compare(level = 5): StoryProblem {
   return base(
     level, 'compare', { a: bigger, b: smaller, bigger, smaller, difference, askMore }, difference,
     askMore
-      ? `${word(bigger)} and ${word(smaller)}. How many more?`
-      : `${word(smaller)} and ${word(bigger)}. How many fewer?`,
+      ? `${word(bigger)} on top. ${word(smaller)} below. How many more on top?`
+      : `${word(smaller)} below. ${word(bigger)} on top. How many fewer below?`,
     [`${bigger}`, `${MINUS} ${smaller}`, '= ?'], `${bigger} ${MINUS} ${smaller} = ?`,
     [`${bigger} ${MINUS} ${smaller} = ?`, `${bigger} + ${smaller} = ?`, `${smaller} ${MINUS} ${difference} = ?`],
     bigger + smaller,
@@ -275,7 +275,7 @@ function equalGroups(level = 7): StoryProblem {
   if (sharing) {
     return base(
       level, 'sharing', { a: groups, b: size, groups, size, total, sharing }, size,
-      `${word(total)} go into ${word(groups)} groups. How many in each?`,
+      `${word(total)} shared by ${word(groups)}. The same in each. How many in each?`,
       [`${total}`, `${DIVIDE} ${groups}`, '= ?'], `${total} ${DIVIDE} ${groups} = ?`,
       [`${total} ${DIVIDE} ${groups} = ?`, `${groups} ${TIMES} ${size} = ?`, `${total} ${MINUS} ${groups} = ?`],
       undefined, 25,

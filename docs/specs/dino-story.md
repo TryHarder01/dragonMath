@@ -46,9 +46,9 @@ A custom scene following the README's layout contract:
 | 2 | **Separate, result unknown** | "Thirteen dinos splash in the pond. Five fly home on Ember. How many are still splashing?" | a 6–20, b 2–9, result ≥ 1; 60% cross ten |
 | 3 | Part-part-whole | "Seven in one group. Six in the other. How many altogether?" / "Thirteen altogether. Seven are in one group. How many are in the other group?" | whole 8–20; 50% whole unknown / 50% part unknown |
 | 4 | Join, change unknown | "Eight dinos at the pond. Some more came. Now there are thirteen. How many came?" | start 3–12, change 2–8, total ≤ 20 |
-| 5 | **Compare**: how many more / fewer | "Thirteen and eight. How many more?" | bigger 6–20, difference 2–9; ask "more" or "fewer" |
+| 5 | **Compare**: how many more / fewer | "Thirteen on top. Eight below. How many more on top?" | bigger 6–20, difference 2–9; ask "more" or "fewer" |
 | 6 | **Separate, start unknown** | "Some dinos were playing. Five flew home. Eight are still playing. How many were playing at the start?" | change 2–9, result 2–11, start ≤ 20 |
-| 7 | Equal groups and sharing | "Four nests with three eggs each. How many altogether?" / "Twelve eggs go into three nests. How many in each?" | groups 2–5, size 2–5; 50% product unknown / 50% sharing (size unknown) |
+| 7 | Equal groups and sharing | "Four nests with three eggs each. How many altogether?" / "Twelve shared by three. The same in each. How many in each?" | groups 2–5, size 2–5; 50% product unknown / 50% sharing (size unknown) |
 | 8 | Mixed L1–L7, plus **two-step** within 20 on ~30% | "Nine dinos play. Four go home. Six more come. How many now?" | two-step: all intermediate values 0–20 |
 
 **Number-sentence beat (L6 and L8):** on half the problems, add a first beat: "Which number puzzle matches the story?" The choices are 3 sentence cards (e.g. `? − 5 = 8`, `8 − 5 = ?`, `8 + 5 = ?`), and the right one is the story's structure. Then comes beat 2: solve it. Build the cards as big tappable elements with `awaitChoice`. `firstTry` = both beats right the first time.
@@ -63,7 +63,7 @@ Build each level's stories from templates. Keep them in a data array in `dinoSto
 | Separate | "{a} dinos splash in the pond. {b} fly home on Ember." · "{a} eggs are in the nest. {b} hatch and walk home." · "{a} dinos are playing. {b} go for a nap." · "A dragon has {a} gems. She shares {b} with a friend." |
 | Part-part-whole | "{a} green dinos are at the pond. {b} blue dinos are there too." · "The nest has {a} white eggs. {b} more eggs are speckled." · "{a} dinos are in the pond. {b} more are on the sand." · "Ember found {a} red gems. {b} more are blue." |
 | Compare | "{a} dinos are in the pond. {b} dinos are on the hill." · "Ember has {a} gems. Her friend has {b} gems." · "The big nest has {a} eggs. The little nest has {b} eggs." · "{a} turtles are at the beach. {b} dinos are there too." |
-| Equal groups / sharing | "{a} nests with {b} eggs in each." · "{a} dragons each have {b} gems." · "{total} eggs go into {a} nests." · "{total} gems go to {a} dragons." |
+| Equal groups / sharing | "{a} nests with {b} eggs in each." · "{a} dragons each have {b} gems." · "{total} eggs for {a} nests. The same in each nest!" · "{total} gems for {a} dragons. The same for each dragon!" |
 
 Every template is two short sentences, one idea each, per "How Ember talks" in AGENTS.md.
 
@@ -74,7 +74,7 @@ Every template is two short sentences, one idea each, per "How Ember talks" in A
 Short sentences, one idea each, per "How Ember talks" in AGENTS.md.
 
 - **The story:** the template sentences, one `say()` each, synced to the animation.
-- **The question:** "How many now?" / "How many are still splashing?" / "How many came?" / "How many more?" / "How many were playing at the start?" / "How many in each?"
+- **The question:** "How many now?" / "How many are still splashing?" / "How many came?" / "How many more on top?" / "How many were playing at the start?" / "How many in each?"
 - **The `ask` for 🔊:** a compact retelling plus the question, e.g. "Thirteen were playing. Five went home. How many are left?"
 - **Praise:** "You acted it out in your head!", "That was a tricky one!", "You found the missing part!"
 - **Intro:** "Dino Story! Help Ember answer the question!"

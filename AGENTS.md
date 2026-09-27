@@ -68,6 +68,7 @@ The listener is 4½ and watches Numberblocks: short, warm and rhythmic, never ba
 - **Recaps read as a chant:** "Eight and two. Ten! Ten and three. Thirteen!" not one long sentence.
 - **Intros: two short sentences, about 10 words in all:** "Egg Warmer! Let's warm the eggs!"
 - **Hints:** start with a gentle "Let's count." or "Watch!", then show and count. No "Hmm, not that one" plus an explanation plus an instruction in one line.
+- **Shorter must not lose the maths.** A comparison still names what's compared ("How many more on top?", not "How many more?", which sounds like adding). Sharing still says the shares are equal: use "the same in each", not a bare "go into".
 - Not baby talk: no "yummy", "teeny", or talking down. Keep the maths (ten, tens, split, take away).
 - Parent-facing text (`skill`, `about`, `levels`, the guide) isn't spoken and keeps its normal register.
 
