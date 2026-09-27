@@ -1,0 +1,324 @@
+<title>Early Math Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --paper:#F3F5F7; --surface:#FFFFFF; --ink:#1B2430; --muted:#5A6573; --rule:#D8DEE5;
+  --red:#D64545; --yellow:#EFB02F; --blue:#2F5D8A; --blue-soft:#E3ECF5; --frame:#1B2430;
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11161D; --surface:#19212B; --ink:#E4E9EF; --muted:#9AA6B4; --rule:#2B3542;
+    --red:#E86161; --yellow:#F2BE4B; --blue:#7FAEDC; --blue-soft:#1D2B3B; --frame:#C9D2DC;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11161D; --surface:#19212B; --ink:#E4E9EF; --muted:#9AA6B4; --rule:#2B3542;
+  --red:#E86161; --yellow:#F2BE4B; --blue:#7FAEDC; --blue-soft:#1D2B3B; --frame:#C9D2DC;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.6; padding-inline:20px}
+.wrap{max-width:980px; margin:0 auto; padding-block:48px 80px; display:flex; flex-direction:column; gap:64px}
+h1,h2,h3{font-family:var(--display); line-height:1.1; text-wrap:balance; margin:0}
+h1{font-size:clamp(2.4rem,6vw,4rem); font-weight:800; letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.4vw,2.2rem); font-weight:700; letter-spacing:-.01em}
+h3{font-size:1.15rem; font-weight:700}
+p{margin:0; max-width:65ch}
+.eyebrow{font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted)}
+.lede{font-size:1.2rem; color:var(--ink)}
+.muted{color:var(--muted)}
+section{display:flex; flex-direction:column; gap:20px}
+.sec-head{display:flex; flex-direction:column; gap:8px}
+
+/* hero */
+.hero{display:grid; grid-template-columns:1.4fr 1fr; gap:40px; align-items:center}
+.hero-text{display:flex; flex-direction:column; gap:18px}
+.hero-fig{display:flex; flex-direction:column; gap:10px; align-items:center}
+.caption{font-family:var(--mono); font-size:.78rem; color:var(--muted); text-align:center}
+
+/* ten-frame */
+.tf{display:grid; grid-template-columns:repeat(5,1fr); border:3px solid var(--frame); border-radius:4px; width:100%; max-width:320px; background:var(--surface)}
+.tf span{aspect-ratio:1; border:1.5px solid var(--frame); display:grid; place-items:center}
+.tf span::after{content:""; width:70%; aspect-ratio:1; border-radius:50%}
+.tf .r::after{background:var(--red)}
+.tf .y::after{background:var(--yellow)}
+.tf.sm{max-width:120px; border-width:2px}
+.tf.sm span{border-width:1px}
+
+/* stat trio */
+.trio{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+.trio div{border-top:3px solid var(--ink); padding-top:12px; display:flex; flex-direction:column; gap:6px}
+.trio b{font-family:var(--display); font-size:1.05rem}
+.trio p{font-size:.95rem; color:var(--muted)}
+
+/* trajectories */
+.traj{display:flex; flex-direction:column; border-top:1px solid var(--rule)}
+.traj-row{display:grid; grid-template-columns:200px 1fr; gap:20px; padding-block:18px; border-bottom:1px solid var(--rule)}
+.traj-row h3 small{display:block; font-family:var(--mono); font-weight:500; font-size:.72rem; color:var(--muted); letter-spacing:.05em; margin-top:4px}
+.steps{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.step{background:var(--blue-soft); color:var(--ink); border-radius:999px; padding:4px 12px; font-size:.9rem; line-height:1.4}
+.arrow{color:var(--muted); font-family:var(--mono); font-size:.8rem}
+.traj-row p{font-size:.92rem; color:var(--muted); grid-column:2}
+
+/* principles */
+.principles{display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
+.pr{background:var(--surface); border:1px solid var(--rule); border-radius:6px; padding:16px; display:flex; flex-direction:column; gap:8px}
+.pr .n{font-family:var(--mono); font-size:.75rem; color:var(--muted)}
+.pr p{font-size:.9rem}
+.pr.key{border:2px solid var(--red)}
+.pr.key .n{color:var(--red)}
+
+/* board path */
+.study{display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:28px}
+.path{display:grid; grid-template-columns:repeat(10,1fr); gap:4px}
+.path span{aspect-ratio:1; display:grid; place-items:center; font-family:var(--display); font-weight:700; font-size:clamp(.8rem,1.6vw,1.05rem); border:2px solid var(--frame); border-radius:4px; background:var(--paper)}
+.path span.on{background:var(--yellow); color:#1B2430}
+.path span.here{background:var(--red); color:#fff}
+.study ul{margin:0; padding-left:1.1em; display:flex; flex-direction:column; gap:6px; font-size:.95rem}
+
+/* CRA */
+.cra{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:stretch}
+.cra div{background:var(--surface); border:1px solid var(--rule); border-radius:6px; padding:20px; display:flex; flex-direction:column; gap:10px; align-items:flex-start}
+.cra .show{font-size:2rem; line-height:1; min-height:2.6rem; display:flex; align-items:center; gap:6px}
+.dot{width:22px; height:22px; border-radius:50%; background:var(--red); display:inline-block}
+.numeral{font-family:var(--display); font-weight:800; font-size:2.6rem}
+
+/* pillars & two-col */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:40px}
+.pillars{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.pillars div{border-left:3px solid var(--blue); padding-left:12px; display:flex; flex-direction:column; gap:4px}
+.pillars p{font-size:.92rem; color:var(--muted)}
+.plain-list{margin:0; padding-left:1.1em; display:flex; flex-direction:column; gap:8px}
+
+/* rules */
+.rules{background:var(--ink); color:var(--paper); border-radius:10px; padding:32px; display:flex; flex-direction:column; gap:20px}
+.rules h2{color:var(--paper)}
+.rules .eyebrow{color:var(--yellow)}
+.rules ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 32px}
+.rules li{display:grid; grid-template-columns:18px 1fr; gap:10px; font-size:.95rem; line-height:1.5}
+.rules li::before{content:""; width:14px; height:14px; border-radius:50%; background:var(--yellow); margin-top:5px}
+.rules li b{font-family:var(--display)}
+.std{display:flex; flex-wrap:wrap; gap:8px}
+.std code{font-family:var(--mono); font-size:.8rem; border:1px solid var(--rule); border-radius:4px; padding:3px 8px; background:var(--surface)}
+
+.sources ol{margin:0; padding-left:1.3em; font-size:.85rem; color:var(--muted); display:flex; flex-direction:column; gap:4px; max-width:none}
+.sources i{color:var(--ink)}
+
+@media (max-width:820px){
+  .hero,.study,.two{grid-template-columns:1fr}
+  .principles{grid-template-columns:1fr 1fr}
+  .rules ul{grid-template-columns:1fr}
+  .traj-row{grid-template-columns:1fr; gap:10px}
+  .traj-row p{grid-column:1}
+}
+@media (max-width:560px){
+  .trio,.cra,.pillars{grid-template-columns:1fr}
+  .principles{grid-template-columns:1fr}
+  .rules{padding:22px}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Dino Egg Blaster · Part 1 · Education foundations</span>
+      <h1>Early Math Foundations</h1>
+      <p class="lede">What research says about how 4 to 6 year olds learn number, and the rules our dragon and dinosaur game follows as a result.</p>
+      <p class="muted">Kids at this age don't need speed drills. They need to <em>see</em> quantities, say numbers aloud, and move one step at a time along a known path of development.</p>
+    </div>
+    <figure class="hero-fig" style="margin:0">
+      <div class="tf" aria-label="Ten-frame showing 7 as 5 red and 2 yellow counters">
+        <span class="r"></span><span class="r"></span><span class="r"></span><span class="r"></span><span class="r"></span>
+        <span class="y"></span><span class="y"></span><span></span><span></span><span></span>
+      </div>
+      <figcaption class="caption">A ten-frame showing 7 as "5 and 2 more", with 3 more to make 10</figcaption>
+    </figure>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Why this age</span>
+      <h2>Early math is worth getting right</h2>
+    </div>
+    <div class="trio">
+      <div><b>Strongest predictor</b><p>Math skills at school entry predict later achievement better than early reading or attention skills do (Duncan et al., 2007).</p></div>
+      <div><b>Number sense compounds</b><p>Kindergarten number sense predicts math achievement through 3rd grade and beyond (Jordan et al., 2009).</p></div>
+      <div><b>Early math can be taught</b><p>The research-based Building Blocks preschool curriculum produced large gains in randomized trials (Clements &amp; Sarama, 2008).</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Core idea · Clements &amp; Sarama</span>
+      <h2>Learning trajectories</h2>
+      <p>Children's thinking passes through predictable levels. Teach one step past where the child is now, whatever their age. These are the trajectories that matter at 4–6. Each becomes one mini-game.</p>
+    </div>
+    <div class="traj">
+      <div class="traj-row">
+        <h3>Subitizing<small>Seeing "how many" at a glance</small></h3>
+        <div class="steps"><span class="step">1–3 at a glance</span><span class="arrow">→</span><span class="step">1–5</span><span class="arrow">→</span><span class="step">6–10 in patterns (dice, ten-frames)</span><span class="arrow">→</span><span class="step">"4 and 2 make 6"</span></div>
+        <p>Structured arrangements build thinking in 5s and 10s.</p>
+      </div>
+      <div class="traj-row">
+        <h3>Counting<small>K.CC.1–5</small></h3>
+        <div class="steps"><span class="step">Say 1–10 in order</span><span class="arrow">→</span><span class="step">Touch each object once</span><span class="arrow">→</span><span class="step">Last number = how many</span><span class="arrow">→</span><span class="step">Count out 5</span><span class="arrow">→</span><span class="step">Count on from 6</span><span class="arrow">→</span><span class="step">To 20, then 100</span></div>
+      </div>
+      <div class="traj-row">
+        <h3>Comparing<small>K.CC.6–7</small></h3>
+        <div class="steps"><span class="step">Match sets side by side</span><span class="arrow">→</span><span class="step">Compare by counting</span><span class="arrow">→</span><span class="step">Compare numerals: 7 &gt; 5</span></div>
+      </div>
+      <div class="traj-row">
+        <h3>Number line<small>Magnitude</small></h3>
+        <div class="steps"><span class="step">Numbers have an order</span><span class="arrow">→</span><span class="step">Bigger means farther along</span><span class="arrow">→</span><span class="step">8 is far from 2 but close to 7</span></div>
+      </div>
+      <div class="traj-row">
+        <h3>Composing<small>K.OA.3–4</small></h3>
+        <div class="steps"><span class="step">5 is 3 and 2</span><span class="arrow">→</span><span class="step">All the ways to make 5</span><span class="arrow">→</span><span class="step">How many more to make 10?</span></div>
+      </div>
+      <div class="traj-row">
+        <h3>Add &amp; subtract<small>K.OA.1–2, K.OA.5</small></h3>
+        <div class="steps"><span class="step">Act out stories within 5</span><span class="arrow">→</span><span class="step">Join / take away within 10</span><span class="arrow">→</span><span class="step">Missing part</span><span class="arrow">→</span><span class="step">Fluent within 5</span></div>
+      </div>
+      <div class="traj-row">
+        <h3>Patterns<small>Bonus</small></h3>
+        <div class="steps"><span class="step">Copy AB</span><span class="arrow">→</span><span class="step">Extend AB, AAB</span><span class="arrow">→</span><span class="step">Create ABC</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Gelman &amp; Gallistel, 1978</span>
+      <h2>The five counting principles</h2>
+      <p>A child can know some of these and not others. A child who counts "1, 2, 3, 4" correctly and then counts again when asked "how many?" hasn't grasped cardinality yet. The game checks for it directly.</p>
+    </div>
+    <div class="principles">
+      <div class="pr"><span class="n">1</span><h3>One-to-one</h3><p>Each object gets exactly one count word.</p></div>
+      <div class="pr"><span class="n">2</span><h3>Stable order</h3><p>The count words always come in the same order.</p></div>
+      <div class="pr key"><span class="n">3 · the big one at 4</span><h3>Cardinality</h3><p>The last word said tells how many there are.</p></div>
+      <div class="pr"><span class="n">4</span><h3>Abstraction</h3><p>Anything can be counted: eggs, stomps, roars.</p></div>
+      <div class="pr"><span class="n">5</span><h3>Order-irrelevance</h3><p>Counting in any order gives the same total.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Siegler &amp; Ramani, 2008</span>
+      <h2>A straight number path builds number sense</h2>
+    </div>
+    <div class="study">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="path" aria-label="Linear board numbered 1 to 10; a token moved from 3 to 6">
+          <span class="on">1</span><span class="on">2</span><span class="on">3</span><span class="on">4</span><span class="on">5</span><span class="here">6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+        </div>
+        <span class="caption">Roll a 3, move from 3 and say "4, 5, 6"</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <p>Preschoolers from low-income families played a numbered, <b>linear</b> board game for four 15-minute sessions. Their counting, numeral recognition, magnitude comparison and number-line estimates all improved, and the gains lasted for weeks.</p>
+        <ul>
+          <li>A <b>circular</b> board didn't produce the gains.</li>
+          <li>A board with <b>colors instead of numbers</b> didn't either.</li>
+          <li>The key is saying each number aloud while moving.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">How to present it · Concrete → Representational → Abstract</span>
+      <h2>Show the quantity, then the symbol</h2>
+      <p>Young children need quantities they can see before a written numeral means anything. At 4–6, every numeral should appear next to a picture of how many it stands for.</p>
+    </div>
+    <div class="cra">
+      <div><span class="eyebrow">Concrete</span><span class="show" aria-hidden="true">🦕🦕🦕</span><p>Real things to tap, move and count.</p></div>
+      <div><span class="eyebrow">Representational</span><span class="show" aria-hidden="true"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span><p>Dots, ten-frames, fingers: structured pictures.</p></div>
+      <div><span class="eyebrow">Abstract</span><span class="show numeral" aria-hidden="true">3</span><p>The numeral, alongside the picture until the child no longer needs it.</p></div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="sec-head">
+        <span class="eyebrow">Hirsh-Pasek et al., 2015</span>
+        <h2>What makes an app educational</h2>
+      </div>
+      <div class="pillars">
+        <div><h3>Active</h3><p>The child thinks and chooses. Tapping alone doesn't count.</p></div>
+        <div><h3>Engaged</h3><p>Little distraction. Flashy rewards in the middle of a task hurt learning.</p></div>
+        <div><h3>Meaningful</h3><p>It connects to stories and things the child cares about. Dinosaurs qualify.</p></div>
+        <div><h3>Social</h3><p>A parent playing alongside and talking about it helps.</p></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="sec-head">
+        <span class="eyebrow">Emotion &amp; practice</span>
+        <h2>No pressure, short sessions</h2>
+      </div>
+      <ul class="plain-list">
+        <li>Math anxiety appears by 1st–2nd grade and is linked to lower scores. Adults' anxiety spreads to kids (Ramirez et al., 2013; Beilock et al., 2010).</li>
+        <li><b>Timed drills are a poor fit at this age.</b> The original Math Blaster ran on speed pressure, so this is the one thing we deliberately change.</li>
+        <li>Aim for about 80% success with adaptive difficulty. Too easy bores kids and too hard discourages them.</li>
+        <li>Short daily sessions of 5–15 minutes, with spaced review of easier skills.</li>
+        <li>After a mistake, show the model: count the dots together. Don't just buzz.</li>
+        <li>Praise the strategy: "You counted every egg!"</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Official guidance</span>
+      <h2>Where this lines up</h2>
+      <p>The NAEYC/NCTM joint position statement, the National Research Council's <i>Mathematics Learning in Early Childhood</i> (2009) and the IES practice guide <i>Teaching Math to Young Children</i> (2013) agree: focus on number, follow developmental progressions, track progress, and do a little math every day. The Kindergarten standards this game targets:</p>
+    </div>
+    <div class="std">
+      <code>K.CC.4 count to tell how many</code><code>K.CC.5 count out up to 20</code><code>K.CC.6–7 compare 1–10</code><code>K.OA.1 represent add/sub</code><code>K.OA.2 word problems within 10</code><code>K.OA.3 decompose ≤10</code><code>K.OA.4 make 10</code><code>K.OA.5 fluent within 5</code>
+    </div>
+  </section>
+
+  <section class="rules">
+    <span class="eyebrow">What this means for our game</span>
+    <h2>Ten design rules</h2>
+    <ul>
+      <li><span><b>One mini-game per trajectory,</b> with levels that follow its steps.</span></li>
+      <li><span><b>Adapt per skill:</b> move up after 3 correct in a row, down after 2 misses.</span></li>
+      <li><span><b>Numerals always come with dots,</b> frames or dinos. The lowest levels show only pictures.</span></li>
+      <li><span><b>Speak every prompt.</b> Pre-readers can play without an adult reading for them.</span></li>
+      <li><span><b>No timers, lives or game over.</b> The arcade feel comes from movement and dragons.</span></li>
+      <li><span><b>Mistakes become mini-lessons:</b> highlight and count aloud, then try again.</span></li>
+      <li><span><b>Include a straight 1–10 number path</b> with each hop said aloud.</span></li>
+      <li><span><b>Ten-frames everywhere</b> to build "make 5" and "make 10".</span></li>
+      <li><span><b>Rewards come between rounds.</b> A baby dino hatches after each set, never during a problem.</span></li>
+      <li><span><b>Short sessions:</b> suggest a break after 5–8 minutes, and design for a parent to play along.</span></li>
+    </ul>
+  </section>
+
+  <section class="sources">
+    <span class="eyebrow">Sources</span>
+    <ol>
+      <li>Clements &amp; Sarama (2014). <i>Learning and Teaching Early Math: The Learning Trajectories Approach</i>. Routledge.</li>
+      <li>Clements &amp; Sarama (2008). Experimental evaluation of a research-based preschool mathematics curriculum. <i>American Educational Research Journal</i>, 45(2).</li>
+      <li>Clements (1999). Subitizing: What is it? Why teach it? <i>Teaching Children Mathematics</i>, 5(7).</li>
+      <li>Gelman &amp; Gallistel (1978). <i>The Child's Understanding of Number</i>. Harvard University Press.</li>
+      <li>Siegler &amp; Ramani (2008). Playing linear numerical board games promotes low-income children's numerical development. <i>Developmental Science</i>, 11(5).</li>
+      <li>Ramani &amp; Siegler (2008). Promoting broad and stable improvements in low-income children's numerical knowledge. <i>Child Development</i>, 79(2).</li>
+      <li>Duncan et al. (2007). School readiness and later achievement. <i>Developmental Psychology</i>, 43(6).</li>
+      <li>Jordan, Kaplan, Ramineni &amp; Locuniak (2009). Early math matters. <i>Developmental Psychology</i>, 45(3).</li>
+      <li>Hirsh-Pasek et al. (2015). Putting education in "educational" apps. <i>Psychological Science in the Public Interest</i>, 16(1).</li>
+      <li>Ramirez, Gunderson, Levine &amp; Beilock (2013). Math anxiety, working memory, and math achievement in early elementary school. <i>Journal of Cognition and Development</i>, 14(2).</li>
+      <li>Beilock, Gunderson, Ramirez &amp; Levine (2010). Female teachers' math anxiety affects girls' math achievement. <i>PNAS</i>, 107(5).</li>
+      <li>National Research Council (2009). <i>Mathematics Learning in Early Childhood</i>.</li>
+      <li>NAEYC &amp; NCTM (2002/2010). <i>Early Childhood Mathematics: Promoting Good Beginnings</i>.</li>
+      <li>Frye et al. (2013). <i>Teaching Math to Young Children</i>. IES What Works Clearinghouse.</li>
+    </ol>
+  </section>
+
+</div>
