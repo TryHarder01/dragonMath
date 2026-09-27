@@ -23,14 +23,14 @@ The Codex workers ran out of usage partway through their self-review pass, so th
 - **Dino Story:** during the hint, the ten-frame model card covers the "11 − 5 = ?" number-sentence card under the stage (see a `story-L2` hint screenshot). Keep both visible, or hide the sentence during the hint on purpose.
 - **Gem Bags L2 (build 47):** the single-gem source button's icon is tiny next to the bag, and the empty hoard is just a thin white strip until something is added. Make the gem button's icon as big as the bag's, and give the empty hoard some size.
 - **Gem Bags L7–L8:** the friend dragon is the 🐲 emoji face, which looks fierce at big sizes. The tone rule says every creature is a friend, so pick a friendlier look.
-- **Stomp Path L6–L7 on a phone:** the open-line labels are small (about 11px). They're readable, but could be bigger now that the line has room.
-- **Stomp Path L8:** the target number shows twice, in the question card and again in the answer band. One is enough.
+- ~~**Stomp Path L6–L7 on a phone:** the open-line labels are small (about 11px). They're readable, but could be bigger now that the line has room.~~ Done: bumped to .85rem/.8rem for the open-line labels and hop labels on phone; checked for overlaps at both phone and iPad sizes on L6 and L7.
+- ~~**Stomp Path L8:** the target number shows twice, in the question card and again in the answer band. One is enough.~~ Done: the question card is no longer shown on L8; the answer-band reminder is the only display.
 
 ## Small code tidy-ups
 
-- `stompPath.ts` exports `generateStompProblem` for a checker script that was later removed. Either add the shared generator check (item 2) or un-export it.
-- The Stomp Path and Gem Bags eggs and scenes carry `data-answer` / `data-target` attributes that exist only for the play-through drivers. They're harmless, but a driver could read the question instead.
-- Stomp Path's praise says "Big hops first. Great thinking!", while the spec says "Big hops first. Smart!".
+- ~~`stompPath.ts` exports `generateStompProblem` for a checker script that was later removed. Either add the shared generator check (item 2) or un-export it.~~ Done: un-exported.
+- The Stomp Path and Gem Bags eggs and scenes carry `data-answer` / `data-target` attributes that exist only for the play-through drivers. They're harmless, but a driver could read the question instead. Stomp Path done: `data-target` removed from the L8 line-hit; `scripts/drivers/stomp.mjs` now reads the target from the on-screen `.stomp-estimate-reminder` text. `data-answer` on the answer eggs is left in place — the correct answer isn't shown as text anywhere before the child answers, so there's no text for a driver to read instead. Gem Bags' attributes are unchanged (out of scope here).
+- ~~Stomp Path's praise says "Big hops first. Great thinking!", while the spec says "Big hops first. Smart!".~~ Done: now says "Big hops first. Smart!".
 
 ## Running it on a phone
 

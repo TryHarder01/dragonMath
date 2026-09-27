@@ -1,5 +1,34 @@
 # Worklog
 
+## 2026-09-27 — Stomp Path tidy-up pass
+
+**Goal:** Small tidy-up of Stomp Path (already line-by-line reviewed) per `docs/specs/follow-ups.md`: fix the praise line, un-export a dead export, dedupe the L8 target display, and enlarge the L6–L7 phone labels.
+
+**Done:**
+- Praise line now matches the spec: "Big hops first. Smart!" (was "Great thinking!").
+- Un-exported `generateStompProblem` (its checker script was already removed) and dropped its stale comment.
+- L8: removed the top `.stomp-question` card so the target number only shows once, in the answer-band reminder; `expression()` no longer has a level-8 branch.
+- L6–L7 open number line: bumped `.stomp-open-label` and `.stomp-arc span` to .85rem/.8rem on phone (from an effective ~11px/9.6px), scoped to `.stomp-path.open` so ruler/window views are untouched.
+- Removed `data-target` from the L8 line-hit (unused now); `scripts/drivers/stomp.mjs` reads the target from the visible `.stomp-estimate-reminder` text instead. Left `data-answer`/`data-value` on the answer eggs alone: the correct answer isn't rendered as text anywhere before the child answers, so there's no text for the driver to read instead.
+- Marked the four Stomp Path items done in `docs/specs/follow-ups.md`.
+
+**Decisions:**
+- Removed the question card (not the answer-band reminder) for L8, since the reminder sits next to the tap interaction and the question card would otherwise be an empty box.
+- Left egg `data-answer`/`data-value` in place per the reasoning above — this is a real constraint, not laziness.
+
+**Verified:**
+- `npm run typecheck` and `npm run build`: clean.
+- `node scripts/audit.mjs --only=stomp-L1-window,stomp-L5-tens,stomp-L7-ruler,stomp-L8-estimate`: 0 of 24 flagged.
+- `node scripts/playthrough.mjs stomp --level=N` for N=1–8: all reach the hatch with a hint shown.
+- `node scripts/playthrough.mjs stomp --level=N --size=phone` for N=6,7,8: all pass.
+- Looked at the hint screenshots for L6, L7 and L8 at both phone and iPad sizes: L6/L7 open-line labels are bigger and don't overlap even in the worst case (9 one-hops plus a ten-hop); L8 shows the target once.
+
+**Open / broken:**
+- None found in this pass; this was a small tidy-up on top of an already-reviewed game, not a re-review.
+
+**Next:**
+- Continue down `docs/specs/follow-ups.md` for Nest Builder, Gem Bags and Dino Story (in progress in parallel worktrees).
+
 ## 2026-09-27 — Merge the four games; rough cut ready to play
 
 **Goal:** Per the user, have four Codex agents (orchestrated with Orca) build the four specced games in parallel, then merge and verify. The user asked for a working rough cut by morning over polish, with follow-up work written down.

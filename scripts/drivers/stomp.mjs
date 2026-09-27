@@ -12,7 +12,7 @@ export async function step(page, ctx) {
 
   const line = page.locator('.stomp-line-hit.tappable');
   if (await line.count()) {
-    const target = Number(await line.getAttribute('data-target'));
+    const target = Number(await page.locator('.stomp-estimate-reminder').textContent());
     const box = await line.boundingBox();
     if (!box) throw new Error('estimation line is not visible');
     const wrong = ctx.wrong === 0;
