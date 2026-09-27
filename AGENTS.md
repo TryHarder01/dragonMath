@@ -59,6 +59,18 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 - Never use zap, blast, shoot, fire or chomp, and never cast any creature as an enemy. This applies to code names, sounds, spoken lines and docs too. Older `WORKLOG.md` entries and dated research files keep their original wording.
 - [Why](docs/decisions/2026-09-26-hero-only-helps.md).
 
+## How Ember talks (every spoken line)
+The listener is 4½ and watches Numberblocks: short, warm and rhythmic, never babyish. `say()` speaks each sentence separately with a short beat between, so **sentence length is the pace control**.
+- **One idea per sentence, about 7 words at most.** Split rather than join with "and", "then" or commas.
+- **Numbers are the stars.** Say the numbers and the action, and drop the rest: "Eight in the nest. Five in the basket." not "There are eight in the nest and five more in the basket."
+- **Ask one short question, last:** "How many fill the nest?", "How many now?", "Which dragon has more?"
+- **Everyday words:** "hop", "take away", "left", "more". Avoid "equally", "compare", "digit", "situation", "total". Keep the game's strategy phrases word for word (they're taught by repetition): "Fill the nest, then the rest!", "Down to ten, then the rest!", "Tens first, then ones!"
+- **Recaps read as a chant:** "Eight and two. Ten! Ten and three. Thirteen!" not one long sentence.
+- **Intros: two short sentences, about 10 words in all:** "Egg Warmer! Let's warm the eggs!"
+- **Hints:** start with a gentle "Let's count." or "Watch!", then show and count. No "Hmm, not that one" plus an explanation plus an instruction in one line.
+- Not baby talk: no "yummy", "teeny", or talking down. Keep the maths (ten, tens, split, take away).
+- Parent-facing text (`skill`, `about`, `levels`, the guide) isn't spoken and keeps its normal register.
+
 ## Teaching rules (from the research, don't break them)
 The reasons are in [the research's design rules](docs/research/2026-09-26-early-math-pedagogy.md).
 - No timers, lives or game over. Wrong answers show a hint model (count the dots aloud), then the child retries ([why](docs/decisions/2026-09-26-no-timers-lives-or-game-over.md)).

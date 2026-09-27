@@ -25,13 +25,30 @@ if ('speechSynthesis' in window) {
   speechSynthesis.addEventListener?.('voiceschanged', () => (chosen = pickVoice()));
 }
 
-/** Speak text. Resolves when finished (or after a safety timeout). */
-export function say(text: string, opts: { rate?: number; pitch?: number } = {}): Promise<void> {
-  if (muted || !('speechSynthesis' in window)) return wait(300 + text.length * 40);
+// Pace for a 4–5-year-old: a touch slower than conversational speech, with a
+// short beat after every sentence (the Numberblocks rhythm), rather than a
+// slower voice overall, which sounds sluggish.
+const RATE = 0.9;
+const SENTENCE_GAP = 300;
+let turn = 0;
+
+/** Speak text a sentence at a time. Resolves when finished; a later say() cuts it short. */
+export async function say(text: string, opts: { rate?: number; pitch?: number } = {}): Promise<void> {
+  const mine = ++turn;
+  const sentences = text.match(/[^.!?]+[.!?]*/g)?.map((t) => t.trim()).filter(Boolean) ?? [text];
+  for (const [i, sentence] of sentences.entries()) {
+    if (i) await wait(SENTENCE_GAP);
+    if (mine !== turn) return;
+    await speak(sentence, opts);
+  }
+}
+
+function speak(text: string, opts: { rate?: number; pitch?: number }): Promise<void> {
+  if (muted || !('speechSynthesis' in window)) return wait(300 + text.length * 45);
   if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   if (chosen) u.voice = chosen;
-  u.rate = opts.rate ?? 0.9;
+  u.rate = (opts.rate ?? 0.9) * RATE;
   u.pitch = opts.pitch ?? 1.15;
   return new Promise((resolve) => {
     let done = false;
@@ -44,8 +61,14 @@ export function say(text: string, opts: { rate?: number; pitch?: number } = {}):
     u.onend = finish;
     u.onerror = finish;
     speechSynthesis.speak(u);
-    setTimeout(finish, 1500 + text.length * 110);
+    setTimeout(finish, 1500 + text.length * 120);
   });
+}
+
+/** Stop speaking now, including any sentences still to come. */
+export function hush() {
+  turn++;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 
 /** Speak an instruction and remember it for the 🔊 repeat button. */

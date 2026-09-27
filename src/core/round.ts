@@ -3,7 +3,7 @@
 import type { Game } from '../games/types';
 import { Adaptive } from './adaptive';
 import { h } from './dom';
-import { repeatPrompt, say, wait } from './voice';
+import { hush, repeatPrompt, say, wait } from './voice';
 import { sfx } from './sound';
 
 const PROBLEMS_PER_ROUND = 5;
@@ -26,7 +26,7 @@ export async function playRound(app: HTMLElement, game: Game, onExit: (e: Exit) 
 
   home.addEventListener('click', () => {
     quit = true;
-    speechSynthesis?.cancel();
+    hush();
     sfx.tap();
     onExit('map');
   });
@@ -44,7 +44,7 @@ export async function playRound(app: HTMLElement, game: Game, onExit: (e: Exit) 
     new Promise<void>((resolve) =>
       skip.addEventListener('click', () => {
         sfx.tap();
-        speechSynthesis?.cancel();
+        hush();
         resolve();
       }),
     ),
