@@ -2,6 +2,8 @@
 
 A Math Blaster–style math game for young kids with a dragon and dinosaur theme. It's currently sized for a player who adds within 20, is weak at subtraction, and knows some of the times tables ([research](docs/research/2026-09-26-right-sizing-advanced-learner.md)). Vite + vanilla TypeScript, DOM + CSS, with no game engine ([why](docs/decisions/2026-09-26-vanilla-ts-no-engine.md)).
 
+**Scale:** a personal project for one child, played on a phone, an iPad or a computer, with no wider user base. Write clean, correct, verified code that reads like the code around it, but not enterprise software: no robustness, configurability, edge-case handling or tooling beyond what the spec and one child need.
+
 ## Start here
 - Read the top entry of `WORKLOG.md` before starting work. Add an entry after each chunk of work, following `.claude/skills/worklog/SKILL.md`.
 - `DESIGN.md` is the game design. `docs/research/` holds the research behind it.
