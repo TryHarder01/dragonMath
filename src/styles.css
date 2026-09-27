@@ -645,6 +645,8 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   .stomp-rex { font-size: clamp(3rem, 15vw, 5rem); }
   .stomp-tick span { font-size: .62rem; }
   .stomp-arc span { font-size: .6rem; }
+  .stomp-path.open .stomp-open-label { font-size: .85rem; }
+  .stomp-path.open .stomp-arc span { font-size: .8rem; }
 }
 /* ---------- Dino Story ---------- */
 .play.story-scene { justify-content: flex-start; width: 100%; gap: 0; }

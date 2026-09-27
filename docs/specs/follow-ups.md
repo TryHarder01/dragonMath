@@ -23,14 +23,13 @@ The Codex workers ran out of usage partway through their self-review pass, so th
 - ~~**Dino Story:** during the hint, the ten-frame model card covers the "11 − 5 = ?" number-sentence card under the stage.~~ Done 2026-09-27: the model card now sits inside the stage.
 - ~~**Gem Bags L2 (build 47):** the single-gem source button's icon is tiny next to the bag, and the empty hoard is just a thin white strip until something is added.~~ Done 2026-09-27: bumped the loose-gem glyph's font-size in the source button, and gave the empty hoard a `min-height`.
 - ~~**Gem Bags L7–L8:** the friend dragon is the 🐲 emoji face, which looks fierce at big sizes.~~ Done 2026-09-27: switched to 🐉, matching every other friendly dragon in the game.
-- **Stomp Path L6–L7 on a phone:** the open-line labels are small (about 11px). They're readable, but could be bigger now that the line has room.
-- **Stomp Path L8:** the target number shows twice, in the question card and again in the answer band. One is enough.
+- ~~**Stomp Path L6–L7 on a phone:** the open-line labels are small.~~ Done 2026-09-27: bigger on phones.
+- ~~**Stomp Path L8:** the target number shows twice.~~ Done 2026-09-27: only the answer-band number remains.
 
 ## Small code tidy-ups
 
-- `stompPath.ts` exports `generateStompProblem` for a checker script that was later removed. Either add the shared generator check (item 2) or un-export it.
-- The Stomp Path and Gem Bags eggs and scenes carry `data-answer` / `data-target` attributes that exist only for the play-through drivers. They're harmless, but a driver could read the question instead.
-- Stomp Path's praise says "Big hops first. Great thinking!", while the spec says "Big hops first. Smart!".
+- ~~Stomp Path: un-export `generateStompProblem`, and use the spec's praise line ("Big hops first. Smart!").~~ Done 2026-09-27.
+- The eggs in Stomp Path and Gem Bags carry `data-answer` / `data-value` attributes that only the play-through drivers use. Stomp Path's `data-target` is gone. The rest are harmless, and removing them isn't worth it at this scale.
 
 ## Running it on a phone
 

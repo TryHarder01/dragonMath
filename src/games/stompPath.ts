@@ -28,8 +28,7 @@ function choices(answer: number, preferred: number[] = []): number[] {
   return shuffle(values.slice(0, 4));
 }
 
-/** Exported so the generators can be stress-tested without driving the UI. */
-export function generateStompProblem(level: number): StompProblem {
+function generateStompProblem(level: number): StompProblem {
   if (level === 1) {
     const count = rand(2, 4);
     const start = rand(0, Math.min(17, 20 - count));
@@ -224,7 +223,6 @@ class PathView {
 
 function expression(p: StompProblem): string {
   if (p.level === 4) return `${p.sequence!.join(', ')}, ?`;
-  if (p.level === 8) return String(p.target);
   const amount = p.hops.reduce((sum, n) => sum + n, 0);
   return `${p.start} ${p.direction === 1 ? '+' : '−'} ${amount}`;
 }
@@ -295,7 +293,7 @@ function answerEggs(box: HTMLElement, p: StompProblem, path: PathView): Promise<
     onRight: async (choice) => {
       choice.el.replaceChildren(h('span', 'hatchling', ['🐣']));
       burst(choice.el);
-      await say(p.level >= 5 ? 'Big hops first. Great thinking!' : 'You counted every stomp!');
+      await say(p.level >= 5 ? 'Big hops first. Smart!' : 'You counted every stomp!');
     },
     onWrong: async () => {
       if (!hinted) {
@@ -339,7 +337,6 @@ async function stompIt(box: HTMLElement, p: StompProblem, path: PathView) {
 async function estimate(box: HTMLElement, p: StompProblem, path: PathView): Promise<boolean> {
   const target = p.target!;
   const hit = h('button', 'stomp-line-hit tappable');
-  hit.dataset.target = String(target);
   hit.setAttribute('aria-label', `Tap where ${target} belongs`);
   path.el.append(hit);
   box.replaceChildren(h('div', 'stomp-estimate-reminder', [String(target)]));
@@ -409,10 +406,10 @@ export const stompPath: Game = {
   async runProblem({ play, level }) {
     const p = generateStompProblem(level);
     play.classList.add('stomp-scene');
-    const question = h('div', 'stomp-question', [expression(p)]);
     const path = new PathView(p, level === 8);
     const answers = h('div', 'stomp-answers');
-    play.append(question, path.el, answers);
+    if (level === 8) play.append(path.el, answers);
+    else play.append(h('div', 'stomp-question', [expression(p)]), path.el, answers);
 
     if (level === 4) {
       const step = p.hops[0];
