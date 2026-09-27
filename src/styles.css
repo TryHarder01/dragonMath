@@ -380,6 +380,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 @media (max-aspect-ratio: 3/4) {
   .nest-tuck-scene { flex-wrap: wrap; align-content: center; }
   .nest-tuck-ember { position: absolute; top: 2%; right: 3%; }
+}
 /* ---------- Gem Bags ---------- */
 .gem-hoard {
   --gem-size: clamp(32px, min(5vmin, 8vh), 10vh);
@@ -530,6 +531,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   .gem-compare { gap: 2vmin; }
   .gem-dragon-choice.ez-target { padding: 1vmin; }
   .gem-dragon-choice .gem-hoard { --gem-size: clamp(22px, 7vw, 5vh); }
+}
 /* ---------- Stomp Path ---------- */
 .play.stomp-scene { justify-content: flex-start; gap: 1.2vh; width: 100%; }
 .stomp-question {
@@ -642,6 +644,7 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
   .stomp-rex { font-size: clamp(3rem, 15vw, 5rem); }
   .stomp-tick span { font-size: .62rem; }
   .stomp-arc span { font-size: .6rem; }
+}
 /* ---------- Dino Story ---------- */
 .play.story-scene { justify-content: flex-start; width: 100%; gap: 0; }
 .story-shell {

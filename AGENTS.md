@@ -7,7 +7,7 @@ A Math Blaster–style math game for young kids with a dragon and dinosaur theme
 ## Start here
 - Read the top entry of `WORKLOG.md` before starting work. Add an entry after each chunk of work, following `.claude/skills/worklog/SKILL.md`.
 - `DESIGN.md` is the game design. `docs/research/` holds the research behind it.
-- `docs/specs/` holds build handoffs, one self-contained spec per unbuilt game. `docs/specs/README.md` covers the shared contract, verification and parallel-work rules. To build a game, start there.
+- `docs/specs/` holds one self-contained spec per game (all four built). `docs/specs/README.md` covers the shared contract, verification and parallel-work rules. `docs/specs/follow-ups.md` lists known rough edges and next steps.
 - `docs/decisions/` holds one file per standing decision, with the reason and the rejected options. Check it before questioning a rule below.
 
 ## Agent setup (Claude Code and Codex)

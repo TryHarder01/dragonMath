@@ -1,5 +1,32 @@
 # Worklog
 
+## 2026-09-27 — Merge the four games; rough cut ready to play
+
+**Goal:** Per the user, have four Codex agents (orchestrated with Orca) build the four specced games in parallel, then merge and verify. The user asked for a working rough cut by morning over polish, with follow-up work written down.
+
+**Done:**
+- Before dispatch: `scripts/playthrough.mjs` + per-game drivers (`just playthrough`, `just verify`), and `orca.yaml` to run `npm install` in new worktrees.
+- Four Codex workers, one worktree and branch each (`nest-builder`, `gem-bags`, `stomp-path`, `dino-story`). They hit the Codex usage limit twice. The user spent one reset; the second time the coordinator finished the work (see `docs/specs/follow-ups.md`).
+- Review fixes: Stomp Path L6–L7 now use an open number line (the hint was unreadable), with faint minor ruler ticks for phones. Gem Bags L2 shows the target numeral.
+- Merged all four into `main`. Fixed a merge bug: each branch's CSS section ended with a `@media` block whose closing `}` git kept only once, so three sections were nested inside the previous one's media query (the audit caught it on larger screens).
+- `AGENTS.md`: a "Scale" note (one child, not enterprise software). Spec README and `AGENTS.md` point to `docs/specs/follow-ups.md`.
+
+**Decisions:**
+- A rough cut on `main` with a follow-up list, rather than full review of every game, is the user's call. `[promote?]`
+- When merging parallel CSS sections, check brace balance per section. Git's "common suffix" can drop a closing brace.
+
+**Verified (on merged `main`):**
+- `npm run build` OK.
+- `node scripts/audit.mjs`: 0 of 156 flagged (8 flagged before the CSS brace fix).
+- `node scripts/playthrough.mjs all`: all 7 games reach the hatch with a hint shown.
+- Per branch before merging: every level 1–8 of all four new games played through; phone-size checks on Stomp L6–L7 and Gem Bags L2. Screenshots looked at are listed in `follow-ups.md`.
+
+**Open / broken:**
+- Nest Builder, Gem Bags and Dino Story haven't had a line-by-line review. Small visual rough edges are listed in `docs/specs/follow-ups.md`.
+
+**Next:**
+- Play it with him. Then work through `docs/specs/follow-ups.md`, starting with the Nest Builder review (his weak spot).
+
 ## 2026-09-27 — Build Nest Builder
 
 **Goal:** Build the eight-level Nest Builder make-ten game from `docs/specs/nest-builder.md`: bridging through ten for adding and, especially, subtracting.

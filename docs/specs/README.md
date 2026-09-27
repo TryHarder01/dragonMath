@@ -1,6 +1,8 @@
 # Game specs: build handoffs
 
-One file per unbuilt mini-game. Each spec is meant to be picked up by an agent (or person) with no memory of earlier sessions and built **without re-planning**. Read this README first. It covers what all four games share.
+**All four are built** (2026-09-27). The specs stay as the source of truth for each game's levels, hints and parent text. Known rough edges and next steps: [follow-ups.md](follow-ups.md).
+
+One file per mini-game. Each spec is meant to be picked up by an agent (or person) with no memory of earlier sessions and built **without re-planning**. Read this README first. It covers what all four games share.
 
 | Spec | Game | Skill | Build order |
 |---|---|---|---|
