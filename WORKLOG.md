@@ -47,6 +47,25 @@
 - `just verify` (build, audit at 6 sizes, every level of every game including the other in-flight conversions): all green, 0 failed.
 
 **Next:** None — this chunk is done. Other in-flight workers are converting Egg Stairs/Egg Crates and Nest Builder/Make Ten/Stomp Path in parallel; nothing here depends on them.
+## 2026-09-27 — Nest Builder, Make Ten, Stomp Path: spoken lines moved to per-game lines files
+
+**Goal:** Move every spoken line in Nest Builder, Make Ten and Stomp Path into `src/games/<game>.lines.ts`, following the `eggWarmer.lines.ts` pattern, so `just check`'s `check-lines.mjs` covers them. Pure move, no wording changes except where the checker flagged a line.
+
+**Done:**
+- Added `src/games/nestBuilder.lines.ts`, `src/games/makeTen.lines.ts`, `src/games/stompPath.lines.ts`; the three game files now hold no spoken wording (only on-screen `.expr` text and single-number `say(word(n))`/`say(String(n))` counts stay inline, per the rule).
+- Two chant-style lines (`addChant`/`subChant` in both nestBuilder and makeTen) had 5–6 numeric params in the original inline code. Rather than exporting `samples` for `check-lines.mjs` to render them (which trips Knip's unused-export check, since `samples` is only read dynamically and I couldn't touch `scripts/`), I reduced each to 3 params by deriving the redundant fields (e.g. `nextTen = a + bridge`) inside the function. Verified algebraically that this produces byte-identical output to the original template for every call site. Same fix for Stomp Path's `skipAsk`: replaced its `sequence: number[]` param with three plain numbers (`s1, s2, s3`), deriving `direction` from `s2 > s1`.
+- Updated `docs/specs/nest-builder.md`, `make-ten.md`, `stomp-path.md`: replaced each "Spoken lines" table with one sentence pointing at the lines file. Left the "Hints" sections and level tables alone — they're loose paraphrases, not exact quotes, and still accurate.
+
+**Decisions:**
+- Skipped `WORKLOG.md` rotation (it's past 500 lines) — other workers are concurrently appending to this file in parallel worktrees for the sibling Egg Stairs/Crates and Gem Bags/Dino Story conversions, and a rotation touches the whole file. Left for a later, non-parallel chunk.
+
+**Verified:**
+- `npm run typecheck && just check`: clean. `check-lines.mjs` reports "5 lines files; longest sentence 7 words", no inline-spoken-text errors for these three games.
+- `node scripts/playthrough.mjs nest --level=all`, `maketen --level=all`, `stomp --level=all`: 8/8 levels each, 0 failed.
+- `just verify`: build passed, 0 of 180 audit screen/size combinations flagged, all 65 game/level rounds (all six games) reached the hatch with a hint shown.
+- Wording check: read the full `git diff main` for all three `.ts` files — every change is `"literal string"` → `lines.key(...)`, nothing else touched. One reword, flagged by the checker: Nest Builder's `subFirstAsk` was 8 words ("How many walk home to get to ten?"); changed "get to" → "reach" (7 words: "How many walk home to reach ten?").
+
+**Next:** None for this chunk. The Egg Stairs/Crates and Gem Bags/Dino Story conversions are being done in parallel by other workers.
 
 ## 2026-09-27 — Voice pass: shared hint lines, Egg Warmer/Stairs/Crates, start greeting
 

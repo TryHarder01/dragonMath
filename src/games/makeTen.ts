@@ -3,6 +3,7 @@ import { sfx } from '../core/sound';
 import { say, wait } from '../core/voice';
 import { word } from '../core/words';
 import { eggScene } from './eggScene';
+import { lines } from './makeTen.lines';
 import {
   addProblem,
   choicesWithMistake,
@@ -197,7 +198,7 @@ function makeTenModel(plan: MakeTenProblem, detailInitially: boolean, hasSplitBe
     restPart.textContent = String(plan.bridge);
     renderChain(1);
     finished = true;
-    await say(`That's ${word(plan.bridge)} more.`);
+    await say(lines.moreBy(plan.bridge));
   }
 
   async function moveBridge() {
@@ -218,7 +219,7 @@ function makeTenModel(plan: MakeTenProblem, detailInitially: boolean, hasSplitBe
     revealDetails();
     bridgePart.classList.add('flash');
     basketEggs.slice(0, plan.bridge).forEach((egg) => egg.classList.add('flash'));
-    await say(subtract ? `${word(plan.bridge)} walked home.` : `${word(plan.bridge)} went in the nest.`);
+    await say(subtract ? lines.bridgeWalkedHome(plan.bridge) : lines.bridgeAdded(plan.bridge));
     await wait(220);
     bridgePart.classList.remove('flash');
     basketEggs.slice(0, plan.bridge).forEach((egg) => egg.classList.remove('flash'));
@@ -235,7 +236,7 @@ function makeTenModel(plan: MakeTenProblem, detailInitially: boolean, hasSplitBe
       await wait(60);
     }
     revealSplit();
-    await say(`${word(plan.b)} is ${word(plan.bridge)} and ${word(plan.rest)}.`);
+    await say(lines.basketSplit(plan.b, plan.bridge, plan.rest));
   }
 
   async function finishAdd() {
@@ -290,15 +291,15 @@ async function runPartner(play: HTMLElement, plan: MakeTenProblem): Promise<bool
   const model = makeTenModel(plan, true, false);
   return eggScene(play, question(
     `10 = ${plan.a} + ?`,
-    `Ten is ${word(plan.a)}. How many more?`,
+    lines.partnerAsk(plan.a),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.partnerHint();
     }, true,
     async () => {
       await model.partnerHint();
-      await say('You made ten!');
+      await say(lines.madeTen);
     },
   ));
 }
@@ -307,16 +308,16 @@ async function runFill(play: HTMLElement, plan: MakeTenProblem): Promise<boolean
   const model = makeTenModel(plan, true, false);
   return eggScene(play, question(
     `${plan.a} + ${plan.b} → ${plan.target}`,
-    `${word(plan.a)} in the nest. ${word(plan.b)} in the basket. How many fill the nest?`,
+    lines.fillAsk(plan.a, plan.b),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.moveBridge();
-      await say(`That's ${word(plan.bridge)} eggs.`);
+      await say(lines.thatsEggs(plan.bridge));
     }, true,
     async () => {
       await model.moveBridge();
-      await say('Fill the nest, then the rest!');
+      await say(lines.fillNestThenRest);
     },
   ));
 }
@@ -325,16 +326,16 @@ async function runSplit(play: HTMLElement, plan: MakeTenProblem): Promise<boolea
   const model = makeTenModel(plan, true, true);
   return eggScene(play, question(
     `${plan.b} = ${plan.bridge} + ?`,
-    `${word(plan.bridge)} eggs filled the nest. ${word(plan.b)} is ${word(plan.bridge)}. How many more?`,
+    lines.splitFilledAsk(plan.bridge, plan.b),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.highlightBridge();
       await model.countRest();
     }, true,
     async () => {
       model.revealSplit();
-      await say(`You split the ${word(plan.b)} to make ten!`);
+      await say(lines.splitMade(plan.b));
     },
   ));
 }
@@ -343,14 +344,12 @@ async function runAddChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   const model = makeTenModel(plan, true, true);
   const first = await eggScene(play, question(
     `${plan.a} + ${plan.b} → ${plan.target}`,
-    plan.a < 10
-      ? `${word(plan.a)} plus ${word(plan.b)}. How many fill the nest?`
-      : `${word(plan.a)} plus ${word(plan.b)}. How many make ${word(plan.target)}?`,
+    plan.a < 10 ? lines.chainFirstAskSmall(plan.a, plan.b) : lines.chainFirstAskBig(plan.a, plan.b, plan.target),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.moveBridge();
-      await say(`That's ${word(plan.bridge)}.`);
+      await say(lines.thatsBridge(plan.bridge));
     }, true,
     model.moveBridge,
   ));
@@ -358,10 +357,10 @@ async function runAddChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   play.replaceChildren();
   const second = await eggScene(play, question(
     `${plan.b} = ${plan.bridge} + ?`,
-    `${word(plan.b)} is ${word(plan.bridge)}. How many more?`,
+    lines.splitAsk(plan.b, plan.bridge),
     plan.beats[1], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.highlightBridge();
       await model.countRest();
     }, true,
@@ -371,17 +370,17 @@ async function runAddChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   play.replaceChildren();
   const third = await eggScene(play, question(
     `${plan.target} + ${plan.rest}`,
-    `${word(plan.target)} and ${word(plan.rest)} more. How many?`,
+    lines.totalAddAsk(plan.target, plan.rest),
     plan.beats[2], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.finishAdd();
-      await say(`${word(plan.target)} and ${word(plan.rest)} is ${word(plan.a + plan.b)}.`);
+      await say(lines.addTotalRecap(plan.target, plan.rest, plan.a + plan.b));
     }, true,
     async () => {
       await model.finishAdd();
-      await say(`${word(plan.a)} plus ${word(plan.b)}. ${word(plan.a)} and ${word(plan.bridge)}. ${word(plan.target)}! ${word(plan.target)} and ${word(plan.rest)}. ${word(plan.a + plan.b)}!`);
-      await say('Fill the nest, then the rest!');
+      await say(lines.addChant(plan.a, plan.bridge, plan.rest));
+      await say(lines.fillNestThenRest);
     },
   ));
   return first && second && third;
@@ -391,17 +390,17 @@ async function runAddTotal(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   const model = makeTenModel(plan, false, false);
   return eggScene(play, question(
     `${plan.a} + ${plan.b}`,
-    `${word(plan.a)} plus ${word(plan.b)}. Warm the egg with the answer!`,
+    lines.addTotalAsk(plan.a, plan.b),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.moveBridge();
       await model.highlightBridge();
       await model.countRest();
       await model.finishAdd();
-      await say(`${word(plan.a)} plus ${word(plan.b)}. ${word(plan.a)} and ${word(plan.bridge)}. ${word(plan.target)}! ${word(plan.target)} and ${word(plan.rest)}. ${word(plan.a + plan.b)}!`);
+      await say(lines.addChant(plan.a, plan.bridge, plan.rest));
     }, true,
-    () => say('Fill the nest, then the rest!'),
+    () => say(lines.fillNestThenRest),
   ));
 }
 
@@ -409,12 +408,12 @@ async function runSubChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   const model = makeTenModel(plan, true, true);
   const first = await eggScene(play, question(
     `${plan.a} ${MINUS} ${plan.b} → 10`,
-    `${word(plan.a)} minus ${word(plan.b)}. How many walk home to make ten?`,
+    lines.subChainFirstAsk(plan.a, plan.b),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.moveBridge();
-      await say(`${word(plan.bridge)} walked home. Now we're at ten.`);
+      await say(lines.subFirstHint(plan.bridge));
     }, true,
     model.moveBridge,
   ));
@@ -422,10 +421,10 @@ async function runSubChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   play.replaceChildren();
   const second = await eggScene(play, question(
     `${plan.b} = ${plan.bridge} + ?`,
-    `${word(plan.b)} is ${word(plan.bridge)}. How many more?`,
+    lines.splitAsk(plan.b, plan.bridge),
     plan.beats[1], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.highlightBridge();
       await model.countRest();
     }, true,
@@ -435,17 +434,17 @@ async function runSubChain(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   play.replaceChildren();
   const third = await eggScene(play, question(
     `10 ${MINUS} ${plan.rest}`,
-    `Ten. ${word(plan.rest)} more walk home. How many are left?`,
+    lines.tenMinusAsk(plan.rest),
     plan.beats[2], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.finishSubtract();
-      await say(`Ten minus ${word(plan.rest)} is ${word(plan.a - plan.b)}.`);
+      await say(lines.tenMinusRecap(plan.rest, plan.a - plan.b));
     }, true,
     async () => {
       await model.finishSubtract();
-      await say(`${word(plan.a)} minus ${word(plan.b)}. ${word(plan.bridge)} to ten! ${word(plan.rest)} more. ${word(plan.a - plan.b)} left!`);
-      await say('Down to ten, then the rest!');
+      await say(lines.subChant(plan.a, plan.bridge, plan.rest));
+      await say(lines.downToTenThenRest);
     },
   ));
   return first && second && third;
@@ -455,17 +454,17 @@ async function runSubTotal(play: HTMLElement, plan: MakeTenProblem): Promise<boo
   const model = makeTenModel(plan, false, false);
   return eggScene(play, question(
     `${plan.a} ${MINUS} ${plan.b}`,
-    `${word(plan.a)} minus ${word(plan.b)}. Warm the egg with the answer!`,
+    lines.subTotalAsk(plan.a, plan.b),
     plan.beats[0], model,
     async () => {
-      await say("Let's count.");
+      await say(lines.hintStart);
       await model.moveBridge();
       await model.highlightBridge();
       await model.countRest();
       await model.finishSubtract();
-      await say(`${word(plan.a)} minus ${word(plan.b)}. ${word(plan.bridge)} to ten! ${word(plan.rest)} more. ${word(plan.a - plan.b)} left!`);
+      await say(lines.subChant(plan.a, plan.bridge, plan.rest));
     }, true,
-    () => say('Down to ten, then the rest!'),
+    () => say(lines.downToTenThenRest),
   ));
 }
 
@@ -486,7 +485,7 @@ export const makeTen: Game = {
     'Down to ten: 13 − 5 = 13 − 3 − 2 = 10 − 2',
     'Mixed adding and taking away across ten',
   ],
-  intro: 'Make Ten! Fill the nest, then the rest!',
+  intro: lines.intro,
 
   runProblem({ play, level }) {
     const plan = levelProblem(level);

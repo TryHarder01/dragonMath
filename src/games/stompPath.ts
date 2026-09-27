@@ -7,6 +7,7 @@ import { awaitChoice, type Choice } from '../core/choices';
 import { burst, h, nearChoices, pick, rand, shuffle } from '../core/dom';
 import { sfx } from '../core/sound';
 import { prompt, say, wait } from '../core/voice';
+import { lines } from './stompPath.lines';
 import type { Game } from './types';
 
 type Direction = 1 | -1;
@@ -229,27 +230,24 @@ function expression(p: StompProblem): string {
 
 function ask(p: StompProblem): string {
   const amount = p.hops.reduce((sum, n) => sum + n, 0);
-  if (p.level === 1) return `The T-rex is on ${p.start}. Hop ${amount}. Where will it land?`;
-  if (p.level === 2) return `The T-rex is on ${p.start}. Hop back ${amount} to the pond. Where will it land?`;
-  if (p.level === 3) return `${p.start}. ${p.hops.length === 1 ? 'One' : 'Two'} big ten-${p.hops.length === 1 ? 'hop' : 'hops'}${p.direction === -1 ? ' back' : ''}! Where does it land?`;
-  if (p.level === 4) {
-    const step = p.hops[0] === 2 ? 'twos' : p.hops[0] === 5 ? 'fives' : 'tens';
-    return `Hopping by ${step}${p.direction === -1 ? ', going back' : ''}. ${p.sequence!.join('. ')}. Where next?`;
-  }
-  if (p.level === 5) return `${p.start} ${p.direction === 1 ? 'plus' : 'minus'} ${amount}. Where does the T-rex land?`;
-  if (p.level === 6) return `${p.start} plus ${amount}. Tens first, then ones!`;
-  if (p.level === 7) return `${p.start} minus ${amount}. Tens first, then ones!`;
-  return `Where does ${p.target} live? Tap the path!`;
+  if (p.level === 1) return lines.hopForwardAsk(p.start, amount);
+  if (p.level === 2) return lines.hopBackAsk(p.start, amount);
+  if (p.level === 3) return lines.tenHopAsk(p.start, p.hops.length, p.direction);
+  if (p.level === 4) return lines.skipAsk(p.hops[0], p.sequence![0], p.sequence![1], p.sequence![2]);
+  if (p.level === 5) return lines.tensAsk(p.start, p.direction, amount);
+  if (p.level === 6) return lines.addHopsAsk(p.start, amount);
+  if (p.level === 7) return lines.subHopsAsk(p.start, amount);
+  return lines.estimateAsk(p.target!);
 }
 
 async function playHint(p: StompProblem, path: PathView) {
   path.clearHops();
   let at = p.level === 4 ? p.sequence![0] - p.direction * p.hops[0] : p.start;
 
-  if (p.level <= 2) await say("Watch! Don't count the start. Count each new square.");
-  else if (p.level === 3 || p.level === 5) await say('Watch! Make each big ten-hop. The ones stay the same.');
-  else if (p.level === 4) await say(`Watch! Keep the same ${p.hops[0]}-hop each time.`);
-  else await say('Watch! Tens first, then ones!');
+  if (p.level <= 2) await say(lines.hintWindow);
+  else if (p.level === 3 || p.level === 5) await say(lines.hintTenHop);
+  else if (p.level === 4) await say(lines.hintSkip(p.hops[0]));
+  else await say(lines.hintOpenLine);
 
   const hops = p.level === 4 ? Array(4).fill(p.hops[0]) : p.hops;
   const ones = hops.filter((size) => size === 1).length;
@@ -261,7 +259,7 @@ async function playHint(p: StompProblem, path: PathView) {
   for (const size of hops) {
     if (size === 1 && crossesTen && !crossingExplained) {
       crossingExplained = true;
-      await say(`Go to ${boundary}. ${Math.abs(p.answer - boundary)} more${p.direction === -1 ? ' back' : ''}.`);
+      await say(lines.crossTen(boundary, Math.abs(p.answer - boundary), p.direction === -1));
     }
     const next = at + p.direction * size;
     await path.hop(at, next, `${p.direction === 1 ? '+' : '−'}${size}`);
@@ -293,15 +291,15 @@ function answerEggs(box: HTMLElement, p: StompProblem, path: PathView): Promise<
     onRight: async (choice) => {
       choice.el.replaceChildren(h('span', 'hatchling', ['🐣']));
       burst(choice.el);
-      await say(p.level >= 5 ? 'Big hops first. Smart!' : 'You counted every stomp!');
+      await say(p.level >= 5 ? lines.bigHopsFirst : lines.countedEveryStomp);
     },
     onWrong: async () => {
       if (!hinted) {
         hinted = true;
-        await say("Watch! Let's walk the path.");
+        await say(lines.hintWalkPath);
         await playHint(p, path);
       } else {
-        await say('Look where the hops land. Try again.');
+        await say(lines.missAgain);
       }
       void prompt(promptText);
     },
@@ -315,7 +313,7 @@ async function stompIt(box: HTMLElement, p: StompProblem, path: PathView) {
   const foot = h('button', 'stomp-foot tappable', ['🦶']);
   foot.setAttribute('aria-label', p.direction === 1 ? 'Stomp forward' : 'Stomp back');
   box.append(foot);
-  void prompt('Now you stomp! Tap the foot for every hop.');
+  void prompt(lines.stompPrompt);
   let at = p.start;
   for (const size of p.hops) {
     await new Promise<void>((resolve) => {
@@ -331,7 +329,7 @@ async function stompIt(box: HTMLElement, p: StompProblem, path: PathView) {
   }
   foot.classList.remove('tappable');
   foot.classList.add('yes');
-  await say('You counted every stomp!');
+  await say(lines.countedEveryStomp);
 }
 
 async function estimate(box: HTMLElement, p: StompProblem, path: PathView): Promise<boolean> {
@@ -350,7 +348,7 @@ async function estimate(box: HTMLElement, p: StompProblem, path: PathView): Prom
       path.revealMarker(target);
       hit.classList.remove('tappable');
       sfx.right();
-      await say("Close! It's right here.");
+      await say(lines.estimateClose);
       resolve(firstTry);
     };
     hit.addEventListener('pointerdown', async (event) => {
@@ -365,21 +363,21 @@ async function estimate(box: HTMLElement, p: StompProblem, path: PathView): Prom
       firstTry = false;
       sfx.hmm();
       hit.classList.add('stomp-missed');
-      await say("Let's count. Find the nearest big number.");
+      await say(lines.estimateHintStart);
       const anchor = [0, 50, 100].reduce((nearest, n) => Math.abs(target - n) < Math.abs(target - nearest) ? n : nearest);
       const forward = anchor < target;
       const decade = forward ? Math.floor(target / 10) * 10 : Math.ceil(target / 10) * 10;
-      await say(`Start at ${anchor}. Count the tens.`);
+      await say(lines.estimateAnchor(anchor));
       for (let n = anchor + (forward ? 10 : -10); forward ? n <= decade : n >= decade; n += forward ? 10 : -10) await say(String(n));
       const ones = Math.abs(target - decade);
-      if (ones) await say(`${ones} more${forward ? '' : ' back'}. ${target}!`);
+      if (ones) await say(lines.estimateOnesMore(ones, !forward, target));
       const retry = path.flag(target, true);
       retry.addEventListener('pointerdown', async () => {
         retry.classList.add('yes');
         await finish(true);
       }, { once: true });
       hit.classList.remove('tappable');
-      void prompt(`Tap the glowing flag for ${target}.`);
+      void prompt(lines.estimateFlagPrompt(target));
     });
   });
 }
@@ -401,7 +399,7 @@ export const stompPath: Game = {
     'Subtracting with hops: tens first, then ones (62 − 25)',
     'Where does 63 live? Tap the path',
   ],
-  intro: 'Stomp Path! Help the T-rex hop home!',
+  intro: lines.intro,
 
   async runProblem({ play, level }) {
     const p = generateStompProblem(level);

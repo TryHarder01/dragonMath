@@ -61,19 +61,7 @@ Use `eggScene` for each beat. The question card holds the number sentence plus t
 
 ## Spoken lines (use `prompt()` for questions)
 
-Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
-
-| Moment | Line |
-|---|---|
-| L1 | "Seven in the nest. How many fill the nest?" |
-| L2/L5 beat 1 | "Eight plus five. How many fill the nest?" / "Thirty-eight plus five. How many more to make forty?" |
-| L2/L5 beat 2 | "The nest is full! Ten and three more. How many?" / "Forty and three more?" |
-| L3 | "Eight plus five. Warm the egg with the answer!" |
-| L4 | "Thirty-eight. How many more to make forty?" |
-| L6/L7 beat 1 | "Thirteen in the nest. Some babies hatch and walk home. How many get down to ten?" / "…down to forty?" |
-| L6/L7 beat 2 | "Now two more from ten. How many are left?" |
-| L8 | the number sentence, then "Warm the egg with the answer!" |
-| Right-answer praise | name the strategy: "You filled the nest first!", "Down to ten, then the rest!" |
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`). Every spoken line lives in `src/games/nestBuilder.lines.ts`; `nestBuilder.ts` holds no wording.
 
 ## Hints (the model's `hint()`, run on the first miss of a beat)
 
