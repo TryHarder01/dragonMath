@@ -43,25 +43,28 @@ function fillProblem(): NestProblem {
   };
 }
 
-function addSmall(oneBeat: boolean): NestProblem {
-  const a = rand(6, 9);
-  const b = rand(11 - a, 9);
-  const bridge = 10 - a;
+function addProblem(kind: 'add-small' | 'add-big', a: number, b: number, oneBeat: boolean, max: number): NestProblem {
+  const bridge = Math.ceil(a / 10) * 10 - a;
   const rest = b - bridge;
   return {
-    kind: 'add-small', a, b, oneBeat,
+    kind, a, b, oneBeat,
     beats: oneBeat
-      ? [{ answer: a + b, choices: choicesWithMistake(a + b, 0, 20, rest) }]
+      ? [{ answer: a + b, choices: choicesWithMistake(a + b, 0, max, rest) }]
       : [
           { answer: bridge, choices: choicesWithMistake(bridge, 1, 9, b) },
-          { answer: a + b, choices: choicesWithMistake(a + b, 0, 20, rest) },
+          { answer: a + b, choices: choicesWithMistake(a + b, 0, max, rest) },
         ],
   };
 }
 
+function addSmall(oneBeat: boolean): NestProblem {
+  const a = rand(6, 9);
+  const b = rand(11 - a, 9);
+  return addProblem('add-small', a, b, oneBeat, 20);
+}
+
 function nextTenProblem(): NestProblem {
-  let a = rand(11, 89);
-  while (a % 10 === 0) a = rand(11, 89);
+  const a = rand(1, 8) * 10 + rand(1, 9);
   const answer = Math.ceil(a / 10) * 10 - a;
   return {
     kind: 'next-ten', a, oneBeat: true,
@@ -73,16 +76,7 @@ function addBig(oneBeat: boolean): NestProblem {
   const a = rand(1, 8) * 10 + rand(2, 9);
   const bridge = Math.ceil(a / 10) * 10 - a;
   const b = rand(bridge + 1, 9);
-  const rest = b - bridge;
-  return {
-    kind: 'add-big', a, b, oneBeat,
-    beats: oneBeat
-      ? [{ answer: a + b, choices: choicesWithMistake(a + b, 0, 99, rest) }]
-      : [
-          { answer: bridge, choices: choicesWithMistake(bridge, 1, 9, b) },
-          { answer: a + b, choices: choicesWithMistake(a + b, 0, 99, rest) },
-        ],
-  };
+  return addProblem('add-big', a, b, oneBeat, 99);
 }
 
 function subSmall(oneBeat: boolean): NestProblem {
@@ -359,9 +353,10 @@ async function runAdd(play: HTMLElement, plan: NestProblem, showModel: boolean):
     ));
   }
 
+  const isSmall = plan.kind === 'add-small';
   const first = await eggScene(play, question(
     `${plan.a} + ${b} → ${nextTen}`,
-    plan.a < 10
+    isSmall
       ? `${word(plan.a)} plus ${word(b)}. How many of the ${word(b)} fill the nest?`
       : `${word(plan.a)} plus ${word(b)}. How many more to make ${word(nextTen)}?`,
     plan.beats[0], nest,
@@ -372,11 +367,11 @@ async function runAdd(play: HTMLElement, plan: NestProblem, showModel: boolean):
     () => nest.fillTo10(),
   ));
 
-  if (plan.a < 10) await tuckIn(play, nest, rest, 'spill');
+  if (isSmall) await tuckIn(play, nest, rest, 'spill');
   play.replaceChildren();
   const second = await eggScene(play, question(
     `${nextTen} + ${rest}`,
-    plan.a < 10
+    isSmall
       ? `The nest is full! Ten and ${word(rest)} more. How many?`
       : `${word(nextTen)} and ${word(rest)} more?`,
     plan.beats[1], nest, explain, true,

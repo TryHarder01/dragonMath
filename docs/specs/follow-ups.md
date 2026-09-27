@@ -8,18 +8,20 @@ All four games (Nest Builder, Gem Bags, Stomp Path, Dino Story) are built and me
 |---|---|---|---|---|
 | Stomp Path | Codex, finished its self-review | Yes (coordinator), fixes applied | Yes; L6–L7 also at phone size | L1, L5 phone, L6–L7 hints (phone + iPad), L8 hint |
 | Gem Bags | Codex, self-review mostly done | No, only spot checks | Yes; L2 also at phone size | L2 build + hint, L7 hint |
-| Nest Builder | Codex, stopped mid self-review | No | Yes | L1 tuck-in, L6 hint |
+| Nest Builder | Codex, stopped mid self-review | Yes (2026-09-27, fresh reviewer) | Yes; L2, L7 also at phone size | L1 tuck-in, L2/L7 hint (phone + others) |
 | Dino Story | Codex, stopped mid self-review | No | Yes | L2 hint, L8 stage |
 
 The Codex workers ran out of usage partway through their self-review pass, so the coordinator finished, verified and committed three of the games.
 
 **1. Review Nest Builder, Gem Bags and Dino Story line by line** against their specs and the "Scale" note in `AGENTS.md`: code that reads like `eggCrates.ts`, no dead code, spoken lines and hints as the spec says. Nest Builder matters most, because it targets his weak spot (subtracting through ten).
+- Nest Builder: done (2026-09-27). All 8 generators, spoken lines and hints checked against the spec and matched; `nextTenProblem` no longer needs a rejection-sampling loop, and `addSmall`/`addBig` now share an `addProblem` helper the same way `subSmall`/`subBig` already shared `subProblem`. Gem Bags and Dino Story still need this pass.
 
 **2. Generator checks.** The specs ask for each level's generator to be looped 1,000× to check ranges and that the answer is always one of the choices. Stomp Path and Gem Bags did this in throwaway scripts. Nest Builder and Dino Story didn't record it. A small shared `scripts/check-generators.mjs` would cover all games.
+- Nest Builder: done (2026-09-27). A throwaway script looped `generateNestProblem` 1,000× per level (8,000 total) in-browser via a Vite dev server + Playwright, asserting each level's range constraints and that every beat's answer is among its 4 choices. All passed; the L8 mixed-level subtraction-weighting ratio came out ~2.0 as specced. Dino Story still needs this.
 
 ## Things a child would notice
 
-- **Nest Builder:** the eggs drawn inside the nest frames are faint (pale yellow on tan). Make them read as eggs at a glance, especially in the hint.
+- **Nest Builder:** done (2026-09-27). The eggs now have a brown outline (`.nest-frame .egg-dot` in `src/styles.css`) so they read as eggs at a glance against the tan nest, in both the mini full-nest tiles and the hint.
 - **Dino Story:** during the hint, the ten-frame model card covers the "11 − 5 = ?" number-sentence card under the stage (see a `story-L2` hint screenshot). Keep both visible, or hide the sentence during the hint on purpose.
 - **Gem Bags L2 (build 47):** the single-gem source button's icon is tiny next to the bag, and the empty hoard is just a thin white strip until something is added. Make the gem button's icon as big as the bag's, and give the empty hoard some size.
 - **Gem Bags L7–L8:** the friend dragon is the 🐲 emoji face, which looks fierce at big sizes. The tone rule says every creature is a friend, so pick a friendlier look.
