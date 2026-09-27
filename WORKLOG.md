@@ -85,6 +85,54 @@
 - Intro: "Dino Story! Watch what the dinos do, then help Ember answer the question." → "Dino Story! Help Ember answer the question!"
 
 **Next:** Have the parent listen to a round of each game on the child's usual device and confirm the new pace and wording land better. Worker A (egg games/core) and worker B (nestBuilder/makeTen/stompPath) are doing the same pass on their files in parallel.
+## 2026-09-27 — Slow the spoken lines in Nest Builder, Make Ten and Stomp Path
+
+**Goal:** Per the parent (words are "an oomph too much" — too fast, too complicated), rewrite the spoken lines in `nestBuilder.ts`, `makeTen.ts` and `stompPath.ts` to match the new "How Ember talks" section of `AGENTS.md`, without dropping the maths or the strategy catchphrases. Pace itself was already fixed elsewhere (`say()` now speaks sentence-by-sentence); this chunk is the words. Two other agents did the same for the other games in parallel (egg games/`eggScene.ts`/`src/core`, and Gem Bags/Dino Story).
+
+**Done:** every hint now opens with "Let's count." (nest/basket games) or "Watch!" (Stomp Path), long joined sentences ("X and Y make Z, and W more is V!") became short chants, and the two-part questions ("X is Y and how many more?") became two sentences ("X is Y. How many more?"). Stomp Path's L6/L7 catchphrase was tightened to the AGENTS.md-listed "Tens first, then ones!" (previously "Hop the tens first, then the ones!", which didn't match). All three intros are now two short sentences. Full before → after list:
+
+**`src/games/nestBuilder.ts`**
+- L1 ask: "Seven eggs in the nest. How many more to fill it?" → "Seven in the nest. How many fill the nest?"
+- L2/L3/L5/L8 add beat1 (small) ask: "…How many of the five fill the nest?" → "…How many fill the nest?"
+- Add hint/explain chant: "Eight and two make ten. Ten and three is thirteen." → "Eight and two. Ten! Ten and three. Thirteen!"
+- Sub hint/explain chant: "Thirteen minus five is eight." → "Thirteen minus three. Ten! Ten minus two. Eight!"
+- Sub beat1 ask: "Thirteen minus five. How many babies hatch and walk home to get down to ten?" → "Thirteen in the nest. Some babies hatch and walk home. How many get down to ten?"
+- Every hint (fill, add ×2, next-ten, subtract) now opens with "Let's count." before it counts.
+- Intro: "Nest Builder! Every nest holds ten eggs. Help Ember fill the nests, one nest at a time." → "Nest Builder! Let's fill the nests!"
+
+**`src/games/makeTen.ts`**
+- L1 (partner) ask: "Ten is eight and how many more?" → "Ten is eight. How many more?"
+- L2 (fill) ask: "Eight in the nest, five in the basket. How many of the five fill the nest?" → "Eight in the nest. Five in the basket. How many fill the nest?"
+- L3/L4/L5/L7 split-beat ask: "Five is two and how many more?" → "Five is two. How many more?"
+- L4/L5 add-chain beat1 ask: "…How many of the five fill the nest?" → "…How many fill the nest?"
+- Full-chain recap (add, two spots): "Eight plus five. Eight and two make ten, and three more is thirteen!" → "Eight plus five. Eight and two. Ten! Ten and three. Thirteen!"
+- L7 sub-chain beat1 ask: "Thirteen minus five. How many walk home to get down to ten?" → "…How many walk home to make ten?"
+- L7 sub-chain beat3 ask: "Ten, and two more walk home. How many are left?" → "Ten. Two more walk home. How many are left?"
+- Full-chain recap (subtract, two spots): "Thirteen minus five. Three to ten, then two more. Eight are left!" → "Thirteen minus five. Three to ten! Two more. Eight left!"
+- Every hint (partner, fill, split, add-chain ×3, add-total, sub-chain ×3, sub-total) now opens with "Let's count." (`runPartner`'s hint call is now its own wrapping arrow so the prefix doesn't also fire on the correct-first-try path, which still calls `model.partnerHint()` directly for its own visual).
+- Intro: "Make Ten! Fill the nest to ten first, then the rest. Let's split the eggs!" → "Make Ten! Fill the nest, then the rest!" (now uses the catchphrase verbatim from the first line).
+
+**`src/games/stompPath.ts`**
+- L4 ask: "Hopping by fives: five, ten, fifteen. Where next?" → "Hopping by fives. Five. Ten. Fifteen. Where next?" (each number gets its own beat instead of running together after a colon).
+- L6/L7 ask and hint: "Hop the tens first, then the ones!" / "Hop back the tens first, then the ones." → "Tens first, then ones!" (the AGENTS.md-listed catchphrase, used for both levels and both hint and ask).
+- Crossing-ten hint: "Go to sixty, then three more." → "Go to sixty. Three more."
+- First miss: "Hmm, not that one. Let's walk the path together." → "Watch! Let's walk the path." (the old line was the exact anti-pattern the guide calls out).
+- Second miss: "Look where the hops land, and try again." → "Look where the hops land. Try again."
+- L1–L2/L3-L5/L4 hints gained a "Watch!" opener; L1-L2's "We don't count the square we start on." → "Don't count the start."
+- Estimate (L8) wrong-tap hint: "Let's use the nearest big number." → "Let's count. Find the nearest big number."; "Start at fifty, and count the tens." → "Start at fifty. Count the tens."; "And three more is sixty-three." → "Three more. Sixty-three!"
+- Intro: "Stomp Path! The T-rex is walking home. Help it hop along the path!" → "Stomp Path! Help the T-rex hop home!"
+
+**Decisions:**
+- Kept "eggs"/"babies hatch and walk home" story language rather than trimming it further — the tone rules (hero-only-helps, everyday words) matter more than shaving one more word off an already-short sentence.
+- `Tens first, then ones!` used for both add (L6) and subtract (L7) Stomp Path levels, dropping the old direction-specific "back" wording, since the catchphrase in AGENTS.md is a single fixed phrase and the hop direction is already audible from the arc animation and spoken landing numbers.
+
+**Verified:**
+- `npm run typecheck && just check`: both clean (Knip flagged nothing).
+- `node scripts/playthrough.mjs nest --level=all`, `maketen --level=all`, `stomp --level=all`: 0 failed, all 8 levels of each reached the hatch with a hint shown.
+- `just verify`: build passed, 0/180 audit combinations flagged, all 65 game/level rounds passed.
+- Longest remaining spoken sentence across the three files: "You split the five to make ten!" (7 words, `makeTen.ts` `runSplit` praise — an existing spec-quoted line, untouched).
+
+**Next:** have the parent listen to a round of each game on the usual device and confirm the new pace and wording read calmer.
 
 ## 2026-09-27 — Dead-code checks with Knip
 

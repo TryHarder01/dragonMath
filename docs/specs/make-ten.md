@@ -53,24 +53,28 @@ Use the shared adaptive rule (5 problems a round, fast placement). No `ownsLevel
 
 ## Spoken lines (use `prompt()` for questions)
 
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
+
 | Moment | Line |
 |---|---|
-| L1 | "Ten is eight and how many more?" |
-| L2 | "Eight in the nest, five in the basket. How many of the five fill the nest?" |
-| L3 | "Two eggs filled the nest. Five is two and how many more?" |
-| L4/L5 beats | "Eight plus five. How many of the five fill the nest?" → "Five is two and how many more?" → "Ten and three more. How many?" (two-digit: "…make forty?", "Forty and three more?") |
+| L1 | "Ten is eight. How many more?" |
+| L2 | "Eight in the nest. Five in the basket. How many fill the nest?" |
+| L3 | "Two eggs filled the nest. Five is two. How many more?" |
+| L4/L5 beats | "Eight plus five. How many fill the nest?" → "Five is two. How many more?" → "Ten and three more. How many?" (two-digit: "…make forty?", "Forty and three more?") |
 | L6/L8 | the number sentence, then "Warm the egg with the answer!" |
-| L7 beats | "Thirteen minus five. How many walk home to get down to ten?" → "Five is three and how many more?" → "Ten, and two more walk home. How many are left?" |
-| After a chain | say it whole: "Eight plus five. Eight and two make ten, and three more is thirteen!" |
+| L7 beats | "Thirteen minus five. How many walk home to make ten?" → "Five is three. How many more?" → "Ten. Two more walk home. How many are left?" |
+| After a chain | the chant: "Eight plus five. Eight and two. Ten! Ten and three. Thirteen!" |
 | Praise | name the strategy: "You split the five to make ten!", "Fill the nest, then the rest!", "Down to ten, then the rest!" |
 
 ## Hints (on the first miss of a beat)
 
-- **Partner:** count on from `a` to ten, lighting each empty slot ("nine, ten: two more").
-- **Split:** the bridge eggs flash ("two went in the nest"), then the basket eggs left are counted one by one: "one, two, three. Five is two and three."
-- **Ten and more:** "Ten…" then count on the rest: "eleven, twelve, thirteen."
-- **One-step levels (6, 8):** show the bond and play the three steps above in order, saying the chain.
-- **Subtract (L7):** mirror image: count back to ten ("twelve, eleven, ten: three walked home"), split, then count back the rest.
+Every hint opens with "Let's count.", then shows and counts.
+
+- **Partner:** "Let's count.", then count on from `a` to ten, lighting each empty slot ("nine, ten: two more").
+- **Split:** "Let's count.", then the bridge eggs flash ("two went in the nest"), then the basket eggs left are counted one by one: "one, two, three. Five is two and three."
+- **Ten and more:** "Let's count.", then "Ten…" then count on the rest: "eleven, twelve, thirteen."
+- **One-step levels (6, 8):** "Let's count.", then show the bond and play the three steps above in order, saying the chant.
+- **Subtract (L7):** "Let's count.", then mirror image: count back to ten ("twelve, eleven, ten: three walked home"), split, then count back the rest.
 
 ## Answer choices
 
@@ -98,7 +102,7 @@ levels: [
   'Down to ten: 13 − 5 = 13 − 3 − 2 = 10 − 2',
   'Mixed adding and taking away across ten',
 ],
-intro: 'Make Ten! Fill the nest to ten first, then the rest. Let\'s split the eggs!',
+intro: 'Make Ten! Fill the nest, then the rest!',
 ```
 
 ## Build checklist

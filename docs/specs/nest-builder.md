@@ -61,24 +61,28 @@ Use `eggScene` for each beat. The question card holds the number sentence plus t
 
 ## Spoken lines (use `prompt()` for questions)
 
+Short, one-idea-per-sentence lines, paced by `say()`'s per-sentence beat (see "How Ember talks" in `AGENTS.md`).
+
 | Moment | Line |
 |---|---|
-| L1 | "Seven eggs in the nest. How many more to fill it?" |
-| L2/L5 beat 1 | "Eight plus five. How many of the five fill the nest?" / "Thirty-eight plus five. How many more to make forty?" |
+| L1 | "Seven in the nest. How many fill the nest?" |
+| L2/L5 beat 1 | "Eight plus five. How many fill the nest?" / "Thirty-eight plus five. How many more to make forty?" |
 | L2/L5 beat 2 | "The nest is full! Ten and three more. How many?" / "Forty and three more?" |
 | L3 | "Eight plus five. Warm the egg with the answer!" |
 | L4 | "Thirty-eight. How many more to make forty?" |
-| L6/L7 beat 1 | "Thirteen minus five. How many babies hatch and walk home to get down to ten?" / "…to get down to forty?" |
+| L6/L7 beat 1 | "Thirteen in the nest. Some babies hatch and walk home. How many get down to ten?" / "…down to forty?" |
 | L6/L7 beat 2 | "Now two more from ten. How many are left?" |
 | L8 | the number sentence, then "Warm the egg with the answer!" |
 | Right-answer praise | name the strategy: "You filled the nest first!", "Down to ten, then the rest!" |
 
 ## Hints (the model's `hint()`, run on the first miss of a beat)
 
-- **To ten / next ten:** `fillTo10()` counting on ("eight… nine, ten"), then say "That's two more."
-- **Bridge add beat 2 (or one-beat add):** `fillTo10()`, then `spill(rest)`, then "Eight and two make ten. Ten and three is thirteen."
-- **Bridge subtract beat 1:** `hatchAway(ones)`, counting back ("twelve, eleven, ten"), then "Three walked home. Now we're at ten."
-- **Bridge subtract beat 2 (or one-beat subtract):** run beat 1's animation if it hasn't happened, then `hatchAway(rest)`, counting back from ten, then "Thirteen minus five is eight."
+Every hint opens with "Let's count.", then shows and counts.
+
+- **To ten / next ten:** "Let's count.", then `fillTo10()` counting on ("eight… nine, ten"), then say "That's two more."
+- **Bridge add beat 2 (or one-beat add):** "Let's count.", then `fillTo10()`, then `spill(rest)`, then the chant "Eight and two. Ten! Ten and three. Thirteen!"
+- **Bridge subtract beat 1:** "Let's count.", then `hatchAway(ones)`, counting back ("twelve, eleven, ten"), then "Three walked home. Now we're at ten."
+- **Bridge subtract beat 2 (or one-beat subtract):** "Let's count.", then run beat 1's animation if it hasn't happened, then `hatchAway(rest)`, counting back from ten, then the chant "Thirteen minus three. Ten! Ten minus two. Eight!"
 
 ## Answer choices
 
@@ -106,7 +110,7 @@ levels: [
   'Subtract across a ten with bigger numbers (43 − 5 → 40 → 38)',
   'Mixed adding and subtracting across ten',
 ],
-intro: 'Nest Builder! Every nest holds ten eggs. Help Ember fill the nests, one nest at a time.',
+intro: "Nest Builder! Let's fill the nests!",
 ```
 
 ## Build checklist
