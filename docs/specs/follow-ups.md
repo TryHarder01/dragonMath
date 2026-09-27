@@ -35,8 +35,8 @@ The Codex workers ran out of usage partway through their self-review pass, so th
 ## Running it on a phone
 
 This is for one child, possibly on a phone:
-- `npm run build` produces a static `dist/` that any static host can serve (GitHub Pages, Netlify, Cloudflare Pages). A `just deploy` recipe could wrap whichever one is chosen.
-- A web app manifest and icon would let "Add to Home Screen" open it full screen like an app.
+- **Done:** a web app manifest and home-screen icons (`public/`), so "Add to Home Screen" opens it full screen like an app. `vite.config.ts` sets `base: './'`, so `dist/` works from any folder or host path (tested from a `/ember/` subpath: all 7 games on the map, no errors).
+- **Open (the owner's choice):** where to host it. `npm run build` produces a static `dist/` that any static host can serve (GitHub Pages, Netlify, Cloudflare Pages). A `just deploy` recipe could wrap whichever one is chosen. Until then, `just run` serves it to a phone on the same wifi.
 - Progress is saved in the browser's local storage, per device. Clearing site data resets it.
 - Speech uses the device's own voices, so check it sounds right on the phone that will run it.
 
