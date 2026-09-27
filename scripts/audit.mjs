@@ -49,6 +49,9 @@ const SCREENS = {
   'stomp-L6-ruler': { open: 'play', game: 'stomp', level: { stomp: 6 }, main: '.stomp-path', ready: '.stomp-path.open' },
   'stomp-L7-ruler': { open: 'play', game: 'stomp', level: { stomp: 7 }, main: '.stomp-path', ready: '.stomp-path.open' },
   'stomp-L8-estimate': { open: 'play', game: 'stomp', level: { stomp: 8 }, main: '.stomp-path', ready: '.stomp-line-hit' },
+  'story-L2': { open: 'play', game: 'story', level: { story: 2 }, main: '.story-stage', ready: '.story-answer .numeral' },
+  'story-L5-compare': { open: 'play', game: 'story', level: { story: 5 }, main: '.story-stage', ready: '.story-answer .numeral' },
+  'story-L8-sentences': { open: 'play', game: 'story', level: { story: 8 }, main: '.story-sentence-choices', ready: '.story-sentence-card' },
   hatch: { open: 'hatch', hatchIt: true, main: '.hatch-stage' },
   nest: { open: 'nest', main: '.nest-grid', spread: true },
   guide: { open: 'guide', main: '.guide' },
@@ -58,7 +61,9 @@ const SCREENS = {
 const CONTENT = [
   '.logo', '.intro-ember', '.start-ember', '.start-btn', '.grownups-link', '.map-ember', '.spot', '.nest-btn',
   '.ez-target', '.ez-ember', '.egg', '.skip-btn', '.big-egg', '.hatched-baby', '.baby-name', '.act',
-  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide', '.stomp-question', '.stomp-path', '.stomp-egg', '.stomp-estimate-reminder',
+  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide',
+  '.stomp-question', '.stomp-path', '.stomp-egg', '.stomp-estimate-reminder',
+  '.story-stage', '.story-sentence-card', '.story-answer-ember',
 ].join(',');
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, '').split('=')));

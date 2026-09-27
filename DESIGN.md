@@ -96,20 +96,21 @@ Egg Crates practises facts in mixed order. Egg Stairs teaches the **mental model
 - **Hint:** count on or back across the changing rows, dot by dot for ×2–×5 and "plus 7 is 42" for bigger tables.
 - **Why:** walking in order shows the structure (one more group), but only unpredictable problems make him recall the fact. So Stairs teaches the structure and Crates does the mixed practice. Jumping from landmarks trains derived facts (6×7 = 5×7 + 7) instead of reciting from 1×.
 
-### 3–6. Planned games
+### 3–6. The four newer games (built)
 
-Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is the source of truth: levels, generators, hints, spoken lines and parent text. Build them in this order:
+Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is the source of truth: levels, generators, hints, spoken lines and parent text. Known rough edges and next steps are in [`docs/specs/follow-ups.md`](docs/specs/follow-ups.md).
 
 | Game | Skill | Spec |
 |---|---|---|
 | 🪺 Nest Builder | Make-ten / bridging ten, add **and subtract** (13 − 5 → 10 → 8; 43 − 5 → 40 → 38) | [nest-builder.md](docs/specs/nest-builder.md) |
-| 💎 Gem Bags (done) | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
-| 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
 | 💎 Gem Bags | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
-| 🦖 Stomp Path (built) | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
+| 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
 | 📖 Dino Story | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
 
-Difference from the spec: on the estimation level, the T-rex marker stays hidden until the child taps, because showing it at the target would reveal the answer. A wrong tap reveals the exact spot as a large glowing flag for the retry.
+Differences from the specs:
+- **Gem Bags L2** shows the target numeral ("47") beside the dragon while the child builds it.
+- **Stomp Path L6–L7** draw an open number line (not to scale, every landing labelled), so the one-hops in the tens-then-ones hint stay readable. On L8 (estimation) the T-rex stays hidden until the child taps, since it would give the answer away.
+- **Dino Story:** the number-sentence beat on L6/L8 alternates instead of being random, and a 5 × 5 story draws countable eggs instead of 25 emoji actors.
 
 ## Rewards: the Hatchery
 
@@ -135,4 +136,4 @@ Difference from the spec: on the estimation level, the T-rex marker stays hidden
 6. ~~Gem Bags~~ (done)
 7. ~~Nest Builder~~ (done)
 8. ~~Stomp Path~~ (done)
-9. Dino Story
+9. ~~Dino Story~~ (done)
