@@ -33,7 +33,7 @@ export function setMuted(m: boolean) {
 /** Speak text. Resolves when finished (or after a safety timeout). */
 export function say(text: string, opts: { rate?: number; pitch?: number } = {}): Promise<void> {
   if (muted || !('speechSynthesis' in window)) return wait(300 + text.length * 40);
-  speechSynthesis.cancel();
+  if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   if (chosen) u.voice = chosen;
   u.rate = opts.rate ?? 0.9;

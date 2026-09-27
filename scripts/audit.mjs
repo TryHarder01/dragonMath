@@ -82,100 +82,26 @@ await server.listen();
 const url = server.resolvedUrls.local[0];
 const browser = await chromium.launch({ channel: 'chrome' });
 
-const rows = [];
-let flagged = 0;
+// Every registered game counts as placed, so screens open at the level asked for.
+const probe = await browser.newPage();
+await probe.goto(`${url}?mute&audit`);
+const placed = Object.fromEntries((await probe.evaluate(() => window.__audit.games())).map((g) => [g.id, true]));
+await probe.close();
 
-for (const size of sizes) {
-  const [w, h] = SIZES[size];
-  const page = await browser.newPage({ viewport: { width: w, height: h } });
+// Every screen × size is a job; a pool of pages (each its own storage) works through
+// them in parallel. Screens run with ?fast (game pauses ~20× quicker); CSS animations
+// still get their real time below. The intro screen stays real-speed so it's still playing.
+const queue = sizes.flatMap((size) => Object.entries(SCREENS).filter(([name]) => !only || only.includes(name)).map(([name, s]) => [size, name, s]));
+const rows = [];
+await Promise.all(Array.from({ length: Math.min(8, queue.length) }, async () => {
+  const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  for (const [name, s] of Object.entries(SCREENS)) {
-    if (only && !only.includes(name)) continue;
-    await page.goto(`${url}?mute&audit`);
-    await page.evaluate(
-      ({ key, s }) =>
-        localStorage.setItem(key, JSON.stringify({
-          levels: s.level ?? {},
-          placed: { egg: true, crates: true, stairs: true, bags: true, stomp: true, nest: true, maketen: true, story: true },
-          hatched: ['rex-green', 'saur-blue', 'dragon-red'],
-          games: s.state ?? {},
-        })),
-      { key: KEY, s },
-    );
-    await page.reload();
-    await page.evaluate(({ open, game }) => window.__audit[open](game), s);
-    if (s.open === 'play') {
-      await page.waitForSelector('.skip-btn');
-      if (s.skip !== false) {
-        await page.click('.skip-btn', { force: true });
-        await page.waitForSelector(s.ready ?? '.egg .numeral');
-      }
-    }
-    if (s.hatchIt) {
-      for (let i = 0; i < 3; i++) await page.dispatchEvent('.big-egg', 'pointerdown');
-      await page.waitForSelector('.hatch-actions .act');
-    }
-    await page.waitForTimeout(700); // fonts, fit, pop-in animations
-
-    const m = await page.evaluate(({ CONTENT, main }) => {
-      const vw = innerWidth, vh = innerHeight;
-      const rects = [...document.querySelectorAll(CONTENT)]
-        .filter((el) => getComputedStyle(el).visibility !== 'hidden')
-        .map((el) => ({ el, r: el.getBoundingClientRect() }))
-        .filter(({ r }) => r.width > 0 && r.height > 0);
-      const u = rects.reduce(
-        (a, { r }) => ({ l: Math.min(a.l, r.left), t: Math.min(a.t, r.top), r: Math.max(a.r, r.right), b: Math.max(a.b, r.bottom) }),
-        { l: Infinity, t: Infinity, r: -Infinity, b: -Infinity },
-      );
-      const mainEl = document.querySelector(main);
-      const mr = mainEl?.getBoundingClientRect();
-      // The question card is scaled to fit the sky; it's using the space if it
-      // fills the sky's height or its width (a 7×2 array can only do one).
-      const sky = document.querySelector('.ez-sky')?.getBoundingClientRect();
-      const cardFill = sky && mr ? Math.max(mr.height / sky.height, mr.width / sky.width) : 1;
-      // Clipped: content outside the window (the guide scrolls, so skip it).
-      const clipped = rects
-        .filter(({ el }) => !el.closest('.guide-screen, .nest-grid'))
-        .filter(({ r }) => r.left < -2 || r.top < -2 || r.right > vw + 2 || r.bottom > vh + 2)
-        .map(({ el }) => el.className);
-      // Eggs covering the question card.
-      const card = document.querySelector('.ez-target')?.getBoundingClientRect();
-      const overlap = card
-        ? [...document.querySelectorAll('.egg')].some((e) => {
-            const r = e.getBoundingClientRect();
-            const ix = Math.min(r.right, card.right) - Math.max(r.left, card.left);
-            const iy = Math.min(r.bottom, card.bottom) - Math.max(r.top, card.top);
-            return ix > 8 && iy > 8;
-          })
-        : false;
-      return {
-        useW: (u.r - u.l) / vw,
-        useH: (u.b - u.t) / vh,
-        mainShare: mr ? (mr.width * mr.height) / (vw * vh) : 0,
-        cardFill,
-        clipped: [...new Set(clipped)],
-        overlap,
-      };
-    }, { CONTENT, main: s.main });
-
-    // What "using the space" means per screen. The question card should be a
-    // big share of the window; the other screens should span most of it.
-    const flags = [];
-    if (m.useH < 0.6) flags.push(`content spans only ${pct(m.useH)} of the height`);
-    if (s.spread && m.useW < 0.6) flags.push(`content spans only ${pct(m.useW)} of the width`);
-    if (s.main === '.ez-target' && m.cardFill < 0.7) flags.push(`question card fills only ${pct(m.cardFill)} of its space`);
-    if (m.clipped.length) flags.push(`clipped: ${m.clipped.join(' | ')}`);
-    if (m.overlap) flags.push('an egg covers the question card');
-    if (errors.length) flags.push(`page errors: ${errors.splice(0).join('; ')}`);
-    flagged += flags.length ? 1 : 0;
-
-    const file = `${outDir}/${size}--${name}.png`;
-    await page.screenshot({ path: file });
-    rows.push({ size, screen: name, width: pct(m.useW), height: pct(m.useH), card: s.main === '.ez-target' ? pct(m.cardFill) : '', flags: flags.join('; ') || 'ok' });
-  }
+  for (let job = queue.shift(); job; job = queue.shift()) rows.push(await auditScreen(page, errors, ...job));
   await page.close();
-}
+}));
+rows.sort((a, b) => sizes.indexOf(a.size) - sizes.indexOf(b.size) || Object.keys(SCREENS).indexOf(a.screen) - Object.keys(SCREENS).indexOf(b.screen));
+const flagged = rows.filter((r) => r.flags !== 'ok').length;
 
 await browser.close();
 await server.close();
@@ -183,6 +109,92 @@ await server.close();
 console.table(rows);
 console.log(`\n${flagged} of ${rows.length} screen/size combinations flagged. Screenshots: ${outDir}/`);
 process.exit(flagged ? 1 : 0);
+
+async function auditScreen(page, errors, size, name, s) {
+  const [w, h] = SIZES[size];
+  await page.setViewportSize({ width: w, height: h });
+  await page.goto(`${url}?mute&audit${s.skip === false ? '' : '&fast'}`);
+  await page.evaluate(
+    ({ key, s, placed }) =>
+      localStorage.setItem(key, JSON.stringify({
+        levels: s.level ?? {},
+        placed,
+        hatched: ['rex-green', 'saur-blue', 'dragon-red'],
+        games: s.state ?? {},
+      })),
+    { key: KEY, s, placed },
+  );
+  await page.reload();
+  await page.evaluate(({ open, game }) => window.__audit[open](game), s);
+  if (s.open === 'play') {
+    if (s.skip === false) await page.waitForSelector('.skip-btn');
+    else {
+      // In fast mode the intro may already be over.
+      await page.click('.skip-btn', { force: true, timeout: 2000 }).catch(() => {});
+      await page.waitForSelector(s.ready ?? '.egg .numeral');
+    }
+  }
+  if (s.hatchIt) {
+    for (let i = 0; i < 3; i++) await page.dispatchEvent('.big-egg', 'pointerdown');
+    await page.waitForSelector('.hatch-actions .act');
+  }
+  await page.waitForTimeout(700); // fonts, fit, pop-in animations
+
+  const m = await page.evaluate(({ CONTENT, main }) => {
+    const vw = innerWidth, vh = innerHeight;
+    const rects = [...document.querySelectorAll(CONTENT)]
+      .filter((el) => getComputedStyle(el).visibility !== 'hidden')
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .filter(({ r }) => r.width > 0 && r.height > 0);
+    const u = rects.reduce(
+      (a, { r }) => ({ l: Math.min(a.l, r.left), t: Math.min(a.t, r.top), r: Math.max(a.r, r.right), b: Math.max(a.b, r.bottom) }),
+      { l: Infinity, t: Infinity, r: -Infinity, b: -Infinity },
+    );
+    const mainEl = document.querySelector(main);
+    const mr = mainEl?.getBoundingClientRect();
+    // The question card is scaled to fit the sky; it's using the space if it
+    // fills the sky's height or its width (a 7×2 array can only do one).
+    const sky = document.querySelector('.ez-sky')?.getBoundingClientRect();
+    const cardFill = sky && mr ? Math.max(mr.height / sky.height, mr.width / sky.width) : 1;
+    // Clipped: content outside the window (the guide scrolls, so skip it).
+    const clipped = rects
+      .filter(({ el }) => !el.closest('.guide-screen, .nest-grid'))
+      .filter(({ r }) => r.left < -2 || r.top < -2 || r.right > vw + 2 || r.bottom > vh + 2)
+      .map(({ el }) => el.className);
+    // Eggs covering the question card.
+    const card = document.querySelector('.ez-target')?.getBoundingClientRect();
+    const overlap = card
+      ? [...document.querySelectorAll('.egg')].some((e) => {
+          const r = e.getBoundingClientRect();
+          const ix = Math.min(r.right, card.right) - Math.max(r.left, card.left);
+          const iy = Math.min(r.bottom, card.bottom) - Math.max(r.top, card.top);
+          return ix > 8 && iy > 8;
+        })
+      : false;
+    return {
+      useW: (u.r - u.l) / vw,
+      useH: (u.b - u.t) / vh,
+      mainShare: mr ? (mr.width * mr.height) / (vw * vh) : 0,
+      cardFill,
+      clipped: [...new Set(clipped)],
+      overlap,
+    };
+  }, { CONTENT, main: s.main });
+
+  // What "using the space" means per screen. The question card should be a
+  // big share of the window; the other screens should span most of it.
+  const flags = [];
+  if (m.useH < 0.6) flags.push(`content spans only ${pct(m.useH)} of the height`);
+  if (s.spread && m.useW < 0.6) flags.push(`content spans only ${pct(m.useW)} of the width`);
+  if (s.main === '.ez-target' && m.cardFill < 0.7) flags.push(`question card fills only ${pct(m.cardFill)} of its space`);
+  if (m.clipped.length) flags.push(`clipped: ${m.clipped.join(' | ')}`);
+  if (m.overlap) flags.push('an egg covers the question card');
+  if (errors.length) flags.push(`page errors: ${errors.splice(0).join('; ')}`);
+
+  const file = `${outDir}/${size}--${name}.png`;
+  await page.screenshot({ path: file });
+  return { size, screen: name, width: pct(m.useW), height: pct(m.useH), card: s.main === '.ez-target' ? pct(m.cardFill) : '', flags: flags.join('; ') || 'ok' };
+}
 
 function pct(x) {
   return `${Math.round(x * 100)}%`;

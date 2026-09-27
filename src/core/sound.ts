@@ -2,9 +2,15 @@
 
 let ctx: AudioContext | null = null;
 
+type NavigatorWithAudioSession = Navigator & {
+  audioSession?: { type: string };
+};
+
 function ac(): AudioContext {
+  const audioSession = (navigator as NavigatorWithAudioSession).audioSession;
+  if (audioSession) audioSession.type = 'playback';
   ctx ??= new AudioContext();
-  if (ctx.state === 'suspended') void ctx.resume();
+  if (ctx.state !== 'running') void ctx.resume();
   return ctx;
 }
 

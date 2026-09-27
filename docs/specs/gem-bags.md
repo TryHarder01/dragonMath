@@ -28,7 +28,7 @@ Levels 1 and 4–8 use `eggScene`: the question card shows the gem model and the
   - At **ten loose gems**, they swirl into a new bag automatically: "Ten gems make a bag!" This is regrouping, discovered by doing.
   - Tapping ✓ checks the answer. Right: sparkle, and the round goes on. Wrong: hint, and the child fixes it (the hoard stays), then taps ✓ again.
   - `firstTry` = right on the first ✓.
-- **L3 "Who has more?":** two dragons, each above its own pile of bags and gems. Tap a dragon (use `awaitChoice` with the dragon elements).
+- **L3 "Who has more?":** a red dragon and a blue dragon, each above its own pile of bags and gems. Their sides are random each problem, so colour does not reveal the answer. Tap a dragon (use `awaitChoice` with the dragon elements).
 
 ### Gem model (new: write it in `gemBags.ts`, shaped like `Model`)
 

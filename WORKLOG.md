@@ -1,5 +1,53 @@
 # Worklog
 
+## 2026-09-27 — Delegation tooling: delegate and retro skills, just check, faster audit
+
+**Goal:** Per the user, make future multi-agent runs smoother: capture tonight's lessons, and have agents report friction so patterns can be fixed.
+
+**Done:**
+- `.claude/skills/delegate/SKILL.md`: the repo's playbook for handing work to Codex/Claude via Orca (brief template with the quality bar and scale up front, launch, known blockers, review/merge checklist, cleanup, retro review).
+- `.claude/skills/retro/SKILL.md` + `docs/retros/`: each delegated agent writes a short friction report (categories: tooling, instructions, environment, codebase, checks) and attaches it to `worker_done`. `docs/retros/README.md` tracks open and fixed patterns. Seeded with the coordinator's retro from the games build. `just retros` lists them.
+- `scripts/check.mjs` / `just check` (the first step of `just verify`): conflict markers in tracked files, and `{ }` balance per `styles.css` section. It caught both injected faults in a test.
+- `scripts/audit.mjs`: screen × size jobs run in parallel with `?fast` (the intro screen stays real-speed): ~4 min → ~45 s, still 0/156 flagged. The audit and play-through build the "placed" lists from `__audit.games()` instead of hard-coded ids.
+- `AGENTS.md`: `just check`, pointers to the delegate and retro skills, and the parallel-work rule (append to your own section, never edit shared lists in place).
+
+**Verified:** `node scripts/check.mjs` clean, and it flags an injected conflict marker and a dropped CSS brace. `node scripts/audit.mjs`: 0 of 156, 45 s; looked at the intro and a question-card screenshot. `node scripts/playthrough.mjs all`: 0 failed. `codex debug prompt-input` lists the delegate, retro and worklog skills.
+
+## 2026-09-27 — Fix mobile sound startup and recovery
+
+**Goal:** Restore effects and spoken instructions on iPhone Safari and the home-screen app without changing desktop or mute/fast behavior.
+
+**Done:**
+- `src/core/sound.ts`: feature-detect Safari's Audio Session API, select `playback` before creating/using Web Audio, and resume an existing context from any non-running state (including WebKit's `interrupted`).
+- `src/core/voice.ts`: cancel only when speech is active or queued, so an idle `cancel()` cannot race the next utterance.
+
+**Decisions:**
+- Fixed hunches 1, 3 and 4. WebKit documents Audio Session support from Safari 16.4 (https://webkit.org/blog/13966/webkit-features-in-safari-16-4/), `playback` as the remedy for silent-switch-muted Web Audio (https://bugs.webkit.org/show_bug.cgi?id=237322), the asynchronous cancel race (https://bugs.webkit.org/show_bug.cgi?id=191745), and iOS's `interrupted` state after backgrounding (https://bugs.webkit.org/show_bug.cgi?id=276016).
+- Rejected hunch 2: `showMap()` invokes the real greeting's `speechSynthesis.speak()` synchronously inside the ▶ click handler already; adding an empty priming utterance would be redundant and could create another queued/cancelled utterance.
+
+**Verified:** `npm run typecheck && npm run build` passed. `just verify` passed: build, 0/156 audit flags, and all 57 game/level play-throughs. An unmuted system-Chrome Playwright probe tapped ▶ and observed the full greeting passed to `speechSynthesis.speak()` in the same click task, the map visible, and no page errors.
+
+**Open / broken:**
+- Untested on iOS hardware. The parent still needs to try with the ringer switch on silent in both a Safari tab and the home-screen app, then background/lock and return before triggering another effect.
+
+**Next:**
+- Have the parent run those three phone checks; if one still fails, capture the iOS version and whether effects, speech, or both are silent.
+## 2026-09-27 — Fit and colour the Gem Bags compare scene
+
+**Goal:** Make Gem Bags level 3 fill its two cards with clear red and blue dragons and name those colours aloud.
+
+**Done:**
+- `src/games/gemBags.ts`: randomized the red/blue dragon sides, named colours in the prompt, hint and right-answer speech, and fitted each dragon-and-hoard unit to its choice card on resize.
+- `src/styles.css`: enlarged the compare dragons and added the fitted unit's layout, within the Gem Bags section.
+- `docs/specs/gem-bags.md`: recorded the red/blue dragons and randomized sides; level 3 remains pictures-only.
+
+**Decisions:**
+- Used the hatchery's existing 230° red and 100° blue emoji hue rotations so the variants match the rest of the game.
+
+**Verified:** `npm run typecheck` and `npm run build` passed; `node scripts/audit.mjs --only=bags-L3-compare` reported 0 of 6 flagged; inspected all six `audit-screens/*--bags-L3-compare.png` images (phone through big-zoomed-out), with large, distinct dragons and hoards and no clipping. `node scripts/playthrough.mjs bags --level=all` passed all 8 levels; `node scripts/playthrough.mjs bags --level=3 --real` passed, and all 7 images in `playthrough-screens/bags-L3/` were inspected, including the hint state. `just verify` passed: build, 0 of 156 audit combinations flagged, and all 57 game/level rounds reached the hatch with a hint shown.
+
+**Next:** Have the parent try Gem Bags level 3 on the child's usual device.
+
 ## 2026-09-27 — Fast, fanned-out play-throughs
 
 **Goal:** Per the user, make the play-through check efficient and fan it out across levels.

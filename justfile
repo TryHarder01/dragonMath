@@ -25,6 +25,14 @@ build:
 preview: build
     npm run preview
 
+# Merge guard: conflict markers, and { } balance in each styles.css section (~1s)
+check:
+    node scripts/check.mjs
+
+# List agent friction reports (docs/retros/), newest first
+retros:
+    @ls -1r docs/retros/*.md | grep -v README | head -20
+
 # Check every screen uses the window well (screenshots in audit-screens/)
 audit:
     node scripts/audit.mjs
@@ -34,7 +42,7 @@ playthrough game="all" *args:
     node scripts/playthrough.mjs {{game}} {{args}}
 
 # Everything before pushing (pushing main deploys): typecheck + build, layout audit, every level of every game played through
-verify:
+verify: check
     npm run build
     node scripts/audit.mjs
     node scripts/playthrough.mjs all --level=all
