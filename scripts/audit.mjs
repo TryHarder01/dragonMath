@@ -36,6 +36,9 @@ const SCREENS = {
   'stairs-L1-first': { open: 'play', game: 'stairs', level: { stairs: 1 }, state: { stairs: { table: 2, phase: 'up-low' } }, main: '.ez-target' },
   'stairs-L7-tall': { open: 'play', game: 'stairs', level: { stairs: 7 }, state: { stairs: { table: 7, phase: 'up-high' } }, main: '.ez-target' },
   'crates-L6': { open: 'play', game: 'crates', level: { crates: 6 }, main: '.ez-target' },
+  'story-L2': { open: 'play', game: 'story', level: { story: 2 }, main: '.story-stage', ready: '.story-answer .numeral' },
+  'story-L5-compare': { open: 'play', game: 'story', level: { story: 5 }, main: '.story-stage', ready: '.story-answer .numeral' },
+  'story-L8-sentences': { open: 'play', game: 'story', level: { story: 8 }, main: '.story-sentence-choices', ready: '.story-sentence-card' },
   hatch: { open: 'hatch', hatchIt: true, main: '.hatch-stage' },
   nest: { open: 'nest', main: '.nest-grid', spread: true },
   guide: { open: 'guide', main: '.guide' },
@@ -45,7 +48,7 @@ const SCREENS = {
 const CONTENT = [
   '.logo', '.intro-ember', '.start-ember', '.start-btn', '.grownups-link', '.map-ember', '.spot', '.nest-btn',
   '.ez-target', '.ez-ember', '.egg', '.skip-btn', '.big-egg', '.hatched-baby', '.baby-name', '.act',
-  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide',
+  '.nest-cell', '.nest-title', '.hud-btn', '.pips', '.guide', '.story-stage', '.story-sentence-card', '.story-answer-ember',
 ].join(',');
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, '').split('=')));

@@ -105,7 +105,9 @@ Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is
 | 🪺 Nest Builder | Make-ten / bridging ten, add **and subtract** (13 − 5 → 10 → 8; 43 − 5 → 40 → 38) | [nest-builder.md](docs/specs/nest-builder.md) |
 | 💎 Gem Bags | Place value to 100: bags of ten, build and compare numbers, ± tens, 2-digit ± without regrouping | [gem-bags.md](docs/specs/gem-bags.md) |
 | 🦖 Stomp Path | Number line 0–100: hops of 1 and 10, skip counting, open-number-line ±, estimation | [stomp-path.md](docs/specs/stomp-path.md) |
-| 📖 Dino Story | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
+| 📖 Dino Story (done) | Word problems by situation type (join, separate, compare, start unknown, equal groups), acted out by dinos | [dino-story.md](docs/specs/dino-story.md) |
+
+Dino Story follows its spec. Its half-of-problems number-sentence beat alternates instead of being randomly selected, so every fresh L6/L8 round opens with that interaction and remains reliably auditable. A 5 × 5 story uses countable egg shapes instead of 25 emoji actors, preserving the stage's 20-character limit without narrowing the specified generator.
 
 ## Rewards: the Hatchery
 
@@ -131,4 +133,4 @@ Each has a full build spec in [`docs/specs/`](docs/specs/README.md). The spec is
 6. Gem Bags
 7. Nest Builder
 8. Stomp Path
-9. Dino Story
+9. ~~Dino Story~~ (done)

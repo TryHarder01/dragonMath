@@ -347,3 +347,117 @@ button:focus-visible { outline: 4px solid var(--lava); outline-offset: 3px; }
 
 /* Intro: Ember introduces the game, with a big skip button. */
 .intro-ember { font-size: clamp(6rem, 36vmin, 60rem); line-height: 1; transform: scaleX(-1); animation: hover 3s ease-in-out infinite; }
+
+/* ---------- Dino Story ---------- */
+.play.story-scene { justify-content: flex-start; width: 100%; gap: 0; }
+.story-shell {
+  flex: 1; min-height: 0; width: 100%; position: relative;
+  display: flex; flex-direction: column; align-items: stretch; gap: clamp(4px, .8vmin, 14px);
+}
+.story-stage {
+  flex: 1; min-height: 0; width: 100%; overflow: hidden; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: clamp(20px, 3vmin, 64px); padding: clamp(8px, 1.5vmin, 28px);
+  box-shadow: inset 0 -1.2vmin 0 #0001, 0 .7vmin 0 #0002;
+}
+.story-pond { background: linear-gradient(#a9e7ff 0 45%, #55c5dc 45% 82%, #69b96c 82%); }
+.story-meadow { background: linear-gradient(#a9e7ff 0 48%, #88d675 48% 82%, #4ba45e 82%); }
+.story-nest { background: linear-gradient(#f9df9a 0 46%, #9bd477 46% 82%, #57a85d 82%); }
+.story-cave { background: radial-gradient(circle at 50% 12%, #bba7d8, #6d6080 68%, #3f3850); }
+.story-beach { background: linear-gradient(#a9e7ff 0 38%, #55c5dc 38% 62%, #f1d38a 62%); }
+.story-sun { position: absolute; top: 2%; right: 3%; font-size: clamp(1.6rem, 5vmin, 9rem); opacity: .75; }
+.story-line { width: 100%; display: flex; justify-content: center; align-items: center; gap: 3vmin; min-height: 0; }
+.story-actor-group {
+  display: grid; grid-template-columns: repeat(5, max-content); align-items: center; justify-content: center;
+  gap: clamp(0px, .25vmin, 6px); max-width: 100%;
+}
+.story-actor {
+  display: inline-grid; place-items: center; line-height: 1;
+  font-size: clamp(1.15rem, min(6.5vmin, 6.8vh), 11rem);
+  animation: story-pop .45s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.story-actor:nth-child(3n + 2) { animation-delay: .06s; }
+.story-actor:nth-child(3n) { animation-delay: .12s; }
+.story-count-token {
+  width: clamp(14px, min(3.4vmin, 4.5vh), 5rem); aspect-ratio: 3 / 4;
+  border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--shell) 60%, #e4c98e);
+  box-shadow: inset 0 -.2em 0 #0002;
+}
+.story-incoming .story-actor { animation-name: story-walk-in; }
+.story-compare-row { grid-template-columns: repeat(20, max-content); justify-content: start; margin-inline: auto; }
+.story-compare-row .story-actor { font-size: clamp(.82rem, min(4.1vw, 7.2vh), 8rem); }
+.story-part { padding: 1vmin; border-radius: 2vmin; background: #fff4; }
+.story-part + .story-part { background: #9edbff88; }
+.story-ember, .story-friend {
+  position: absolute; right: 4%; top: 5%; font-size: clamp(2.6rem, 10vmin, 17rem);
+  transform: scaleX(-1); animation: hover 2.4s ease-in-out infinite;
+}
+.story-friend { top: auto; bottom: 6%; transform: none; }
+.story-leave-fly { animation: story-fly-home .9s ease-in forwards; }
+.story-leave-hatch { animation: story-walk-home .9s ease-in forwards; }
+.story-leave-nap { animation: story-nap .9s ease-in forwards; }
+.story-leave-share { animation: story-share .9s ease-in forwards; }
+.story-stage.fast .story-actor { animation-duration: .2s; }
+.story-stage.fast [class*="story-leave-"] { animation-duration: .4s; }
+.story-group-row, .story-share-row {
+  width: 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: clamp(4px, 1.2vmin, 24px);
+}
+.story-stage-nest, .story-share-nest, .story-deal-nest {
+  min-width: clamp(72px, 13vmin, 220px); min-height: clamp(72px, 13vmin, 220px);
+  padding: .5vmin; border-radius: 45%; background: #c8955add; box-shadow: inset 0 -.7vmin 0 #0002;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  font-size: clamp(1.6rem, 4vmin, 7rem);
+}
+.story-stage-nest > .story-nest-items { display: flex; flex-wrap: wrap; }
+.story-stage-nest .story-actor, .story-share-nest .story-actor { font-size: clamp(1rem, min(4vmin, 5vh), 7rem); }
+.story-pool .story-actor { font-size: clamp(.95rem, min(4vmin, 5vh), 7rem); }
+.story-strip {
+  flex: none; min-height: clamp(54px, 8vh, 180px); display: flex; align-items: center; justify-content: center;
+  gap: clamp(4px, 1vmin, 20px); overflow: hidden;
+}
+.story-strip-part {
+  white-space: nowrap; background: var(--card); border-radius: clamp(12px, 1.7vmin, 32px);
+  padding: .18em .45em; font-size: clamp(1.35rem, min(4.7vmin, 5.5vh), 8rem); font-weight: 700;
+  box-shadow: 0 .45vmin 0 #0002; font-variant-numeric: tabular-nums;
+}
+.story-sentence-choices {
+  flex: none; width: 100%; min-height: clamp(228px, 26vh, 520px);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(6px, 1.3vmin, 24px); align-items: stretch;
+}
+.story-sentence-card {
+  min-height: 72px; padding: .25em; background: var(--card); border-radius: clamp(16px, 2vmin, 36px);
+  box-shadow: 0 .7vmin 0 #0002; font-size: clamp(1.4rem, min(4.4vmin, 5.2vh), 7rem); font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.story-answers { flex: none; width: 100%; height: max(170px, 27vh); position: relative; }
+.story-answer { width: clamp(72px, min(21vw, 19vh), 460px); --rise: -12%; container-type: inline-size; }
+.story-answer .numeral { font-size: 36cqi; }
+.story-answer-ember {
+  position: absolute; right: 1%; bottom: calc(max(170px, 27vh) - 1vmin);
+  z-index: 3; font-size: clamp(2.5rem, 8vmin, 14rem); transform: scaleX(-1);
+}
+.story-model-card {
+  position: absolute; z-index: 8; left: 50%; top: 38%; translate: -50% -50%;
+  background: #fffffff2; border-radius: 24px; padding: 14px 20px; box-shadow: 0 1vmin 3vmin #0005;
+  display: grid; place-items: center; pointer-events: none;
+}
+.story-two-model { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.story-deal-model { display: flex; gap: 10px; align-items: stretch; justify-content: center; }
+.story-deal-nest { min-width: 84px; min-height: 84px; font-size: 2rem; }
+.story-deal-nest .story-actor { font-size: clamp(1.2rem, 3vmin, 4rem); }
+
+@keyframes story-pop { from { scale: 0; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes story-walk-in { from { translate: 45vw 0; } to { translate: 0 0; } }
+@keyframes story-fly-home { to { translate: 24vw -35vh; rotate: 18deg; opacity: 0; } }
+@keyframes story-walk-home { to { translate: 45vw 0; opacity: 0; } }
+@keyframes story-nap { to { translate: 0 2vh; scale: .75; opacity: .35; } }
+@keyframes story-share { to { translate: 35vw 12vh; scale: .7; opacity: .2; } }
+
+@media (max-aspect-ratio: 3/4) {
+  .story-sentence-choices { grid-template-columns: 1fr; min-height: 252px; }
+  .story-sentence-card { font-size: clamp(1.15rem, 6vw, 2rem); }
+  .story-answer-ember { bottom: calc(max(170px, 27vh) + 2vmin); }
+  .story-strip-part { padding-inline: .25em; }
+}

@@ -1,5 +1,29 @@
 # Worklog
 
+## 2026-09-27 — Build Dino Story
+
+**Goal:** Build the eight-level Dino Story word-problem game from `docs/specs/dino-story.md`.
+
+**Done:**
+- Added `src/games/dinoStory.ts`: story templates per situation type, a stage that acts each story out, answer eggs, and hints using `addModel`, `subModel`, `missingModel` and `groupsModel`.
+- Registered it, added its CSS, audit screens and a play-through driver (`scripts/drivers/story.mjs`), marked it done in `DESIGN.md`, and recorded both accepted spec defaults.
+- The Codex worker built this; its session hit the Codex usage limit before its self-review finished, so the coordinator verified and committed it.
+
+**Decisions:**
+- The half-of-problems number-sentence beat on L6/L8 alternates rather than being random, so the audit reliably sees it.
+- A 5 × 5 story draws countable egg shapes instead of 25 emoji actors, keeping the stage within 20 characters.
+
+**Verified:**
+- `npm run typecheck` clean. The worker's `just audit`: 0 of 78 flagged.
+- `just playthrough story --level=N` for every level 1–8: hatch reached with one wrong tap (hint shown) each time.
+- Looked at the L2 hint (11 − 5 on ten-frames) and the L8 stage.
+
+**Open / broken:**
+- The hint model card covers the number-sentence card under the stage (L2 hint screenshot). Minor; see `docs/specs/follow-ups.md`.
+
+**Next:**
+- Merge with the other game branches and run `just verify`.
+
 ## 2026-09-26 — Codex portability: AGENTS.md and shared skills
 
 **Goal:** Per the user, make the repo work the same for Codex as for Claude Code: one instruction file, and skills both tools find.

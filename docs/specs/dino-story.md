@@ -1,6 +1,6 @@
 # Spec: 📖 Dino Story (word problems)
 
-- **Status:** Ready to build. Read [README.md](README.md) first.
+- **Status:** Built. Read [README.md](README.md) first.
 - **Game id:** `'story'`. **File:** `src/games/dinoStory.ts`
 - **Build order:** 4th. It reuses the models from `src/core/models.ts`, and benefits from Nest Builder's hatch-and-walk-home animation if that already exists.
 - **Standards:**
@@ -139,10 +139,10 @@ intro: 'Dino Story! Watch what the dinos do, then help Ember answer the question
    - a sentence-card beat.
    Every template must pass a generator test: 1,000 random problems per level, with numbers in range, a valid answer, and the answer among the choices.
 
-## Open questions for the user (defaults in bold, so build with the default)
+## Open questions for the user (defaults accepted)
 
-- Should the story text also appear on screen for a parent reading along? **No.** Kid screens stay wordless. The parent guide explains the levels.
-- Keep sharing (division) in L7, or leave it to Egg Crates' missing factor? **Keep it.** Sharing stories are the most natural way into division.
+- Should the story text also appear on screen for a parent reading along? **No.** Kid screens stay wordless. The parent guide explains the levels. **Resolved: default accepted by user.**
+- Keep sharing (division) in L7, or leave it to Egg Crates' missing factor? **Keep it.** Sharing stories are the most natural way into division. **Resolved: default accepted by user.**
 
 ## Out of scope
 
