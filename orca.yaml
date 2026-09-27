@@ -1,0 +1,5 @@
+# Orca worktree hooks: new worktrees get dependencies before the agent starts.
+setupAgentStartupPolicy: wait-for-setup
+scripts:
+  setup: |
+    npm install

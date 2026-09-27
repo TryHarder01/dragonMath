@@ -28,3 +28,13 @@ preview: build
 # Check every screen uses the window well (screenshots in audit-screens/)
 audit:
     node scripts/audit.mjs
+
+# Drive a full round of a game in Chrome (screenshots in playthrough-screens/). e.g. `just playthrough nest --level=6`, or `all`
+playthrough game="all" *args:
+    node scripts/playthrough.mjs {{game}} {{args}}
+
+# Everything before handing work back: typecheck + build, layout audit, every game's play-through
+verify:
+    npm run build
+    node scripts/audit.mjs
+    node scripts/playthrough.mjs all

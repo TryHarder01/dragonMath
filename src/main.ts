@@ -46,6 +46,7 @@ if (new URLSearchParams(location.search).has('audit')) {
       hatch: () => showHatch(app, GAMES[0]),
       guide: () => showGuide(app, showStart),
       play: (id: string) => startGame(app, game(id)),
+      games: () => GAMES.map((g) => ({ id: g.id, levels: g.levels.length })),
     },
   });
 }

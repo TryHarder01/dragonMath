@@ -63,7 +63,7 @@ If you build a custom scene rather than `eggScene`, keep to the same layout cont
 
 1. `npm run typecheck` is clean and `npm run build` succeeds.
 2. **Layout:** add at least two entries to `SCREENS` in `scripts/audit.mjs`: an easy level and the most crowded level. Use `open: 'play', game: '<id>', level: { <id>: N }`, and set `ready: '<selector>'` if the first problem doesn't show `.egg .numeral`. Then `just audit` must report 0 flagged.
-3. **Play-through:** drive a full round in Playwright (system Chrome, `channel: 'chrome'`, URL `?mute&audit`, open the game with `window.__audit.play('<id>')`). Include one deliberate wrong answer so the hint runs, and check the round reaches the hatch with no page errors. Look at screenshots of the hint. (Earlier sessions used throwaway drive scripts; a reusable `scripts/playthrough.mjs` would be welcome.)
+3. **Play-through:** `just playthrough <id> --level=N` (`scripts/playthrough.mjs`) drives a full round in the system Chrome and fails unless it reaches the hatch with no page errors and at least one wrong tap (so the hint ran). Games built on `awaitChoice`/`eggScene` work with the default driver (`scripts/drivers/tap.mjs`). If your game has other interactions (build buttons + ✓, a stomp button, tapping a spot on a line, tuck-in), add `scripts/drivers/<id>.mjs` exporting `step(page, ctx)` that does **one** interaction, including a deliberate wrong answer. Run it on an easy level and on each level with a different interaction, and look at the screenshots of the hint in `playthrough-screens/`.
 4. Check every level's problem generator against its constraints: loop each level 1,000× in a quick script and assert the ranges and that the answer is among the choices.
 5. Put screenshots of each level in `just audit` or the play-through, and look at them.
 
@@ -80,6 +80,7 @@ The games live in separate files, but a few shared files get touched by every ga
 - `src/games/index.ts`: one import, one `GAMES` entry, one `UPCOMING` removal.
 - `src/styles.css`: **append** one section headed `/* ---------- <Game name> ---------- */`. Don't edit other sections. If a shared rule must change, say so in the worklog instead.
 - `scripts/audit.mjs`: add your `SCREENS` entries only.
+- `scripts/drivers/<id>.mjs`: your own new file, if you need one. Don't change `scripts/playthrough.mjs`; if it can't express your game, say so in the worklog.
 - `DESIGN.md`, `WORKLOG.md`: your own section and entry only.
 - **Don't change shared core files** (`eggScene.ts`, `models.ts`, `round.ts`, `types.ts`) unless your spec asks for it. New models go in your game file, or in `src/core/models.ts` as **new** exports only.
 - Use a separate git worktree or branch per game when several agents run at once.
