@@ -11,7 +11,7 @@ export const lines = {
   addBridge: (a: number, b: number) => `${word(a)} and ${word(10 - a)}. Ten! Ten and ${word(a + b - 10)}. ${word(a + b)}!`,
   addSum: (a: number, b: number) => `${word(a)} and ${word(b)} is ${word(a + b)}.`,
   // subModel: a − b, counting back (down to ten first when it crosses).
-  subBridge: (a: number, b: number) => `Take away ${word(a - 10)}. Down to ten. Then ${word(b - (a - 10))} more.`,
+  subBridge: (a: number, b: number) => `Take away ${word(a - 10)}. Down to ten. Take away ${word(b - (a - 10))} more.`,
   subCountBack: (a: number, b: number) => `Start at ${word(a)}. Take away ${word(b)}. Count back.`,
   subResult: (a: number, b: number) => `${word(a)} take away ${word(b)} is ${word(a - b)}.`,
   // missingModel: a + ? = c.

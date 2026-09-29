@@ -24,7 +24,7 @@ export const lines = {
 
   // Estimation (L8).
   estimateAsk: (target: number) => `Where does ${target} live? Tap the path!`,
-  estimateHintStart: "Let's count. Find the nearest big number.",
+  estimateHintStart: "Let's count.",
   estimateAnchor: (anchor: number) => `Start at ${anchor}. Count the tens.`,
   estimateOnesMore: (ones: number, back: boolean, target: number) => `${ones} more${back ? ' back' : ''}. ${target}!`,
   estimateFlagPrompt: (target: number) => `Tap the glowing flag for ${target}.`,

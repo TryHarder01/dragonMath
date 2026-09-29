@@ -47,8 +47,8 @@ export const lines = {
   // buildScene: L2, tap bags and gems to make a target.
   bagFormed: 'Ten gems make a bag!',
   buildPrompt: (target: number) => `Make ${target}. Tap the bags and the gems!`,
-  buildHint: (total: number, tens: number, ones: number, target: number, targetTens: number, targetOnes: number) =>
-    `You made ${total}. That's ${tens} bags and ${ones} gems. ${target} needs ${targetTens} bags and ${targetOnes} gems.`,
+  buildHint: (total: number, target: number, targetTens: number, targetOnes: number) =>
+    `You made ${total}. ${target} is ${targetTens} bags and ${targetOnes} gems.`,
 
   // compareScene: L3, which dragon has more.
   compareAsk: 'Red dragon. Blue dragon. Who has more gems?',
@@ -56,7 +56,7 @@ export const lines = {
   compareCard: 'Who has more?',
   compareRight: (colour: string) => `The ${colour} dragon has more! ${PRAISE}`,
   compareTensCount: (highTens: number, lowTens: number) => `${highTens} bags is more than ${lowTens} bags.`,
-  compareOnesMatch: (onesA: number, onesB: number) => `The bags match. ${onesA} and ${onesB}.`,
+  compareOnesMatch: (onesA: number, onesB: number) => `The bags match. ${Math.max(onesA, onesB)} gems is more than ${Math.min(onesA, onesB)}.`,
   compareAnswer: (colour: string) => `The ${colour} dragon has more!`,
   compareAgain: 'Look at both dragons. Bags first, then gems!',
 };

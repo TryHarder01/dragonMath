@@ -4,7 +4,7 @@ export const lines = {
   intro: "Egg Stairs! Let's count the rows!",
   askFirstRow: (t: number) => `One row of ${t}. How many eggs?`,
   askLandmark: (from: number, t: number, known: number, to: number) =>
-    `You know this. ${from} rows of ${t} is ${known}. How many is ${to} rows?`,
+    `You know this. ${from} rows of ${t} is ${known}. How many in ${to} rows?`,
   askUp: (from: number, known: number, step: number, t: number) =>
     `${from} rows is ${known}. Add ${step === 1 ? 'one more row' : `${step} more rows`} of ${t}. How many now?`,
   askDown: (from: number, known: number, step: number) =>

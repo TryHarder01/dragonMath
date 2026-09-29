@@ -442,7 +442,7 @@ function buildScene(play: HTMLElement, target: number): Promise<boolean> {
       sfx.hmm();
       scene.classList.add('hinting');
       const [targetTens, targetOnes] = split(target);
-      await say(lines.buildHint(total(), tens, ones, target, targetTens, targetOnes));
+      await say(lines.buildHint(total(), target, targetTens, targetOnes));
       if (target - total() >= 10) bagSource.classList.add('need');
       else if (target > total()) gemSource.classList.add('need');
       else hoardEl.classList.add('need');

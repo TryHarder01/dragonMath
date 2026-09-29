@@ -49,7 +49,7 @@ export const lines = {
   tenMinusRecap: (rest: number, final: number) => `Ten minus ${word(rest)} is ${word(final)}.`,
   subChant: (a: number, bridge: number, rest: number) => {
     const b = bridge + rest;
-    return `${word(a)} minus ${word(b)}. ${word(bridge)} to ten! ${word(rest)} more. ${word(a - b)} left!`;
+    return `${word(a)} minus ${word(b)}. ${word(a)} minus ${word(bridge)}. Ten! Ten minus ${word(rest)}. ${word(a - b)}!`;
   },
 
   // Subtract in one step (L8).

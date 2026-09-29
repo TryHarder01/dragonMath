@@ -1,5 +1,23 @@
 # Worklog
 
+## 2026-09-28 — Clearer spoken lines outside Dino Story
+
+**Goal:** Fix the lines from the review that could confuse a 4–5-year-old. The user said to skip Dino Story for now.
+
+**Done:**
+- Take-away no longer says a bare "more": Nest Builder `subSecondAsk` is now "Thirty. Four more walk home. How many are left?" (matching Make Ten). The shared `subBridge` hint now ends "Take away two more."
+- Fragments made into questions: Nest Builder `addSecondAskBig` "Thirty and four more. How many?"; Egg Stairs `askLandmark` "How many in six rows?"
+- Gem Bags `compareOnesMatch` now finishes the thought: "The bags match. Five gems is more than three." `buildHint` dropped its middle sentence: "You made 23. 34 is 3 bags and 4 gems." (fewer numbers in one breath).
+- Stomp Path `estimateHintStart` is just "Let's count." ("nearest big number" was hard; the next line names the start number).
+- Make Ten `subChant` now reads as a chant like Nest Builder's: "Thirteen minus five. Thirteen minus three. Ten! Ten minus two. Eight!" The old line said "Three to ten!", which was too clipped to follow.
+
+**Verified:** typecheck; `just check`; `just verify` before push. I didn't listen to it in the browser.
+
+**Open / broken:** Dino Story is not changed (the user said to skip it for now): its generic asks don't match the gem, egg and nap stories; "shared by three"; "fewer"; "Extra ones are the answer."
+
+**Next:**
+- Dino Story lines, when the user returns to that game.
+
 ## 2026-09-28 — Make Ten: fix "Ten is six" phrasing
 
 **Goal:** The user heard Make Ten say a broken sentence ("Ten is six. How many more?"). Fix the wording.
