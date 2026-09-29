@@ -1,5 +1,24 @@
 # Worklog
 
+## 2026-09-28 — Make Ten: fix "Ten is six" phrasing
+
+**Goal:** The user heard Make Ten say a broken sentence ("Ten is six. How many more?"). Fix the wording.
+
+**Done:** In `src/games/makeTen.lines.ts`, "X is Y" was used for "Y and ? make X", which says the wrong fact out loud.
+- `partnerAsk` (L1): "Six eggs. How many more make ten?"
+- `splitAsk` (L4/L5/L7) and `splitFilledAsk` (L3): "Two and how many make five?"
+- `basketSplit` recap: "Two and three make five." so it echoes the question.
+
+**Decisions:**
+- "Two and how many make five?" was the user's pick from five options, because it's the most natural to say and goes with the partner line.
+
+**Verified:** `just check`; `just verify` (build, audit, every level of every game: 0 failed). I didn't listen to it in the browser.
+
+**Open / broken:** A review of every lines file found other lines that could confuse a 4–5-year-old. They're listed for the user and not changed yet. The biggest is Dino Story's generic asks ("were playing… went home") after gem, egg or nap stories.
+
+**Next:**
+- Fix whichever of those lines the user picks.
+
 ## 2026-09-27 — Gem Bags L3 asks only "who has more?"
 
 **Goal:** The user didn't like the "💎💎💎 more? / 💎 fewer?" cue card. Instead: focus L3 on "more" only, and teach fewer/less later as a follow-on.

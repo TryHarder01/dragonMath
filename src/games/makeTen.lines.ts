@@ -15,18 +15,18 @@ export const lines = {
   // Model recaps, shared by several beats.
   bridgeAdded: (bridge: number) => `${word(bridge)} went in the nest.`,
   bridgeWalkedHome: (bridge: number) => `${word(bridge)} walked home.`,
-  basketSplit: (b: number, bridge: number, rest: number) => `${word(b)} is ${word(bridge)} and ${word(rest)}.`,
-  splitAsk: (b: number, bridge: number) => `${word(b)} is ${word(bridge)}. How many more?`,
+  basketSplit: (b: number, bridge: number, rest: number) => `${word(bridge)} and ${word(rest)} make ${word(b)}.`,
+  splitAsk: (b: number, bridge: number) => `${word(bridge)} and how many make ${word(b)}?`,
 
   // Partners of ten (L1).
-  partnerAsk: (a: number) => `Ten is ${word(a)}. How many more?`,
+  partnerAsk: (a: number) => `${word(a)} eggs. How many more make ten?`,
 
   // Fill from the basket (L2).
   fillAsk: (a: number, b: number) => `${word(a)} in the nest. ${word(b)} in the basket. How many fill the nest?`,
   thatsEggs: (bridge: number) => `That's ${word(bridge)} eggs.`,
 
   // Split the number (L3).
-  splitFilledAsk: (bridge: number, b: number) => `${word(bridge)} eggs filled the nest. ${word(b)} is ${word(bridge)}. How many more?`,
+  splitFilledAsk: (bridge: number, b: number) => `${word(bridge)} eggs filled the nest. ${word(bridge)} and how many make ${word(b)}?`,
 
   // The whole chain (L4/L5).
   chainFirstAskSmall: (a: number, b: number) => `${word(a)} plus ${word(b)}. How many fill the nest?`,
